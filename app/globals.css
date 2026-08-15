@@ -1,0 +1,1519 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   Design Tokens
+   Ein einziges visuelles System: helle Flaechen, ein Blau, ein Cyan, eine
+   Bewegungskurve. Ueber @theme entstehen daraus zusaetzlich Tailwind-
+   Utilities, z. B. bg-nh-canvas, text-nh-mute, border-nh-line, font-display,
+   max-w-wrap.
+--------------------------------------------------------------------------- */
+@theme {
+  /* Flaechen — hell, mit einem sehr leichten Blaustich statt reinem Grau. */
+  --color-nh-white: #ffffff;
+  --color-nh-canvas: #f6f9ff;
+  --color-nh-panel: #eef4ff;
+
+  /* Text — drei Stufen reichen fuer die komplette Hierarchie. */
+  --color-nh-ink: #08111f;
+  --color-nh-body: #46557a;
+  --color-nh-mute: #6d7d9e;
+  --color-nh-mute-2: #97a5c2;
+
+  /* Akzente. */
+  --color-nh-blue: #1a5cff;
+  --color-nh-blue-2: #4b86ff;
+  --color-nh-blue-deep: #0b3bbf;
+  --color-nh-cyan: #00c2e0;
+  --color-nh-ok: #0eaa72;
+  --color-nh-error: #e11d48;
+
+  /* Linien und Schleier auf hellem Grund. */
+  --color-nh-line: rgba(11, 39, 96, 0.1);
+  --color-nh-line-2: rgba(11, 39, 96, 0.06);
+
+  /* Bewegung: eine Kurve, damit sich Hover, Fokus und Reveal ueberall gleich
+     anfuehlen. Erzeugt zusaetzlich die Utilities ease-nh / ease-nh-out. */
+  --ease-nh: cubic-bezier(0.16, 0.8, 0.24, 1);
+  --ease-nh-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --font-display: var(--font-sora), sans-serif;
+  --font-body: var(--font-inter), sans-serif;
+  --font-mono: var(--font-jetbrains-mono), monospace;
+
+  --container-wrap: 1200px;
+}
+
+/* ---------------------------------------------------------------------------
+   Bewegung, Glas und Licht
+   Zentrale Werte statt verstreuter Einzelangaben.
+--------------------------------------------------------------------------- */
+:root {
+  --dur-hover: 460ms;
+  --dur-slow: 700ms;
+
+  /*
+   * Glas auf hellem Grund funktioniert anders als auf dunklem: es braucht
+   * Weiss mit hoher Deckkraft, eine feine helle Kante oben und einen sehr
+   * weichen, blau eingefaerbten Schatten. Sonst wirkt es wie eine graue
+   * Flaeche statt wie Glas.
+   */
+  --glass-bg: linear-gradient(
+    160deg,
+    rgba(255, 255, 255, 0.86),
+    rgba(255, 255, 255, 0.62)
+  );
+  --glass-border: rgba(255, 255, 255, 0.9);
+  --glass-blur: blur(20px) saturate(160%);
+  --glass-shadow:
+    0 24px 60px -32px rgba(11, 39, 96, 0.34),
+    0 2px 10px -4px rgba(11, 39, 96, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+
+  /* Glow: mehrere sehr weiche Ebenen statt eines harten farbigen Schattens —
+     es soll wirken, als laege Licht hinter dem Element. */
+  --glow-soft:
+    0 0 0 1px rgba(26, 92, 255, 0.16),
+    0 14px 38px -18px rgba(26, 92, 255, 0.36),
+    0 30px 80px -40px rgba(0, 194, 224, 0.34);
+
+  --glow-strong:
+    0 0 0 1px rgba(26, 92, 255, 0.24),
+    0 18px 44px -16px rgba(26, 92, 255, 0.48),
+    0 40px 100px -46px rgba(0, 194, 224, 0.42);
+
+  /* Der durchgehende Verlauf fuer Akzentflaechen und Text. */
+  --gradient-accent: linear-gradient(
+    118deg,
+    var(--color-nh-blue-deep),
+    var(--color-nh-blue) 42%,
+    var(--color-nh-cyan)
+  );
+}
+
+/* ---------------------------------------------------------------------------
+   Base
+--------------------------------------------------------------------------- */
+@layer base {
+  *,
+  *::before,
+  *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    /* Damit Anker nicht unter dem fixierten Header landen. */
+    scroll-padding-top: 96px;
+    /*
+     * Tailwinds Preflight setzt hier 1.5. Buttons, Labels, Eingabefelder und
+     * Mono-Labels rechnen mit dem Browser-Standard; Elemente mit eigener
+     * Zeilenhoehe (Headlines, Fliesstext) sind davon unberuehrt.
+     */
+    line-height: normal;
+  }
+
+  body {
+    background: var(--color-nh-white);
+    color: var(--color-nh-body);
+    font-family: var(--font-body);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: rgba(26, 92, 255, 0.16);
+    color: var(--color-nh-ink);
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  img,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
+
+  button {
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+    background: none;
+    color: inherit;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    line-height: 1.04;
+    letter-spacing: -0.025em;
+    color: var(--color-nh-ink);
+    /* Grosse fette Headlines brauchen engere Zahlen als Fliesstext. */
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Komponenten-Klassen
+   Bewusst als globales CSS gehalten: Pseudo-Elemente, mehrschichtige
+   Hintergruende, Masken, Keyframes und mehrfach kombinierte Transitions
+   waeren als Tailwind-Utilities unnoetig unleserlich.
+--------------------------------------------------------------------------- */
+@layer components {
+  /*
+   * Bewusst als Layer: Tailwind legt seine Utilities in @layer utilities.
+   * Ungeschichtetes CSS schlaegt jede Layer-Regel — eine Klasse wie .glass
+   * wuerde damit ein `absolute` oder `bg-white` am selben Element
+   * ueberschreiben. Innerhalb dieses Layers gilt die erwartete Reihenfolge:
+   * Utility schlaegt Komponente.
+   */
+
+  /* --- Eyebrow (kleines Mono-Label mit Strich) --- */
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    line-height: 1.5;
+    text-transform: uppercase;
+    color: var(--color-nh-blue);
+  }
+
+  /*
+   * Der Strich sitzt inline vor dem Text, nicht als Flex-Item daneben.
+   * Bricht das Label auf schmalen Geraeten auf zwei Zeilen, bleibt er dadurch
+   * an der ersten Zeile — als Flex-Item wuerde er auf halber Hoehe schweben.
+   */
+  .eyebrow::before {
+    content: "";
+    display: inline-block;
+    width: 22px;
+    height: 1px;
+    margin-right: 10px;
+    vertical-align: 0.32em;
+    background: linear-gradient(90deg, var(--color-nh-blue), var(--color-nh-cyan));
+  }
+
+  /**
+   * Text im Akzentverlauf. Nur fuer einzelne Woerter in Headlines — als
+   * Fliesstext waere es weder lesbar noch ruhig.
+   */
+  .text-gradient {
+    background: var(--gradient-accent);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    /* Ohne das schneidet der Verlauf Unterlaengen bei manchen Schriften ab. */
+    padding-bottom: 0.06em;
+  }
+
+  /* --- Buttons ---
+     Hover: minimal anheben, Licht dahinter, ein einmaliger Light-Sweep.
+     Klick: sehr kurzer Press-Effekt. Bewusst lange Dauern, damit es ruhig
+     statt sprunghaft wirkt. */
+  .btn {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    padding: 14px 26px;
+    border-radius: 999px;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 14.5px;
+    letter-spacing: -0.01em;
+    color: #ffffff;
+    background: var(--gradient-accent);
+    background-size: 160% 160%;
+    background-position: 0% 50%;
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.3) inset,
+      0 10px 26px -10px rgba(26, 92, 255, 0.6);
+    transition:
+      transform var(--dur-hover) var(--ease-nh),
+      box-shadow var(--dur-hover) ease,
+      background-position var(--dur-slow) var(--ease-nh),
+      color var(--dur-hover) ease;
+  }
+
+  /* Der Sweep laeuft einmal durch den Button, sobald der Zeiger daraufkommt. */
+  .btn::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background: linear-gradient(
+      115deg,
+      transparent 34%,
+      rgba(255, 255, 255, 0.4) 50%,
+      transparent 66%
+    );
+    transform: translateX(-130%);
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      transform 900ms var(--ease-nh-out),
+      opacity 300ms ease;
+  }
+
+  .btn:hover {
+    transform: translateY(-2px);
+    background-position: 100% 50%;
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.35) inset,
+      0 16px 34px -12px rgba(26, 92, 255, 0.66),
+      0 0 60px -16px rgba(0, 194, 224, 0.7);
+  }
+
+  .btn:hover::after {
+    transform: translateX(130%);
+    opacity: 1;
+  }
+
+  .btn:active {
+    transform: translateY(0) scale(0.985);
+    transition-duration: 120ms;
+  }
+
+  /** Glasvariante — gleiche Geometrie, zurueckhaltende Wirkung. */
+  .btn-ghost {
+    background: var(--glass-bg);
+    background-size: auto;
+    -webkit-backdrop-filter: var(--glass-blur);
+    backdrop-filter: var(--glass-blur);
+    color: var(--color-nh-ink);
+    box-shadow:
+      0 0 0 1px var(--color-nh-line) inset,
+      0 10px 26px -18px rgba(11, 39, 96, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  }
+
+  .btn-ghost:hover {
+    color: var(--color-nh-blue);
+    box-shadow:
+      0 0 0 1px rgba(26, 92, 255, 0.28) inset,
+      inset 0 1px 0 rgba(255, 255, 255, 0.95),
+      var(--glow-soft);
+  }
+
+  .btn-ghost::after {
+    background: linear-gradient(
+      115deg,
+      transparent 34%,
+      rgba(26, 92, 255, 0.14) 50%,
+      transparent 66%
+    );
+  }
+
+  /** Kleinere Variante fuer die Navigation. */
+  .btn-sm {
+    padding: 10px 18px;
+    font-size: 13.5px;
+  }
+
+  /* ---------------------------------------------------------------------------
+     Wiederverwendbare Oberflaechen
+  --------------------------------------------------------------------------- */
+
+  /** Glass — die Grundflaeche fast aller Karten. */
+  .glass {
+    position: relative;
+    background: var(--glass-bg);
+    -webkit-backdrop-filter: var(--glass-blur);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+  }
+
+  /**
+   * Lichtkante: ein feiner Verlauf entlang des Rahmens, der oben links hell
+   * anfaengt und unten rechts verschwindet — dadurch bekommt die Glasflaeche
+   * eine Richtung, aus der das Licht kommt.
+   */
+  .glass-edge::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    pointer-events: none;
+    background: linear-gradient(
+      140deg,
+      rgba(255, 255, 255, 0.95),
+      rgba(26, 92, 255, 0.22) 40%,
+      rgba(255, 255, 255, 0) 70%
+    );
+    /* Nur der Rahmen bleibt stehen, die Fuellung wird ausgestanzt. */
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
+
+  /** Weicher Lichtschein beim Hover — nie im Ruhezustand sichtbar. */
+  .glow-hover {
+    transition:
+      transform var(--dur-hover) var(--ease-nh),
+      box-shadow var(--dur-hover) ease,
+      border-color var(--dur-hover) ease,
+      color var(--dur-hover) ease;
+  }
+
+  .glow-hover:hover {
+    box-shadow: var(--glow-soft);
+  }
+
+  /**
+   * Lichtschein, der der Maus folgt. Die Position liefert lib/use-pointer-glow.ts
+   * als --mx/--my; ohne JavaScript bleibt die Flaeche schlicht unsichtbar.
+   * Nur fuer grosse interaktive Flaechen gedacht.
+   */
+  .pointer-glow::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity var(--dur-slow) ease;
+    background: radial-gradient(
+      280px circle at var(--mx, 50%) var(--my, 50%),
+      rgba(26, 92, 255, 0.14),
+      rgba(0, 194, 224, 0.07) 40%,
+      transparent 70%
+    );
+  }
+
+  .pointer-glow:hover::after {
+    opacity: 1;
+  }
+
+  /**
+   * Wandernde Lichtreflexion ueber einer Glasflaeche. Laeuft dauerhaft, sehr
+   * langsam und mit geringer Deckkraft — es soll wie Streulicht auf Glas
+   * aussehen, nicht wie ein Ladebalken.
+   */
+  .sheen {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .sheen::before {
+    content: "";
+    position: absolute;
+    top: -60%;
+    bottom: -60%;
+    left: -40%;
+    width: 40%;
+    z-index: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      100deg,
+      transparent,
+      rgba(255, 255, 255, 0.75),
+      transparent
+    );
+    transform: skewX(-16deg);
+    animation: sheenSweep 9s var(--ease-nh-out) infinite;
+  }
+
+  @keyframes sheenSweep {
+    0% {
+      left: -40%;
+      opacity: 0;
+    }
+    12% {
+      opacity: 0.9;
+    }
+    55%,
+    100% {
+      left: 130%;
+      opacity: 0;
+    }
+  }
+
+  /* ---------------------------------------------------------------------------
+     Technische Hintergrundelemente
+  --------------------------------------------------------------------------- */
+
+  /** Feines Raster, ueberall als Untergrund technischer Abschnitte. */
+  .tech-grid {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(var(--color-nh-line-2) 1px, transparent 1px),
+      linear-gradient(90deg, var(--color-nh-line-2) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+
+  /** Variante mit weicher Kante — fuer den Hero und grosse Flaechen. */
+  .tech-grid-fade {
+    -webkit-mask-image: radial-gradient(
+      ellipse 75% 60% at 50% 35%,
+      black,
+      transparent 78%
+    );
+    mask-image: radial-gradient(ellipse 75% 60% at 50% 35%, black, transparent 78%);
+  }
+
+  /** Punktraster als leichtere Alternative zum Linienraster. */
+  .tech-dots {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: radial-gradient(
+      rgba(11, 39, 96, 0.14) 1px,
+      transparent 1px
+    );
+    background-size: 26px 26px;
+    -webkit-mask-image: radial-gradient(ellipse 60% 60% at 50% 50%, black, transparent 75%);
+    mask-image: radial-gradient(ellipse 60% 60% at 50% 50%, black, transparent 75%);
+    opacity: 0.5;
+  }
+
+  /* --- Section-Hintergruende --- */
+  .hero-backdrop {
+    background:
+      radial-gradient(ellipse 60% 50% at 78% 8%, rgba(0, 194, 224, 0.16), transparent 62%),
+      radial-gradient(ellipse 70% 55% at 12% 20%, rgba(26, 92, 255, 0.14), transparent 60%),
+      radial-gradient(ellipse 90% 60% at 50% 100%, rgba(26, 92, 255, 0.07), transparent 65%),
+      var(--color-nh-white);
+  }
+
+  /**
+   * Sehr langsam wanderndes Licht im Hero. 30s, minimale Amplitude — soll
+   * unterschwellig bleiben und nie ablenken.
+   */
+  .hero-backdrop::before {
+    content: "";
+    position: absolute;
+    inset: -15%;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse 34% 30% at 74% 22%, rgba(0, 194, 224, 0.22), transparent 64%),
+      radial-gradient(ellipse 30% 28% at 22% 68%, rgba(26, 92, 255, 0.18), transparent 64%);
+    animation: auroraDrift 30s ease-in-out infinite;
+  }
+
+  @keyframes auroraDrift {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+    50% {
+      transform: translate3d(-2%, 1.6%, 0) scale(1.06);
+    }
+  }
+
+  /** Abschnitte, die sich leicht vom Weiss abheben sollen. */
+  .panel-backdrop {
+    background: linear-gradient(
+      180deg,
+      var(--color-nh-white),
+      var(--color-nh-canvas) 30%,
+      var(--color-nh-canvas) 70%,
+      var(--color-nh-white)
+    );
+  }
+
+  .accent-backdrop {
+    background:
+      radial-gradient(ellipse 60% 55% at 50% 0%, rgba(26, 92, 255, 0.1), transparent 62%),
+      radial-gradient(ellipse 50% 50% at 82% 100%, rgba(0, 194, 224, 0.1), transparent 62%),
+      var(--color-nh-white);
+  }
+
+  /** Trennlinie zwischen zwei Abschnitten: in der Mitte hell, aussen weg. */
+  .section-rule {
+    height: 1px;
+    border: 0;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      var(--color-nh-line),
+      rgba(26, 92, 255, 0.28),
+      var(--color-nh-line),
+      transparent
+    );
+  }
+
+  /* ---------------------------------------------------------------------------
+     Header
+     Oben transparent und clean. Nach etwas Scroll legt sich Glas darunter, die
+     Hoehe nimmt leicht ab. Der Wechsel ist animiert, nicht sprunghaft.
+  --------------------------------------------------------------------------- */
+  .header-backdrop {
+    background: transparent;
+    border-bottom: 1px solid transparent;
+    transition:
+      padding-block var(--dur-slow) var(--ease-nh),
+      background var(--dur-slow) ease,
+      border-color var(--dur-slow) ease,
+      box-shadow var(--dur-slow) ease,
+      backdrop-filter var(--dur-slow) ease;
+  }
+
+  .header-backdrop[data-scrolled="true"] {
+    padding-block: 11px;
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.86),
+      rgba(255, 255, 255, 0.68)
+    );
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    backdrop-filter: blur(20px) saturate(180%);
+    border-bottom-color: var(--color-nh-line);
+    box-shadow:
+      0 18px 40px -34px rgba(11, 39, 96, 0.55),
+      inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  }
+
+  /**
+   * Ladebalken-artige Linie am unteren Header-Rand: sie zeigt den Scrollfortschritt.
+   * Die Breite kommt als --progress aus components/Navbar.tsx.
+   */
+  .header-progress {
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    height: 1.5px;
+    width: 100%;
+    transform: scaleX(var(--progress, 0));
+    transform-origin: left;
+    background: var(--gradient-accent);
+    opacity: 0;
+    transition: opacity var(--dur-slow) ease;
+  }
+
+  .header-backdrop[data-scrolled="true"] .header-progress {
+    opacity: 1;
+  }
+
+  /* --- Navigationslinks --- */
+  .nav-link {
+    position: relative;
+    color: var(--color-nh-body);
+    font-weight: 500;
+    transition: color var(--dur-hover) ease;
+  }
+
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -7px;
+    height: 1.5px;
+    border-radius: 2px;
+    background: var(--gradient-accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--dur-hover) var(--ease-nh);
+  }
+
+  .nav-link:hover {
+    color: var(--color-nh-ink);
+  }
+
+  .nav-link:hover::after {
+    transform: scaleX(1);
+  }
+
+  /** Aktiver Abschnitt — wird von components/Navbar.tsx gesetzt. */
+  .nav-link[data-active="true"] {
+    color: var(--color-nh-blue);
+  }
+
+  .nav-link[data-active="true"]::after {
+    transform: scaleX(1);
+  }
+
+  /* --- Mobile Navigation --- */
+  .nav-panel {
+    transform-origin: top;
+    transition:
+      opacity var(--dur-hover) var(--ease-nh),
+      transform var(--dur-hover) var(--ease-nh),
+      visibility var(--dur-hover);
+  }
+
+  .nav-panel[data-open="false"] {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px) scale(0.98);
+  }
+
+  .nav-panel[data-open="true"] {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+  }
+
+  /** Burger-Icon: drei Striche, die zum X werden. */
+  .burger-line {
+    display: block;
+    width: 17px;
+    height: 1.6px;
+    border-radius: 2px;
+    background: var(--color-nh-ink);
+    transition:
+      transform var(--dur-hover) var(--ease-nh),
+      opacity 200ms ease;
+  }
+
+  .burger[data-open="true"] .burger-line:nth-child(1) {
+    transform: translateY(5.6px) rotate(45deg);
+  }
+
+  .burger[data-open="true"] .burger-line:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0.4);
+  }
+
+  .burger[data-open="true"] .burger-line:nth-child(3) {
+    transform: translateY(-5.6px) rotate(-45deg);
+  }
+
+  /* --- Logo --- */
+  .logo-link {
+    display: inline-flex;
+    border-radius: 12px;
+    transition:
+      transform var(--dur-hover) var(--ease-nh),
+      filter var(--dur-hover) ease;
+  }
+
+  .logo-link:hover {
+    transform: translateY(-1px);
+    filter: drop-shadow(0 6px 16px rgba(26, 92, 255, 0.4));
+  }
+
+  .logo-link:active {
+    transform: translateY(0) scale(0.98);
+    transition-duration: 120ms;
+  }
+
+  /** Das Logo-Zeichen pulsiert sehr dezent — wie eine aktive Statusleuchte. */
+  .logo-glow {
+    animation: logoPulse 5s ease-in-out infinite;
+  }
+
+  @keyframes logoPulse {
+    0%,
+    100% {
+      filter: drop-shadow(0 2px 10px rgba(26, 92, 255, 0.35));
+    }
+    50% {
+      filter: drop-shadow(0 2px 18px rgba(0, 194, 224, 0.55));
+    }
+  }
+
+  /* --- Footer-Links --- */
+  .footer-link {
+    position: relative;
+    color: var(--color-nh-mute);
+    transition: color var(--dur-hover) ease;
+  }
+
+  .footer-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -3px;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    opacity: 0.5;
+    transition: transform var(--dur-hover) var(--ease-nh);
+  }
+
+  .footer-link:hover {
+    color: var(--color-nh-blue);
+  }
+
+  .footer-link:hover::after {
+    transform: scaleX(1);
+  }
+
+  /* ---------------------------------------------------------------------------
+     Status-Indikatoren
+     Ein Punkt mit einem Ring, der einmal pro Zyklus nach aussen laeuft.
+  --------------------------------------------------------------------------- */
+  .status-dot {
+    position: relative;
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    background: var(--color-nh-ok);
+    flex: none;
+  }
+
+  .status-dot::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: inherit;
+    animation: statusPing 2.4s var(--ease-nh-out) infinite;
+  }
+
+  .status-dot[data-tone="blue"] {
+    background: var(--color-nh-blue);
+  }
+
+  .status-dot[data-tone="cyan"] {
+    background: var(--color-nh-cyan);
+  }
+
+  /* Eingeschraenkter Betrieb — bernstein statt rot, es ist kein Ausfall. */
+  .status-dot[data-tone="warn"] {
+    background: #f0a72c;
+  }
+
+  @keyframes statusPing {
+    0% {
+      transform: scale(1);
+      opacity: 0.55;
+    }
+    70%,
+    100% {
+      transform: scale(3.2);
+      opacity: 0;
+    }
+  }
+
+  /* ---------------------------------------------------------------------------
+     Terminal
+  --------------------------------------------------------------------------- */
+  .terminal {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.85;
+    /* Auf dunklem Grund bleibt ein Terminal ein Terminal — die einzige dunkle
+       Flaeche der Seite, bewusst als Zitat aus der Entwicklerwelt. */
+    background: linear-gradient(165deg, #0b1220, #070d18);
+    color: #cfe0ff;
+  }
+
+  .terminal-bar {
+    background: rgba(255, 255, 255, 0.04);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .terminal-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 999px;
+    flex: none;
+  }
+
+  /** Der blinkende Cursor am Ende der aktuell getippten Zeile. */
+  .caret {
+    display: inline-block;
+    width: 7px;
+    height: 1.05em;
+    vertical-align: text-bottom;
+    margin-left: 2px;
+    background: var(--color-nh-cyan);
+    animation: caretBlink 1.05s steps(2, start) infinite;
+  }
+
+  @keyframes caretBlink {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+  }
+
+  /** Eine erscheinende Terminalzeile kommt kurz von unten herein. */
+  .terminal-line {
+    animation: terminalLine 340ms var(--ease-nh-out) both;
+  }
+
+  @keyframes terminalLine {
+    from {
+      opacity: 0;
+      transform: translateY(5px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* --- Code-Fenster auf hellem Grund --- */
+  .code-window {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.8;
+    color: var(--color-nh-body);
+  }
+
+  .code-window .tok-key {
+    color: var(--color-nh-blue-deep);
+  }
+
+  .code-window .tok-str {
+    color: #0a8f6a;
+  }
+
+  .code-window .tok-com {
+    color: var(--color-nh-mute-2);
+  }
+
+  .code-window .tok-fn {
+    color: var(--color-nh-blue);
+  }
+
+  /* ---------------------------------------------------------------------------
+     Karten
+  --------------------------------------------------------------------------- */
+
+  /**
+   * Perspektivische Karte. Die Rotation kommt als --rx/--ry aus
+   * lib/use-tilt.ts; ohne JavaScript liegt die Karte einfach flach.
+   */
+  .tilt {
+    transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg))
+      translateY(var(--lift, 0px));
+    transform-style: preserve-3d;
+    transition:
+      transform var(--dur-hover) var(--ease-nh),
+      box-shadow var(--dur-hover) ease;
+    will-change: transform;
+  }
+
+  /** Inhalt, der bei der Neigung minimal vor der Karte zu schweben scheint. */
+  .tilt-layer {
+    transform: translateZ(28px);
+  }
+
+  /* Beim Ziehen der Maus ueber die Karte soll die Neigung direkt folgen,
+     nicht mit 460ms hinterherlaufen. */
+  .tilt[data-active="true"] {
+    transition:
+      transform 90ms linear,
+      box-shadow var(--dur-hover) ease;
+  }
+
+  /**
+   * Der hervorgehobene Tarif.
+   *
+   * Bewusst als eigene Klasse und nicht als Utility: `.glass` setzt Rahmen und
+   * Schatten als ungeschichtetes CSS und wuerde eine Tailwind-Utility damit
+   * ueberschreiben. Hier stehen beide Werte an einer Stelle.
+   */
+  .plan-featured {
+    border-color: rgba(26, 92, 255, 0.32);
+    box-shadow:
+      var(--glass-shadow),
+      var(--glow-soft);
+  }
+
+  .plan-featured:hover {
+    box-shadow:
+      var(--glass-shadow),
+      var(--glow-strong);
+  }
+
+  /** Grosse Nummer im Kartenhintergrund — traegt die Hierarchie. */
+  .card-index {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 78px;
+    line-height: 1;
+    color: rgba(11, 39, 96, 0.05);
+    transition: color var(--dur-slow) ease;
+  }
+
+  .group:hover .card-index {
+    color: rgba(26, 92, 255, 0.14);
+  }
+
+  /* ---------------------------------------------------------------------------
+     Floating / Partikel
+  --------------------------------------------------------------------------- */
+
+  /** Sehr langsames Schweben. Die Verzoegerung setzt die jeweilige Komponente. */
+  .float {
+    animation: floatY 9s ease-in-out infinite;
+  }
+
+  @keyframes floatY {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-12px);
+    }
+  }
+
+  /**
+   * Lichtpunkte im Hintergrund. Position, Groesse und Dauer kommen als
+   * Inline-Variablen aus components/Particles.tsx, damit hier keine 20
+   * Einzelregeln stehen muessen.
+   */
+  .particle {
+    position: absolute;
+    left: var(--px);
+    top: var(--py);
+    width: var(--size);
+    height: var(--size);
+    border-radius: 999px;
+    background: radial-gradient(circle, rgba(26, 92, 255, 0.6), transparent 68%);
+    opacity: 0;
+    animation: particleRise var(--dur) linear infinite;
+    animation-delay: var(--delay);
+  }
+
+  @keyframes particleRise {
+    0% {
+      opacity: 0;
+      transform: translate3d(0, 14px, 0) scale(0.6);
+    }
+    18%,
+    72% {
+      opacity: 0.75;
+    }
+    100% {
+      opacity: 0;
+      transform: translate3d(var(--drift, 10px), -70px, 0) scale(1.15);
+    }
+  }
+
+  /* ---------------------------------------------------------------------------
+     Netzwerk-Visualisierung
+  --------------------------------------------------------------------------- */
+
+  /** Die Verbindungslinie zeichnet sich einmal und bleibt dann stehen. */
+  .net-line {
+    stroke-dasharray: var(--len, 400);
+    stroke-dashoffset: var(--len, 400);
+    animation: netDraw 2.4s var(--ease-nh-out) forwards;
+    animation-delay: var(--delay, 0s);
+  }
+
+  @keyframes netDraw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  /** Ein Lichtpaket, das dauerhaft ueber die Verbindung laeuft. */
+  .net-pulse {
+    animation: netPulse var(--dur, 4s) linear infinite;
+    animation-delay: var(--delay, 0s);
+  }
+
+  @keyframes netPulse {
+    0% {
+      offset-distance: 0%;
+      opacity: 0;
+    }
+    12%,
+    80% {
+      opacity: 1;
+    }
+    100% {
+      offset-distance: 100%;
+      opacity: 0;
+    }
+  }
+
+  /** Der Ring um einen Standort. */
+  .net-ring {
+    transform-origin: center;
+    transform-box: fill-box;
+    animation: netRing 3.2s var(--ease-nh-out) infinite;
+    animation-delay: var(--delay, 0s);
+  }
+
+  @keyframes netRing {
+    0% {
+      transform: scale(0.5);
+      opacity: 0.75;
+    }
+    70%,
+    100% {
+      transform: scale(2.4);
+      opacity: 0;
+    }
+  }
+
+  /* ---------------------------------------------------------------------------
+     Kennzahl-Balken
+     Faehrt beim Einblenden auf seinen Zielwert (--fill).
+  --------------------------------------------------------------------------- */
+  .meter {
+    height: 4px;
+    border-radius: 999px;
+    background: var(--color-nh-line);
+    overflow: hidden;
+  }
+
+  .meter > span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: var(--gradient-accent);
+    transform: scaleX(var(--fill, 1));
+    transform-origin: left;
+    transition: transform 1.4s var(--ease-nh-out);
+  }
+
+  /*
+   * Steht der Balken in einem Bereich, der noch eingeblendet wird, faehrt er
+   * erst mit dessen Reveal auf seinen Wert. Ausserhalb solcher Bereiche — etwa
+   * im Hero, der sofort sichtbar ist — steht er von Anfang an richtig.
+   */
+  .reveal:not(.in) .meter > span,
+  .stagger:not(.in) .meter > span {
+    transform: scaleX(0);
+  }
+
+  /* ---------------------------------------------------------------------------
+     Formular
+  --------------------------------------------------------------------------- */
+  .field {
+    margin-bottom: 18px;
+  }
+
+  .field label {
+    display: block;
+    margin-bottom: 8px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-nh-mute);
+  }
+
+  .field input,
+  .field select,
+  .field textarea {
+    width: 100%;
+    padding: 13px 15px;
+    border-radius: 12px;
+    border: 1px solid var(--color-nh-line);
+    background: rgba(255, 255, 255, 0.7);
+    color: var(--color-nh-ink);
+    font-family: var(--font-body);
+    font-size: 14.5px;
+    transition:
+      border-color var(--dur-hover) ease,
+      box-shadow var(--dur-hover) ease,
+      background-color var(--dur-hover) ease;
+  }
+
+  .field textarea {
+    min-height: 132px;
+    resize: vertical;
+    line-height: 1.6;
+  }
+
+  .field input::placeholder,
+  .field textarea::placeholder {
+    color: var(--color-nh-mute-2);
+  }
+
+  .field input:hover,
+  .field select:hover,
+  .field textarea:hover {
+    border-color: rgba(26, 92, 255, 0.28);
+  }
+
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus {
+    outline: none;
+    background: #ffffff;
+    border-color: var(--color-nh-blue);
+    box-shadow: 0 0 0 4px rgba(26, 92, 255, 0.12);
+  }
+
+  .field select {
+    appearance: none;
+    /* Eigener Pfeil, damit das Feld in allen Browsern gleich aussieht. */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5l5-5' stroke='%236d7d9e' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    padding-right: 40px;
+  }
+
+  .err-msg {
+    margin-top: 7px;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--color-nh-error);
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition:
+      max-height var(--dur-hover) var(--ease-nh),
+      opacity var(--dur-hover) ease;
+  }
+
+  .field.error input,
+  .field.error select,
+  .field.error textarea {
+    border-color: var(--color-nh-error);
+    box-shadow: 0 0 0 4px rgba(225, 29, 72, 0.1);
+  }
+
+  .field.error .err-msg {
+    max-height: 40px;
+    opacity: 1;
+  }
+
+  /* ---------------------------------------------------------------------------
+     Scroll-Reveal
+     Zwei Varianten ueber denselben Observer: einzelnes Element (.reveal) und
+     gestaffelte Gruppe (.stagger). Beide blenden mit einer Spur Blur ein —
+     das laesst die Bewegung weich wirken, ohne sie zu verlangsamen.
+  --------------------------------------------------------------------------- */
+  .reveal {
+    opacity: 0;
+    transform: translateY(26px);
+    filter: blur(8px);
+    transition:
+      opacity 0.85s var(--ease-nh),
+      transform 0.85s var(--ease-nh),
+      filter 0.85s var(--ease-nh);
+  }
+
+  .reveal.in {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+
+  .stagger > * {
+    opacity: 0;
+    transform: translateY(22px);
+    filter: blur(7px);
+    transition:
+      opacity 0.75s var(--ease-nh),
+      transform 0.75s var(--ease-nh),
+      filter 0.75s var(--ease-nh);
+  }
+
+  .stagger.in > * {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+
+  .stagger.in > *:nth-child(1) { transition-delay: 0ms; }
+  .stagger.in > *:nth-child(2) { transition-delay: 80ms; }
+  .stagger.in > *:nth-child(3) { transition-delay: 160ms; }
+  .stagger.in > *:nth-child(4) { transition-delay: 240ms; }
+  .stagger.in > *:nth-child(5) { transition-delay: 320ms; }
+  .stagger.in > *:nth-child(6) { transition-delay: 400ms; }
+  .stagger.in > *:nth-child(7) { transition-delay: 480ms; }
+  .stagger.in > *:nth-child(8) { transition-delay: 560ms; }
+
+  /**
+   * Elemente, die erst nach dem Blur-Reveal ihre Dauerbewegung starten duerfen —
+   * sonst schwebt eine Karte, die noch gar nicht sichtbar ist.
+   */
+  .reveal .float,
+  .stagger > * .float {
+    animation-play-state: paused;
+  }
+
+  .reveal.in .float,
+  .stagger.in > * .float {
+    animation-play-state: running;
+  }
+
+  /* ---------------------------------------------------------------------------
+     Hero
+     Einmalige Eintrittsbewegung beim Laden, bewusst langsam und knapp.
+  --------------------------------------------------------------------------- */
+  @keyframes heroRise {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+      filter: blur(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+  }
+
+  .hero-rise {
+    opacity: 0;
+    animation: heroRise 1.1s var(--ease-nh) forwards;
+  }
+
+  .hero-rise-1 { animation-delay: 100ms; }
+  .hero-rise-2 { animation-delay: 220ms; }
+  .hero-rise-3 { animation-delay: 360ms; }
+  .hero-rise-4 { animation-delay: 500ms; }
+  .hero-rise-5 { animation-delay: 640ms; }
+  .hero-rise-6 { animation-delay: 780ms; }
+
+  /**
+   * Der Lichtschein, der im Hero der Maus folgt. Position kommt als --gx/--gy
+   * aus components/HeroBackdrop.tsx.
+   */
+  .hero-cursor-glow {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(
+      460px circle at var(--gx, 50%) var(--gy, 40%),
+      rgba(26, 92, 255, 0.14),
+      rgba(0, 194, 224, 0.08) 42%,
+      transparent 68%
+    );
+    opacity: 0;
+    transition: opacity 900ms ease;
+  }
+
+  .hero-cursor-glow[data-active="true"] {
+    opacity: 1;
+  }
+
+  /* --- Scroll-Cue --- */
+  .scroll-cue-line {
+    width: 1px;
+    height: 42px;
+    background: linear-gradient(var(--color-nh-blue), transparent);
+    animation: scrollLine 2s ease-in-out infinite;
+  }
+
+  @keyframes scrollLine {
+    0% {
+      transform: scaleY(0);
+      transform-origin: top;
+    }
+    50% {
+      transform: scaleY(1);
+      transform-origin: top;
+    }
+    51% {
+      transform-origin: bottom;
+    }
+    100% {
+      transform: scaleY(0);
+      transform-origin: bottom;
+    }
+  }
+
+  /* --- Laufband (Logos / Standorte) --- */
+  .marquee {
+    display: flex;
+    width: max-content;
+    animation: marqueeSlide 38s linear infinite;
+  }
+
+  @keyframes marqueeSlide {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+    to {
+      /* Der Inhalt liegt doppelt im DOM — bei -50 % beginnt er nahtlos neu. */
+      transform: translate3d(-50%, 0, 0);
+    }
+  }
+
+  .marquee-mask {
+    -webkit-mask-image: linear-gradient(
+      90deg,
+      transparent,
+      black 12%,
+      black 88%,
+      transparent
+    );
+    mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent);
+  }
+
+  .marquee-wrap:hover .marquee {
+    animation-play-state: paused;
+  }
+
+}
+
+/* ---------------------------------------------------------------------------
+   Reduced Motion
+   Bewusst ausserhalb von @layer, damit die Regeln alle Utilities schlagen.
+   Bewegung raus, Rueckmeldung bleibt: Farbe, Rahmen und Schein wirken
+   weiterhin, nur ohne Verschieben, Zoomen oder Lichtwanderung.
+--------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .reveal,
+  .stagger > * {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    transition: none;
+  }
+
+  .stagger.in > * {
+    transition-delay: 0ms;
+  }
+
+  .hero-rise {
+    opacity: 1;
+    animation: none;
+  }
+
+  .reveal:not(.in) .meter > span,
+  .stagger:not(.in) .meter > span,
+  .meter > span {
+    transform: scaleX(var(--fill, 1));
+    transition: none;
+  }
+
+  .sheen::before,
+  .particle,
+  .float,
+  .marquee,
+  .scroll-cue-line,
+  .status-dot::after,
+  .caret,
+  .logo-glow,
+  .net-pulse,
+  .net-ring,
+  .hero-backdrop::before,
+  .terminal-line {
+    animation: none;
+  }
+
+  /* Ohne Animation muessen die gezeichneten Linien trotzdem sichtbar sein. */
+  .net-line {
+    stroke-dashoffset: 0;
+    animation: none;
+  }
+
+  .particle,
+  .sheen::before {
+    opacity: 0;
+  }
+
+  .caret {
+    opacity: 1;
+  }
+
+  .btn:hover,
+  .btn:active,
+  .logo-link:hover,
+  .logo-link:active,
+  .glow-hover:hover {
+    transform: none;
+  }
+
+  .tilt {
+    transform: none;
+    transition: box-shadow var(--dur-hover) ease;
+  }
+
+  .tilt-layer {
+    transform: none;
+  }
+
+  .btn::after,
+  .pointer-glow::after,
+  .hero-cursor-glow {
+    display: none;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Fokus
+   Muss unabhaengig von allen Hover-Effekten deutlich sichtbar bleiben.
+--------------------------------------------------------------------------- */
+:focus-visible {
+  outline: 2px solid var(--color-nh-blue);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+.field input:focus-visible,
+.field select:focus-visible,
+.field textarea:focus-visible {
+  outline: 2px solid var(--color-nh-blue);
+  outline-offset: 2px;
+}
+
+/** Sprungmarke fuer die Tastatur — sichtbar erst beim Fokus. */
+.skip-link {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 200;
+  padding: 11px 18px;
+  border-radius: 999px;
+  background: var(--color-nh-ink);
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  transform: translateY(-160%);
+  transition: transform 240ms var(--ease-nh);
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+/* ---------------------------------------------------------------------------
+   Beruehrungsgeraete
+   Ohne echten Hover greifen die Effekte nicht; die schweren Blur-Ebenen und
+   der Maus-Glow entfallen dort, das spart Rechenzeit.
+--------------------------------------------------------------------------- */
+@media (hover: none) {
+  .pointer-glow::after,
+  .hero-cursor-glow,
+  .btn::after {
+    display: none;
+  }
+}
+
+@media (max-width: 760px) {
+  :root {
+    /* Auf kleinen Geraeten kuerzer und mit weniger Blur. */
+    --dur-hover: 320ms;
+    --dur-slow: 480ms;
+    --glass-blur: blur(14px) saturate(150%);
+  }
+
+  /* Der Blur im Reveal ist auf schwachen GPUs der teuerste Teil der
+     Animation — Bewegung und Deckkraft reichen dort voellig. */
+  .reveal,
+  .stagger > * {
+    filter: none;
+  }
+}
