@@ -1,4 +1,5 @@
 import type {
+  ConsentCategoryInfo,
   FooterColumn,
   LegalLink,
   LegalPageContent,
@@ -454,6 +455,54 @@ export const socialLinks = [
 export const footerSnippet = `$ curl -s https://status.novahost.dev
 { "status": "operational", "uptime": "99.99%" }`;
 
+/* --------------------------------- Consent ------------------------------- */
+
+/**
+ * Texte der Cookie-Abfrage.
+ *
+ * Bewusst nuechtern formuliert und ohne Druck: die Ablehnung steht gleichwertig
+ * neben der Zustimmung, es gibt keine vorausgewaehlten Haken und kein
+ * Wegklicken, das als Einwilligung gilt.
+ */
+export const consent = {
+  eyebrow: "Datenschutz",
+  title: "Ihr seid am Zug.",
+  text: "Nova Host speichert nur, was für den Betrieb dieser Seite nötig ist. Statistik und Marketing laufen ausschließlich mit eurer Zustimmung — und ihr könnt sie jederzeit im Footer wieder zurücknehmen.",
+  acceptAll: "Alle akzeptieren",
+  rejectAll: "Nur notwendige",
+  openSettings: "Einstellungen",
+  save: "Auswahl speichern",
+  back: "Zurück",
+  close: "Abfrage schließen",
+  settingsTitle: "Einstellungen",
+  settingsText: "Wählt aus, was gespeichert werden darf. Notwendiges lässt sich nicht abwählen — ohne diesen Eintrag ließe sich eure Entscheidung nicht merken.",
+  /** Link zur ausführlichen Erklärung. */
+  privacyLabel: "Zur Datenschutzerklärung",
+  privacyHref: "/datenschutz",
+} as const;
+
+export const consentCategories: ConsentCategoryInfo[] = [
+  {
+    id: "necessary",
+    title: "Notwendig",
+    text: "Speichert allein eure Entscheidung aus dieser Abfrage, damit sie beim nächsten Besuch nicht erneut erscheint. Keine Weitergabe, keine Auswertung.",
+    detail: "localStorage · nova-host-consent",
+    locked: true,
+  },
+  {
+    id: "statistics",
+    title: "Statistik",
+    text: "Anonyme Reichweitenmessung: welche Seiten aufgerufen werden und wie schnell sie laden. Hilft uns, die Seite schneller zu machen.",
+    detail: "aggregiert · keine Profilbildung",
+  },
+  {
+    id: "marketing",
+    title: "Marketing",
+    text: "Misst, über welche Kampagne ihr zu uns gefunden habt. Ohne Zustimmung wird dafür nichts gespeichert und nichts geladen.",
+    detail: "opt-in · standardmäßig aus",
+  },
+];
+
 export const legalLinks: LegalLink[] = [
   { label: "Impressum", href: "/impressum" },
   { label: "Datenschutz", href: "/datenschutz" },
@@ -554,9 +603,11 @@ export const datenschutz: LegalPageContent = {
       ],
     },
     {
-      heading: "Cookies und Analyse",
+      heading: "Cookies und lokale Speicherung",
       paragraphs: [
-        "Diese Website setzt keine Cookies zu Analyse- oder Werbezwecken und bindet keine Tracking-Dienste ein.",
+        "Beim ersten Besuch fragen wir, was gespeichert werden darf. Ohne Ihre Zustimmung setzen wir keine Cookies zu Analyse- oder Werbezwecken und binden keine Tracking-Dienste ein.",
+        "Gespeichert wird in jedem Fall Ihre Entscheidung selbst — im lokalen Speicher Ihres Browsers unter dem Schlüssel „nova-host-consent“, zusammen mit dem Zeitpunkt der Entscheidung. Sie verlässt Ihr Gerät nicht. Rechtsgrundlage ist § 25 Abs. 2 Nr. 2 TDDDG: ohne diesen Eintrag ließe sich Ihre Auswahl nicht merken.",
+        "Ihre Einwilligung ist freiwillig und jederzeit mit Wirkung für die Zukunft widerruflich. Über „Cookie-Einstellungen“ im Fußbereich der Seite können Sie Ihre Auswahl jederzeit ändern oder vollständig zurücknehmen.",
       ],
     },
     {

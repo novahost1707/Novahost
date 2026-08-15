@@ -1097,6 +1097,104 @@
   }
 
   /* ---------------------------------------------------------------------------
+     Einwilligung (Cookie-Abfrage)
+  --------------------------------------------------------------------------- */
+
+  /* Der Banner faehrt einmal von unten herein — ruhig, nicht springend. Die
+     Verzoegerung laesst zuerst die Seite ankommen, dann die Frage. */
+  .consent-banner {
+    animation: consentRise 620ms var(--ease-nh-out) both;
+    animation-delay: 500ms;
+  }
+
+  @keyframes consentRise {
+    from {
+      opacity: 0;
+      transform: translateY(22px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .consent-scrim {
+    animation: consentFade 320ms ease both;
+  }
+
+  .consent-dialog {
+    animation: consentZoom 380ms var(--ease-nh-out) both;
+  }
+
+  @keyframes consentFade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes consentZoom {
+    from {
+      opacity: 0;
+      transform: translateY(12px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  /*
+   * Schalter statt Haken.
+   *
+   * Bewusst ein echtes <input type="checkbox">, nur anders gezeichnet: damit
+   * bleiben Tastaturbedienung, Screenreader-Ansage und der Zustand
+   * "deaktiviert" ohne eigenes ARIA-Gebastel korrekt.
+   */
+  .consent-switch {
+    appearance: none;
+    position: relative;
+    width: 40px;
+    height: 22px;
+    border-radius: 999px;
+    background: var(--color-nh-line);
+    box-shadow: inset 0 0 0 1px rgba(11, 39, 96, 0.08);
+    cursor: inherit;
+    transition:
+      background var(--dur-hover) ease,
+      box-shadow var(--dur-hover) ease;
+  }
+
+  .consent-switch::after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 16px;
+    height: 16px;
+    border-radius: 999px;
+    background: #ffffff;
+    box-shadow: 0 2px 6px -1px rgba(11, 39, 96, 0.4);
+    transition: transform var(--dur-hover) var(--ease-nh);
+  }
+
+  .consent-switch:checked {
+    background: var(--gradient-accent);
+    box-shadow: 0 6px 16px -8px rgba(26, 92, 255, 0.8);
+  }
+
+  .consent-switch:checked::after {
+    transform: translateX(18px);
+  }
+
+  .consent-switch:disabled {
+    opacity: 0.55;
+  }
+
+
+  /* ---------------------------------------------------------------------------
      Formular
   --------------------------------------------------------------------------- */
   .field {
@@ -1399,6 +1497,9 @@
   }
 
   .sheen::before,
+  .consent-banner,
+  .consent-scrim,
+  .consent-dialog,
   .particle,
   .float,
   .marquee,
@@ -1422,6 +1523,15 @@
   .particle,
   .sheen::before {
     opacity: 0;
+  }
+
+  /* `animation-fill-mode: both` wuerde ohne laufende Animation den
+     Startzustand festhalten — der Banner bliebe unsichtbar. */
+  .consent-banner,
+  .consent-scrim,
+  .consent-dialog {
+    opacity: 1;
+    transform: none;
   }
 
   .caret {

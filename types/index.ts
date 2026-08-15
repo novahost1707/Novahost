@@ -143,6 +143,36 @@ export interface FooterColumn {
   links: FooterLink[];
 }
 
+/* --------------------------------- Consent ------------------------------- */
+
+/**
+ * Kategorien der Einwilligung.
+ *
+ * "necessary" umfasst allein die Speicherung der Entscheidung selbst und ist
+ * nicht abwaehlbar. Alles andere laeuft erst nach ausdruecklicher Zustimmung.
+ */
+export type CookieCategory = "necessary" | "statistics" | "marketing";
+
+/** Die gespeicherte Entscheidung eines Besuchers. */
+export interface ConsentState {
+  /** Fassung der Abfrage — siehe CONSENT_VERSION in lib/consent.ts. */
+  version: number;
+  /** Zeitpunkt der Entscheidung als ISO-String (Nachweis der Einwilligung). */
+  decidedAt: string;
+  categories: Record<CookieCategory, boolean>;
+}
+
+/** Eine Kategorie, wie sie in der Abfrage beschrieben wird. */
+export interface ConsentCategoryInfo {
+  id: CookieCategory;
+  title: string;
+  text: string;
+  /** Technische Zeile in Monospace, z. B. der verwendete Speicherschluessel. */
+  detail: string;
+  /** Nicht abwaehlbar. */
+  locked?: boolean;
+}
+
 /* ------------------------------- Kontaktformular ------------------------- */
 
 /** Worum es bei der Anfrage geht — steuert das Select im Formular. */

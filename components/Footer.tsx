@@ -2,6 +2,7 @@ import Link from "next/link";
 import Container from "@/components/ui/Container";
 import LogoLink from "@/components/ui/LogoLink";
 import CurrentYear from "@/components/CurrentYear";
+import ConsentSettingsButton from "@/components/ConsentSettingsButton";
 import StatusDot from "@/components/ui/StatusDot";
 import {
   footerColumns,
@@ -76,12 +77,15 @@ export default function Footer() {
           </span>
 
           <div className="flex flex-wrap items-center gap-6">
-            <div className="flex gap-[22px] text-[12.5px]">
+            <div className="flex flex-wrap gap-[22px] text-[12.5px]">
               {legalLinks.map((link) => (
                 <Link key={link.href} href={link.href} className="footer-link">
                   {link.label}
                 </Link>
               ))}
+
+              {/* Der Widerruf steht gleichwertig neben den Pflichtseiten. */}
+              <ConsentSettingsButton className="text-[12.5px]" />
             </div>
 
             <div className="flex gap-2">

@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import { Inter, JetBrains_Mono, Sora } from "next/font/google";
+import CookieConsent from "@/components/CookieConsent";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import ScrollReveal from "@/components/ScrollReveal";
@@ -82,6 +83,7 @@ export default function RootLayout({
         <main id="main">{children}</main>
         <Footer />
         <ScrollReveal />
+        <CookieConsent />
       </body>
     </html>
   );
