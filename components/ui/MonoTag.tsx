@@ -15,7 +15,7 @@ export default function MonoTag({ children, className }: MonoTagProps) {
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-md border border-nh-line bg-white/60 px-2 py-1 font-mono text-[11px] leading-none tracking-[0.02em] text-nh-mute",
+        "inline-flex items-center gap-1.5 rounded-md border border-nh-line bg-nh-surface/60 px-2 py-1 font-mono text-[11px] leading-none tracking-[0.02em] text-nh-mute",
         className,
       )}
     >

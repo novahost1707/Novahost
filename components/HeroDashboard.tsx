@@ -1,17 +1,21 @@
 import Terminal from "@/components/Terminal";
 import StatusDot from "@/components/ui/StatusDot";
 import Icon from "@/components/ui/Icon";
-import { dashboardServices, dashboardStats, heroTerminal } from "@/lib/content";
+import { dashboardProjects, dashboardStats, heroTerminal } from "@/lib/content";
 
 /**
- * Die grosse Glaskarte im Hero — ein abstrahiertes Infrastruktur-Dashboard.
+ * Die grosse Glaskarte im Hero — ein abstrahiertes Projekt-Dashboard.
  *
- * Bewusst kein echtes Monitoring, sondern ein Bild davon: die Zahlen sind
+ * Bewusst kein echtes Kundensystem, sondern ein Bild davon: die Zahlen sind
  * redaktioneller Inhalt aus lib/content.ts. Was es zeigt, entspricht dem, was
- * Nova Host verspricht — Standorte, Uptime, Latenz, Systemzustand.
+ * Nova Host verspricht — schnelle Seiten, laufende Betreuung und ein sichtbar
+ * begrenztes Aenderungskontingent.
  *
- * Die Karte selbst ist eine Server Component; nur die drei bewegten Teile
- * (Zaehler, Terminal, Auslastungsbalken) sind Client-Komponenten.
+ * Die Projektzeilen tragen absichtlich Branchen statt erfundener Firmennamen
+ * oder Domains: das waeren Referenzen, die es nicht gibt.
+ *
+ * Die Karte selbst ist eine Server Component; nur die bewegten Teile
+ * (Terminal, Balken) bringen Client-Code mit.
  */
 export default function HeroDashboard() {
   return (
@@ -19,24 +23,24 @@ export default function HeroDashboard() {
       {/* Kopfzeile */}
       <div className="relative z-[1] flex items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <span className="flex h-9 w-9 flex-none items-center justify-center rounded-[11px] bg-[linear-gradient(140deg,#1a5cff,#00c2e0)] text-white shadow-[0_8px_20px_-10px_rgba(26,92,255,0.9)]">
-            <Icon name="cloud" className="h-[19px] w-[19px]" />
+          <span className="flex h-9 w-9 flex-none items-center justify-center rounded-[11px] bg-[linear-gradient(140deg,var(--color-nh-blue),var(--color-nh-cyan))] text-white shadow-[0_8px_20px_-10px_color-mix(in_oklab,var(--color-nh-blue)_90%,transparent)]">
+            <Icon name="design" className="h-[19px] w-[19px]" />
           </span>
 
           <div>
             <div className="font-display text-[15px] leading-none font-bold text-nh-ink">
-              Global Network
+              Eure Website
             </div>
             <div className="mt-1.5 font-mono text-[11px] text-nh-mute">
-              nova-host · eu-central
+              nova-host · betreuung plus
             </div>
           </div>
         </div>
 
-        <div className="flex items-center gap-2 rounded-full border border-nh-line bg-white/70 px-3 py-1.5">
+        <div className="flex items-center gap-2 rounded-full border border-nh-line bg-nh-surface/70 px-3 py-1.5">
           <StatusDot />
           <span className="font-mono text-[11px] whitespace-nowrap text-nh-ok">
-            operational
+            live
           </span>
         </div>
       </div>
@@ -46,7 +50,7 @@ export default function HeroDashboard() {
         {dashboardStats.map((stat) => (
           <div
             key={stat.label}
-            className="rounded-[14px] border border-nh-line bg-white/55 px-3.5 py-3"
+            className="rounded-[14px] border border-nh-line bg-nh-surface/55 px-3.5 py-3"
           >
             <div className="font-mono text-[10.5px] tracking-[0.14em] text-nh-mute uppercase">
               {stat.label}
@@ -67,34 +71,27 @@ export default function HeroDashboard() {
         ))}
       </div>
 
-      {/* Systemzustand pro Knoten */}
-      <div className="relative z-[1] mt-3 rounded-[14px] border border-nh-line bg-white/55 p-3.5">
+      {/* Laufende Projekte */}
+      <div className="relative z-[1] mt-3 rounded-[14px] border border-nh-line bg-nh-surface/55 p-3.5">
         <div className="mb-2.5 flex items-center justify-between font-mono text-[10.5px] tracking-[0.14em] text-nh-mute uppercase">
-          <span>Node status</span>
-          <span>latency</span>
+          <span>Projekte</span>
+          <span>Stand</span>
         </div>
 
         <ul className="flex flex-col gap-2">
-          {dashboardServices.map((service, index) => (
+          {dashboardProjects.map((project) => (
             <li
-              key={service.name}
+              key={project.name}
               className="flex items-center gap-3 font-mono text-[11.5px]"
             >
-              <StatusDot tone={service.status === "operational" ? "ok" : "warn"} />
+              <StatusDot tone={project.done ? "ok" : "warn"} />
 
-              <span className="min-w-0 flex-1 truncate text-nh-ink">{service.name}</span>
-
-              <span className="hidden text-nh-mute-2 min-[420px]:inline">
-                {service.region}
+              <span className="min-w-0 flex-1 truncate text-nh-ink">
+                {project.name}
               </span>
 
-              <span
-                className={
-                  service.status === "operational" ? "text-nh-ok" : "text-[#c07b10]"
-                }
-              >
-                {/* Fest hinterlegte, aber plausibel gestaffelte Werte. */}
-                {[4, 7, 9, 21][index]}ms
+              <span className={project.done ? "text-nh-ok" : "text-nh-mute"}>
+                {project.stage}
               </span>
             </li>
           ))}

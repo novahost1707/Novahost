@@ -3,35 +3,36 @@ import Section from "@/components/ui/Section";
 import SectionHead from "@/components/ui/SectionHead";
 import Icon from "@/components/ui/Icon";
 import StatusDot from "@/components/ui/StatusDot";
-import { securityItems } from "@/lib/content";
+import { careItems } from "@/lib/content";
 
 /**
- * Sicherheit und Betrieb.
+ * Was im monatlichen Abo steckt.
  *
- * Flachere Karten als bei den Services — hier geht es um Vollstaendigkeit,
+ * Flachere Karten als bei den Leistungen — hier geht es um Vollstaendigkeit,
  * nicht um Auswahl. Jede Karte traegt eine Statuszeile in Monospace, die den
- * jeweiligen Mechanismus konkret macht.
+ * jeweiligen Punkt konkret macht: "monatlich", "30 tage", "5 min". Ohne diese
+ * Zahlen waere der Abschnitt eine Liste unverbindlicher Versprechen.
  */
-export default function Security() {
+export default function Care() {
   return (
-    <Section id="security" className="panel-backdrop" grid>
+    <Section id="care" className="panel-backdrop" grid>
       <Container>
         <SectionHead
           centered
-          eyebrow="Trust & Security"
-          title="Abgesichert, bevor ihr fragt."
-          accent="bevor ihr fragt"
-          text="Sicherheitsmechanismen sind bei Nova Host keine Zusatzoption, sondern Teil jedes Tarifs — vom Starter bis Enterprise."
+          eyebrow="Im Abo enthalten"
+          title="Was wir übernehmen, damit ihr es nicht müsst."
+          accent="damit ihr es nicht müsst"
+          text="Eine Website ist mit dem Launch nicht fertig. Das Betreuungs-Abo hält sie aktuell, sicher und erreichbar — in jedem Tarif, vom kleinsten aufwärts."
         />
 
         <div className="stagger grid grid-cols-3 gap-4 max-[900px]:grid-cols-2 max-[560px]:grid-cols-1">
-          {securityItems.map((item) => (
+          {careItems.map((item) => (
             <div
               key={item.title}
               className="glass glass-edge glow-hover group relative overflow-hidden rounded-[20px] p-6 hover:-translate-y-1"
             >
               <div className="flex items-start gap-4">
-                <span className="flex h-11 w-11 flex-none items-center justify-center rounded-[13px] border border-nh-line bg-white/70 text-nh-blue transition-all duration-[var(--dur-hover)] group-hover:border-transparent group-hover:bg-[linear-gradient(140deg,#1a5cff,#00c2e0)] group-hover:text-white">
+                <span className="flex h-11 w-11 flex-none items-center justify-center rounded-[13px] border border-nh-line bg-nh-surface/70 text-nh-blue transition-all duration-[var(--dur-hover)] group-hover:border-transparent group-hover:bg-[linear-gradient(140deg,var(--color-nh-blue),var(--color-nh-cyan))] group-hover:text-white">
                   <Icon name={item.icon} className="h-[21px] w-[21px]" />
                 </span>
 

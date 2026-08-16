@@ -5,7 +5,7 @@ import Icon from "@/components/ui/Icon";
 import StatusDot from "@/components/ui/StatusDot";
 import HeroBackdrop from "@/components/HeroBackdrop";
 import HeroDashboard from "@/components/HeroDashboard";
-import { hero, marqueeItems } from "@/lib/content";
+import { hero, heroTrust, marqueeItems } from "@/lib/content";
 
 /**
  * Der Hero baut sich beim Laden gestaffelt auf (`hero-rise-*`): Eyebrow,
@@ -59,18 +59,12 @@ export default function Hero() {
 
             {/* Vertrauenszeile: drei harte Fakten in Monospace. */}
             <div className="hero-rise hero-rise-5 mt-9 flex flex-wrap items-center gap-x-6 gap-y-3 font-mono text-[12px] text-nh-mute">
-              <span className="flex items-center gap-2">
-                <StatusDot />
-                99,99 % Uptime-SLA
-              </span>
-              <span className="flex items-center gap-2">
-                <StatusDot tone="blue" />
-                Rechenzentren in der EU
-              </span>
-              <span className="flex items-center gap-2">
-                <StatusDot tone="cyan" />
-                Setup in unter 60 Sekunden
-              </span>
+              {heroTrust.map((item, index) => (
+                <span key={item} className="flex items-center gap-2">
+                  <StatusDot tone={(["ok", "blue", "cyan"] as const)[index] ?? "ok"} />
+                  {item}
+                </span>
+              ))}
             </div>
           </div>
 
@@ -79,7 +73,7 @@ export default function Hero() {
             {/* Weicher Schein hinter der Karte — laesst sie schweben. */}
             <div
               aria-hidden="true"
-              className="pointer-events-none absolute inset-[-14%] rounded-full bg-[radial-gradient(circle,rgba(26,92,255,0.16),transparent_66%)] blur-[8px]"
+              className="pointer-events-none absolute inset-[-14%] rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--color-nh-blue)_16%,transparent),transparent_66%)] blur-[8px]"
             />
             <div className="float relative" style={{ animationDuration: "11s" }}>
               <HeroDashboard />
@@ -89,7 +83,7 @@ export default function Hero() {
       </Container>
 
       {/* Laufband mit technischen Stichworten am unteren Rand. */}
-      <div className="marquee-wrap marquee-mask absolute right-0 bottom-0 left-0 border-t border-nh-line bg-white/40 py-3.5 backdrop-blur-sm max-[900px]:static max-[900px]:mt-12">
+      <div className="marquee-wrap marquee-mask absolute right-0 bottom-0 left-0 border-t border-nh-line bg-nh-surface/40 py-3.5 backdrop-blur-sm max-[900px]:static max-[900px]:mt-12">
         <div className="marquee">
           {/* Der Inhalt liegt doppelt im DOM, damit das Band nahtlos umlaeuft. */}
           {[0, 1].map((copy) => (

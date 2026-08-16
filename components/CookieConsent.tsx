@@ -269,7 +269,7 @@ export default function CookieConsent() {
             type="button"
             onClick={dismissSettings}
             aria-label={texts.close}
-            className="glow-hover flex h-9 w-9 flex-none items-center justify-center rounded-xl border border-nh-line bg-white/70 text-nh-mute hover:text-nh-blue"
+            className="glow-hover flex h-9 w-9 flex-none items-center justify-center rounded-xl border border-nh-line bg-nh-surface/70 text-nh-mute hover:text-nh-blue"
           >
             <svg
               viewBox="0 0 24 24"
@@ -299,10 +299,10 @@ export default function CookieConsent() {
               <label
                 key={category.id}
                 className={cn(
-                  "flex gap-4 rounded-[16px] border border-nh-line bg-white/60 p-4 transition-colors duration-[var(--dur-hover)]",
+                  "flex gap-4 rounded-[16px] border border-nh-line bg-nh-surface/60 p-4 transition-colors duration-[var(--dur-hover)]",
                   locked
                     ? "cursor-default"
-                    : "cursor-pointer hover:border-[rgba(26,92,255,0.28)]",
+                    : "cursor-pointer hover:border-[color-mix(in_oklab,var(--color-nh-blue)_28%,transparent)]",
                 )}
               >
                 <input
@@ -325,7 +325,7 @@ export default function CookieConsent() {
                     </span>
 
                     {locked ? (
-                      <span className="rounded-md border border-nh-line bg-white/70 px-1.5 py-0.5 font-mono text-[10px] text-nh-mute">
+                      <span className="rounded-md border border-nh-line bg-nh-surface/70 px-1.5 py-0.5 font-mono text-[10px] text-nh-mute">
                         immer aktiv
                       </span>
                     ) : null}

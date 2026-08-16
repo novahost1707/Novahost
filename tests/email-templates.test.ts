@@ -14,7 +14,7 @@ function form(overrides: Partial<ContactFormValues> = {}): ContactFormValues {
   return {
     ...emptyContactForm,
     name: "Lena Fischer",
-    role: "hosting",
+    role: "website",
     email: "lena@example.com",
     phone: "+49 170 1234567",
     message: "Hallo Nova-Team,\nwir wollen unsere Umgebung migrieren.",
@@ -59,8 +59,8 @@ describe("buildOwnerEmail — Kontaktanfrage an den Betreiber", () => {
 
   it("nennt das gewählte Anliegen", () => {
     // Im HTML maskiert, im Text unverändert — beides ist korrekt.
-    assert.ok(email.html.includes("Hosting &amp; Server"));
-    assert.ok(email.text.includes("Hosting & Server"));
+    assert.ok(email.html.includes("Neue Website"));
+    assert.ok(email.text.includes("Neue Website"));
   });
 
   it("zeigt ein Strich-Platzhalter, wenn keine Telefonnummer angegeben ist", () => {

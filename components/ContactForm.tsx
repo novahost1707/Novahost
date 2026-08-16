@@ -305,7 +305,7 @@ function SuccessState({ notice }: { notice: string | null }) {
       role="status"
       className="glass glass-edge rounded-[24px] px-6 py-14 text-center"
     >
-      <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-[linear-gradient(140deg,#1a5cff,#00c2e0)] text-white shadow-[0_14px_30px_-14px_rgba(26,92,255,0.9)]">
+      <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-[linear-gradient(140deg,var(--color-nh-blue),var(--color-nh-cyan))] text-white shadow-[0_14px_30px_-14px_color-mix(in_oklab,var(--color-nh-blue)_90%,transparent)]">
         <Icon name="check" strokeWidth={2.4} className="h-6 w-6" />
       </div>
 

@@ -13,7 +13,7 @@ function form(overrides: Partial<ContactFormValues> = {}): ContactFormValues {
   return {
     ...emptyContactForm,
     name: "Lena Fischer",
-    role: "hosting",
+    role: "website",
     email: "lena@example.com",
     phone: "+49 170 1234567",
     message: "Hallo, wir suchen einen neuen Hosting-Partner.",
@@ -75,7 +75,7 @@ describe("parseContactPayload", () => {
   it("normalisiert einen gültigen Body und trimmt Werte", () => {
     const parsed = parseContactPayload({
       name: "  Lena Fischer  ",
-      role: "hosting",
+      role: "website",
       email: " lena@example.com ",
       phone: "",
       message: " Hallo ",
@@ -84,7 +84,7 @@ describe("parseContactPayload", () => {
 
     assert.deepEqual(parsed, {
       name: "Lena Fischer",
-      role: "hosting",
+      role: "website",
       email: "lena@example.com",
       phone: "",
       message: "Hallo",

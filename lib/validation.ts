@@ -13,9 +13,9 @@ const REQUIRED_FIELDS: ContactFieldName[] = ["name", "role", "email", "message"]
 
 /** Erlaubte Werte des Auswahlfelds "Anliegen". */
 export const CONTACT_ROLES: ContactRole[] = [
-  "hosting",
-  "infrastruktur",
-  "managed",
+  "website",
+  "relaunch",
+  "betreuung",
   "sonstiges",
 ];
 
@@ -24,9 +24,9 @@ export const CONTACT_ROLES: ContactRole[] = [
  * Benachrichtigungs-E-Mail garantiert dieselben Woerter benutzen.
  */
 export const CONTACT_ROLE_LABELS: Record<ContactRole, string> = {
-  hosting: "Hosting & Server",
-  infrastruktur: "Cloud-Infrastruktur",
-  managed: "Managed IT / Support",
+  website: "Neue Website",
+  relaunch: "Relaunch bestehender Seite",
+  betreuung: "Betreuung / Abo",
   sonstiges: "Sonstiges",
 };
 

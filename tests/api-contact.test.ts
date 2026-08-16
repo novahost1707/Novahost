@@ -15,7 +15,7 @@ delete process.env.RESEND_API_KEY;
 
 const VALID_BODY = {
   name: "Lena Fischer",
-  role: "hosting",
+  role: "website",
   email: "lena@example.com",
   phone: "",
   message: "Hallo, wir suchen einen neuen Hosting-Partner.",

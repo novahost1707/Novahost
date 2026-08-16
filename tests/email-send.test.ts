@@ -27,7 +27,7 @@ interface CapturedRequest {
 const VALUES: ContactFormValues = {
   ...emptyContactForm,
   name: "Lena Fischer",
-  role: "infrastruktur",
+  role: "relaunch",
   email: "lena@example.com",
   phone: "+49 170 1234567",
   message: "Hallo, wir planen eine Migration im Herbst.",

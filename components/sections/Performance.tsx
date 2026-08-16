@@ -30,7 +30,7 @@ export default function Performance() {
                   ganze Reihe dauerhaft und nichts hebt sich mehr ab. */}
               <div
                 aria-hidden="true"
-                className="pointer-events-none absolute inset-0 rounded-[24px] bg-[radial-gradient(circle_at_50%_30%,rgba(26,92,255,0.12),transparent_68%)] opacity-0 transition-opacity duration-[var(--dur-slow)] group-hover:opacity-100"
+                className="pointer-events-none absolute inset-0 rounded-[24px] bg-[radial-gradient(circle_at_50%_30%,color-mix(in_oklab,var(--color-nh-blue)_12%,transparent),transparent_68%)] opacity-0 transition-opacity duration-[var(--dur-slow)] group-hover:opacity-100"
               />
 
               <div className="relative px-2 py-6">

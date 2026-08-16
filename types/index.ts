@@ -13,16 +13,16 @@ export interface NavLink {
 /**
  * Ein Angebot in der Services-Section.
  *
- * `icon` ist ein Schluessel, den components/ui/ServiceIcon.tsx in ein
- * gezeichnetes SVG uebersetzt — bewusst kein Icon-Paket als Abhaengigkeit.
+ * `icon` ist ein Schluessel, den components/ui/Icon.tsx in ein gezeichnetes
+ * SVG uebersetzt — bewusst kein Icon-Paket als Abhaengigkeit.
  */
 export type ServiceIconName =
-  | "web"
-  | "vps"
-  | "dedicated"
-  | "cloud"
-  | "game"
-  | "managed";
+  | "design"
+  | "code"
+  | "relaunch"
+  | "care"
+  | "seo"
+  | "content";
 
 export interface ServiceItem {
   /** Zweistellige Nummer, z. B. "01" — erscheint als Mono-Label. */
@@ -31,45 +31,32 @@ export interface ServiceItem {
   title: string;
   text: string;
   /**
-   * Technische Mikrodetails auf der Karte, z. B. "NVMe SSD" oder "AMD EPYC".
+   * Kurze Stichworte auf der Karte, z. B. "Figma" oder "Responsive".
    * Drei bis vier Eintraege, sonst wird die Karte unruhig.
    */
   specs: string[];
-  /** Mono-Zeile am Kartenfuss, z. B. "ab 4,90 €/Monat". */
+  /** Mono-Zeile am Kartenfuss, z. B. "Teil des Website-Pakets". */
   meta: string;
 }
 
-/* ------------------------------- Infrastruktur --------------------------- */
+/* ---------------------------------- Ablauf ------------------------------- */
 
-/**
- * Ein Standort in der Netzwerkvisualisierung.
- *
- * `x`/`y` sind Prozentwerte im Koordinatensystem der SVG-Karte (0–100).
- * `primary` markiert die Kernstandorte, die staerker leuchten.
- */
-export interface Region {
-  code: string;
-  city: string;
-  country: string;
-  /** Latenz-Angabe als fertiger Text, z. B. "8ms". */
-  latency: string;
-  x: number;
-  y: number;
-  primary?: boolean;
+/** Ein Schritt im Projektablauf. */
+export interface ProcessStep {
+  /** Zweistellige Nummer, z. B. "01". */
+  num: string;
+  title: string;
+  text: string;
+  /** Grobe Dauer als fertiger Text, z. B. "1–2 Tage". */
+  duration: string;
 }
 
-/** Eine Verbindung zwischen zwei Standorten (Referenz ueber `Region.code`). */
-export interface Link {
-  from: string;
-  to: string;
-}
-
-/* -------------------------------- Performance ---------------------------- */
+/* -------------------------------- Kennzahlen ----------------------------- */
 
 export interface MetricItem {
   /** Zielwert des Zaehlers. */
   value: number;
-  /** Nachkommastellen, z. B. 2 bei 99.99. */
+  /** Nachkommastellen, z. B. 1 bei 1,2. */
   decimals?: number;
   prefix?: string;
   suffix?: string;
@@ -78,38 +65,70 @@ export interface MetricItem {
   hint: string;
 }
 
-/* ---------------------------------- Pricing ------------------------------ */
+/* ---------------------------------- Preise ------------------------------- */
 
-export interface PricingPlan {
+/**
+ * Ein Website-Paket — die einmalige Leistung am Anfang.
+ *
+ * Ohne dieses Paket gibt es keine Zusammenarbeit: erst wird die Website
+ * gebaut, danach laeuft sie im Abo weiter.
+ */
+export interface WebsitePackage {
   slug: string;
   name: string;
-  /** Kurzer Satz, fuer wen der Tarif gedacht ist. */
+  /** Kurzer Satz, fuer wen das Paket gedacht ist. */
   tagline: string;
-  /** Preis als Zahl in Euro; `null` bedeutet "auf Anfrage". */
+  /** Einmalpreis in Euro; `null` bedeutet "auf Anfrage". */
   price: number | null;
-  /** Mono-Zeile mit der Hardware, z. B. "2 vCPU · 4 GB RAM · 80 GB NVMe". */
-  spec: string;
+  /** Zusatz unter dem Preis, z. B. "einmalig, zzgl. USt." */
+  note: string;
   features: string[];
   cta: string;
-  /** Genau ein Tarif ist hervorgehoben. */
+  /** Genau ein Paket ist hervorgehoben. */
   featured?: boolean;
 }
 
-/* --------------------------------- Security ------------------------------ */
+/**
+ * Ein Betreuungs-Abo — verpflichtend ab dem Launch.
+ *
+ * `included` begrenzt, wie viel Aenderungsarbeit im Monat enthalten ist.
+ * Darueber hinaus wird nach `overageRate` je angefangene halbe Stunde
+ * abgerechnet. Genau diese Grenze macht das Abo fuer beide Seiten
+ * kalkulierbar.
+ */
+export interface CarePlan {
+  slug: string;
+  name: string;
+  tagline: string;
+  /** Monatspreis in Euro; `null` bedeutet "auf Anfrage". */
+  price: number | null;
+  /** Enthaltenes Aenderungskontingent, z. B. "30 Minuten pro Monat". */
+  included: string;
+  /** Zugesagte Reaktionszeit, z. B. "innerhalb von 48 Stunden". */
+  response: string;
+  /** Preis je angefangene halbe Stunde ueber dem Kontingent, in Euro. */
+  overageRate: number | null;
+  features: string[];
+  cta: string;
+  /** Genau ein Abo ist hervorgehoben. */
+  featured?: boolean;
+}
 
-export type SecurityIconName =
-  | "shield"
-  | "lock"
-  | "firewall"
+/* -------------------------------- Betreuung ------------------------------ */
+
+export type CareIconName =
+  | "update"
   | "backup"
+  | "lock"
   | "monitor"
-  | "compliance";
+  | "compliance"
+  | "support";
 
-export interface SecurityItem {
-  icon: SecurityIconName;
+export interface CareItem {
+  icon: CareIconName;
   title: string;
   text: string;
-  /** Statuszeile in Monospace, z. B. "mitigation: automatic". */
+  /** Statuszeile in Monospace, z. B. "turnus: monatlich". */
   status: string;
 }
 
@@ -173,10 +192,21 @@ export interface ConsentCategoryInfo {
   locked?: boolean;
 }
 
+/* ---------------------------------- Theme -------------------------------- */
+
+/**
+ * Farbmodus. "system" folgt der Einstellung des Betriebssystems und ist die
+ * Voreinstellung — fuer die meisten Menschen ist sie die richtige.
+ */
+export type ThemeChoice = "light" | "dark" | "system";
+
+/** Der tatsaechlich dargestellte Modus, nachdem "system" aufgeloest wurde. */
+export type ResolvedTheme = "light" | "dark";
+
 /* ------------------------------- Kontaktformular ------------------------- */
 
 /** Worum es bei der Anfrage geht — steuert das Select im Formular. */
-export type ContactRole = "hosting" | "infrastruktur" | "managed" | "sonstiges";
+export type ContactRole = "website" | "relaunch" | "betreuung" | "sonstiges";
 
 /** Alle Felder, die validiert werden koennen. */
 export type ContactFieldName = "name" | "role" | "email" | "phone" | "message";

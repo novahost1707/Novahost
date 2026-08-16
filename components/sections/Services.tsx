@@ -35,7 +35,7 @@ export default function Services() {
               </span>
 
               <div className="tilt-layer relative z-[2]">
-                <span className="flex h-12 w-12 items-center justify-center rounded-[15px] border border-nh-line bg-white/70 text-nh-blue transition-all duration-[var(--dur-hover)] group-hover:-translate-y-0.5 group-hover:border-transparent group-hover:bg-[linear-gradient(140deg,#1a5cff,#00c2e0)] group-hover:text-white group-hover:shadow-[0_12px_26px_-12px_rgba(26,92,255,0.85)]">
+                <span className="flex h-12 w-12 items-center justify-center rounded-[15px] border border-nh-line bg-nh-surface/70 text-nh-blue transition-all duration-[var(--dur-hover)] group-hover:-translate-y-0.5 group-hover:border-transparent group-hover:bg-[linear-gradient(140deg,var(--color-nh-blue),var(--color-nh-cyan))] group-hover:text-white group-hover:shadow-[0_12px_26px_-12px_color-mix(in_oklab,var(--color-nh-blue)_85%,transparent)]">
                   <Icon name={service.icon} className="h-[23px] w-[23px]" />
                 </span>
 
@@ -52,7 +52,7 @@ export default function Services() {
                   {service.specs.map((spec) => (
                     <li
                       key={spec}
-                      className="rounded-md border border-nh-line bg-white/60 px-2 py-1 font-mono text-[10.5px] leading-none text-nh-mute"
+                      className="rounded-md border border-nh-line bg-nh-surface/60 px-2 py-1 font-mono text-[10.5px] leading-none text-nh-mute"
                     >
                       {spec}
                     </li>

@@ -1,51 +1,56 @@
 import type {
+  CareItem,
+  CarePlan,
   ConsentCategoryInfo,
   FooterColumn,
   LegalLink,
   LegalPageContent,
-  Link,
   MetricItem,
   NavLink,
-  PricingPlan,
-  Region,
-  SecurityItem,
+  ProcessStep,
   ServiceItem,
   TerminalLine,
+  WebsitePackage,
 } from "@/types";
 
 /**
  * Alle redaktionellen Inhalte der Website an einer Stelle.
  * Aenderungen am Text passieren nur hier — die Komponenten bleiben unberuehrt.
+ *
+ * ACHTUNG PREISE: Die Betraege in `websitePackages` und in den Abos oberhalb
+ * von 49,99 € sind Vorschlaege und muessen vor dem Livegang bestaetigt werden.
+ * Fest vorgegeben war nur, dass die Betreuung bei 49,99 € beginnt und nach
+ * oben geht.
  */
 
 export const siteMeta = {
   name: "Nova Host",
-  title: "Nova Host — Infrastructure, built for what's next.",
+  title: "Nova Host — Websites, die gebaut und betreut werden.",
   description:
-    "Nova Host betreibt Hosting, VPS, Dedicated Server und Cloud-Infrastruktur in europäischen Rechenzentren. 99,99 % Uptime, 12 ms Latenz, 24/7 Monitoring.",
+    "Nova Host gestaltet, baut und betreut Websites. Einmalig das Website-Paket, danach ein festes Betreuungs-Abo ab 49,99 € im Monat — mit klarem Änderungskontingent statt endloser Nachforderungen.",
   /** Erscheint als Mono-Zeile unter dem Logo im Footer. */
-  claim: "Infrastructure, built for what's next.",
+  claim: "Websites, die gebaut und betreut werden.",
   email: "hello@novahost.dev",
   phone: "+49 30 5555 0170",
 } as const;
 
 export const navLinks: NavLink[] = [
   { label: "Home", hash: "#hero" },
-  { label: "Services", hash: "#services" },
-  { label: "Infrastructure", hash: "#infrastructure" },
-  { label: "Pricing", hash: "#pricing" },
-  { label: "About", hash: "#about" },
-  { label: "Contact", hash: "#contact" },
+  { label: "Leistungen", hash: "#services" },
+  { label: "Ablauf", hash: "#process" },
+  { label: "Preise", hash: "#pricing" },
+  { label: "Über uns", hash: "#about" },
+  { label: "Kontakt", hash: "#contact" },
 ];
 
 /* ----------------------------------- Hero -------------------------------- */
 
 export const hero = {
-  eyebrow: "Cloud · Hosting · Managed Infrastructure",
-  headlineTop: "Infrastructure,",
-  headlineAccent: "built for what's next.",
-  text: "Nova Host betreibt Hosting, virtuelle und dedizierte Server sowie Cloud-Infrastruktur in europäischen Rechenzentren — mit NVMe-Speicher, eigenem Backbone und einem Team, das nachts erreichbar ist.",
-  primaryCta: { label: "Server entdecken", hash: "#pricing" },
+  eyebrow: "Webdesign · Umsetzung · Betreuung",
+  headlineTop: "Eure Website,",
+  headlineAccent: "gebaut und betreut.",
+  text: "Nova Host gestaltet und baut eure Website — und kümmert sich danach weiter darum. Einmalig das Website-Paket, ab dem Launch ein festes Betreuungs-Abo mit klarem Änderungskontingent. Keine Baukästen, keine Überraschungen auf der Rechnung.",
+  primaryCta: { label: "Preise ansehen", hash: "#pricing" },
   secondaryCta: { label: "Kontakt aufnehmen", hash: "#contact" },
 } as const;
 
@@ -53,45 +58,57 @@ export const hero = {
  * Die Kennzahlen im Hero-Dashboard.
  *
  * `fill` steuert den kleinen Balken unter dem Wert (0–1) und ist rein
- * visuell — er zeigt die Auslastung relativ zum jeweiligen Zielwert.
+ * visuell — er zeigt den Wert relativ zu seinem Bestwert.
  */
 export const dashboardStats = [
-  { label: "Uptime", value: "99.99", unit: "%", fill: 0.99 },
-  { label: "Latency", value: "12", unit: "ms", fill: 0.86 },
-  { label: "Nodes", value: "104", unit: "", fill: 0.72 },
-  { label: "Regions", value: "9", unit: "", fill: 0.6 },
+  { label: "Lighthouse", value: "98", unit: "/100", fill: 0.98 },
+  { label: "Ladezeit", value: "1,2", unit: "s", fill: 0.88 },
+  { label: "Änderungen", value: "3", unit: "/8", fill: 0.38 },
+  { label: "Reaktion", value: "4", unit: "h", fill: 0.8 },
 ] as const;
 
-/** Zeilen der Live-Statusliste im Hero-Dashboard. */
-export const dashboardServices = [
-  { name: "edge-fra-01", region: "Frankfurt", status: "operational" },
-  { name: "core-ams-04", region: "Amsterdam", status: "operational" },
-  { name: "db-par-02", region: "Paris", status: "operational" },
-  { name: "cdn-nyc-07", region: "New York", status: "degraded" },
+/**
+ * Zeilen der Projektliste im Hero-Dashboard.
+ *
+ * Bewusst ohne erfundene Kundennamen oder Domains — das waeren Referenzen,
+ * die es nicht gibt. Stattdessen neutrale Projektbezeichnungen.
+ */
+export const dashboardProjects = [
+  { name: "Handwerksbetrieb", stage: "live", done: true },
+  { name: "Arztpraxis", stage: "live", done: true },
+  { name: "Restaurant", stage: "im Design", done: false },
+  { name: "Onlineshop", stage: "Relaunch", done: false },
 ] as const;
 
 /** Das kurze Terminal im Hero. */
 export const heroTerminal: TerminalLine[] = [
-  { kind: "prompt", text: "nova-host status" },
-  { kind: "log", text: "> all systems operational" },
-  { kind: "log", text: "> latency: 12ms" },
-  { kind: "log", text: "> uptime: 99.99%" },
+  { kind: "prompt", text: "nova status --kunde" },
+  { kind: "log", text: "> website: live seit 148 tagen" },
+  { kind: "log", text: "> abo: plus · 2h pro monat" },
+  { kind: "log", text: "> verbraucht: 45min" },
 ];
 
-/** Laufband unter dem Hero — technische Stichworte statt Kundenlogos. */
+/** Die drei Fakten unter den Hero-Buttons. */
+export const heroTrust: string[] = [
+  "Erstgespräch kostenlos",
+  "Festpreis nach Konzept",
+  "Betreuung ab 49,99 €/Monat",
+];
+
+/** Laufband unter dem Hero — woraus die Websites gebaut sind. */
 export const marqueeItems: string[] = [
-  "NVMe SSD",
-  "AMD EPYC",
-  "IPv6 ready",
-  "DDoS Protection",
-  "ISO 27001",
+  "Responsive Design",
+  "Core Web Vitals",
+  "Barrierefreiheit",
+  "SEO-Grundlagen",
   "DSGVO-konform",
-  "Anycast DNS",
-  "100 Gbit/s Backbone",
-  "Terraform Provider",
-  "REST & GraphQL API",
-  "Green Energy",
-  "S3-kompatibel",
+  "Handgeschriebener Code",
+  "CMS-Anbindung",
+  "Figma-Entwürfe",
+  "Kein Baukasten",
+  "Fester Ansprechpartner",
+  "Monatliche Updates",
+  "Ladezeit unter 1,5s",
 ];
 
 /* --------------------------------- Services ------------------------------ */
@@ -99,297 +116,386 @@ export const marqueeItems: string[] = [
 export const services: ServiceItem[] = [
   {
     num: "01",
-    icon: "web",
-    title: "Web Hosting",
-    text: "High-performance Hosting für moderne Websites und Anwendungen — mit Deploy-Hooks, Staging und automatischem SSL.",
-    specs: ["NVMe SSD", "HTTP/3", "Auto-SSL", "PHP · Node · Python"],
-    meta: "ab 4,90 €/Monat",
+    icon: "design",
+    title: "Webdesign",
+    text: "Entwurf in Figma, zugeschnitten auf eure Marke und eure Kundschaft. Ihr seht das Design, bevor eine Zeile Code entsteht.",
+    specs: ["Figma", "2 Entwürfe", "Feedback-Runden", "Mobile first"],
+    meta: "Teil des Website-Pakets",
   },
   {
     num: "02",
-    icon: "vps",
-    title: "VPS",
-    text: "Flexible virtuelle Server mit voller Kontrolle. Root-Zugriff, freie Distributionswahl und Skalierung im laufenden Betrieb.",
-    specs: ["KVM", "Root Access", "Snapshots", "vCPU 2–32"],
-    meta: "ab 9,90 €/Monat",
+    icon: "code",
+    title: "Umsetzung",
+    text: "Handgeschriebener Code statt Baukasten. Schnell, sauber strukturiert und auf jedem Gerät gleich gut zu bedienen.",
+    specs: ["Responsive", "Schnell", "Barrierearm", "Sauberes HTML"],
+    meta: "Teil des Website-Pakets",
   },
   {
     num: "03",
-    icon: "dedicated",
-    title: "Dedicated Servers",
-    text: "Maximale Performance für anspruchsvolle Workloads. Dedizierte Hardware ohne geteilte Ressourcen, individuell konfiguriert.",
-    specs: ["AMD EPYC", "ECC RAM", "RAID 10", "10 Gbit/s uplink"],
-    meta: "ab 89 €/Monat",
+    icon: "relaunch",
+    title: "Relaunch",
+    text: "Bestehende Seite neu aufgebaut — Inhalte übernommen, Struktur aufgeräumt, Ladezeit und Auffindbarkeit deutlich verbessert.",
+    specs: ["Inhaltsübernahme", "Weiterleitungen", "Struktur", "Tempo"],
+    meta: "eigenes Paket",
   },
   {
     num: "04",
-    icon: "cloud",
-    title: "Cloud Infrastructure",
-    text: "Skalierbare Infrastruktur für moderne Anwendungen — API-first, per Terraform beschreibbar, sekundengenau abgerechnet.",
-    specs: ["Autoscaling", "Load Balancer", "Object Storage", "Private Network"],
-    meta: "pay per second",
+    icon: "care",
+    title: "Betreuung",
+    text: "Nach dem Launch übernehmen wir: Änderungen, Updates, Backups und ein fester Ansprechpartner. Das ist das monatliche Abo.",
+    specs: ["Änderungen", "Updates", "Backups", "Ansprechpartner"],
+    meta: "ab 49,99 €/Monat",
   },
   {
     num: "05",
-    icon: "game",
-    title: "Game Hosting",
-    text: "Performance-orientierte Server für Gaming-Communities. Niedrige Latenz, sofortige Bereitstellung, volle Mod-Kontrolle.",
-    specs: ["Low latency", "Instant setup", "Mod-Support", "DDoS Layer 7"],
-    meta: "ab 6,90 €/Monat",
+    icon: "seo",
+    title: "SEO & Tempo",
+    text: "Damit Menschen euch finden und nicht vorher abspringen: saubere Struktur, sinnvolle Texte, kurze Ladezeiten.",
+    specs: ["Core Web Vitals", "Metadaten", "Struktur", "Messbar"],
+    meta: "im Abo enthalten",
   },
   {
     num: "06",
-    icon: "managed",
-    title: "Managed IT",
-    text: "Professionelle Infrastruktur und technischer Support. Wir übernehmen Betrieb, Updates und Monitoring — ihr baut das Produkt.",
-    specs: ["24/7 Support", "Patch-Management", "SLA 99,99 %", "Onboarding"],
-    meta: "individuell",
+    icon: "content",
+    title: "Inhalte",
+    text: "Texte, Bilder und Struktur. Wir sortieren, was ihr habt, und formulieren um, wo es hakt — ihr müsst nicht texten können.",
+    specs: ["Texte", "Bildauswahl", "Struktur", "Korrektur"],
+    meta: "optional buchbar",
   },
 ];
 
-/* ------------------------------- Infrastruktur --------------------------- */
+/* ---------------------------------- Ablauf ------------------------------- */
 
-/**
- * Die Standorte der Netzwerkkarte.
- *
- * x/y sind Prozentwerte im 100×100-Koordinatensystem der SVG. Sie bilden
- * keine geografisch exakte Karte ab, sondern eine bewusst abstrahierte
- * Anordnung — Europa dichter, Nordamerika links, Asien rechts.
- */
-export const regions: Region[] = [
-  { code: "fra", city: "Frankfurt", country: "Germany", latency: "4ms", x: 52, y: 38, primary: true },
-  { code: "ams", city: "Amsterdam", country: "Netherlands", latency: "7ms", x: 44, y: 27, primary: true },
-  { code: "par", city: "Paris", country: "France", latency: "9ms", x: 38, y: 47, primary: true },
-  { code: "hel", city: "Helsinki", country: "Finland", latency: "16ms", x: 62, y: 16 },
-  { code: "vie", city: "Vienna", country: "Austria", latency: "11ms", x: 63, y: 52 },
-  { code: "nyc", city: "New York", country: "USA", latency: "78ms", x: 13, y: 33 },
-  { code: "sfo", city: "San Francisco", country: "USA", latency: "142ms", x: 6, y: 58 },
-  { code: "sgp", city: "Singapore", country: "Singapore", latency: "168ms", x: 88, y: 72 },
-  { code: "syd", city: "Sydney", country: "Australia", latency: "241ms", x: 94, y: 88 },
+export const processSteps: ProcessStep[] = [
+  {
+    num: "01",
+    title: "Erstgespräch",
+    text: "Was macht ihr, wer soll euch finden, was stört euch an der jetzigen Lösung. Danach wisst ihr, was es kostet — verbindlich.",
+    duration: "30–60 Minuten",
+  },
+  {
+    num: "02",
+    title: "Konzept & Design",
+    text: "Wir bauen die Struktur und entwerfen die Seite in Figma. Ihr seht zwei Entwürfe und entscheidet, in welche Richtung es geht.",
+    duration: "1–2 Wochen",
+  },
+  {
+    num: "03",
+    title: "Umsetzung",
+    text: "Das Design wird zur echten Website — handgeschrieben, schnell und auf jedem Gerät geprüft. Inhalte pflegen wir mit ein.",
+    duration: "2–4 Wochen",
+  },
+  {
+    num: "04",
+    title: "Launch",
+    text: "Wir gehen gemeinsam durch, richten Domain und Weiterleitungen ein und schalten live. Ihr bekommt eine kurze Einweisung.",
+    duration: "1 Tag",
+  },
+  {
+    num: "05",
+    title: "Betreuung",
+    text: "Ab hier läuft das Abo: Änderungen, Updates, Backups und ein Ansprechpartner, der euer Projekt kennt.",
+    duration: "monatlich",
+  },
 ];
 
-/** Die Verbindungen zwischen den Standorten (Referenz ueber `Region.code`). */
-export const networkLinks: Link[] = [
-  { from: "fra", to: "ams" },
-  { from: "fra", to: "par" },
-  { from: "fra", to: "vie" },
-  { from: "ams", to: "hel" },
-  { from: "ams", to: "nyc" },
-  { from: "nyc", to: "sfo" },
-  { from: "fra", to: "sgp" },
-  { from: "sgp", to: "syd" },
-  { from: "par", to: "nyc" },
-];
-
-/** Kurze Fakten neben der Karte. */
-export const infrastructureFacts = [
-  { label: "Backbone", value: "100 Gbit/s", hint: "redundant angebunden" },
-  { label: "Standorte", value: "9 Regionen", hint: "5 davon in der EU" },
-  { label: "Strom", value: "100 % erneuerbar", hint: "seit 2021" },
-  { label: "Peering", value: "DE-CIX · AMS-IX", hint: "direkte Übergabe" },
+/** Kurze Fakten neben dem Ablauf. */
+export const processFacts = [
+  { label: "Bis zum Launch", value: "4–6 Wochen", hint: "im Regelfall" },
+  { label: "Ansprechpartner", value: "Immer derselbe", hint: "kein Ticketsystem" },
+  { label: "Entwürfe", value: "2 Richtungen", hint: "inklusive Korrekturen" },
+  { label: "Danach", value: "Abo ab 49,99 €", hint: "Teil des Pakets" },
 ] as const;
 
-/** Das Objekt-Snippet neben der Karte. */
-export const infrastructureSnippet = `const novaHost = {
-  uptime: "99.99%",
-  latency: "12ms",
-  regions: 9,
-  infrastructure: "global"
+/** Das Code-Snippet neben dem Ablauf. */
+export const processSnippet = `const projekt = {
+  design: "Figma",
+  umsetzung: "handgeschrieben",
+  launch: "4-6 Wochen",
+  danach: "Betreuung im Abo"
 };`;
 
-/* -------------------------------- Performance ---------------------------- */
+/* -------------------------------- Kennzahlen ----------------------------- */
 
 export const metrics: MetricItem[] = [
   {
-    value: 99.99,
-    decimals: 2,
-    suffix: "%",
-    label: "Uptime",
-    hint: "gemessen über die letzten 12 Monate",
+    value: 98,
+    suffix: "/100",
+    label: "Lighthouse",
+    hint: "Durchschnitt unserer Seiten beim Launch",
   },
   {
-    value: 12,
-    suffix: "ms",
-    label: "Average Latency",
-    hint: "innerhalb der EU-Regionen",
+    value: 1.2,
+    decimals: 1,
+    suffix: "s",
+    label: "Ladezeit",
+    hint: "bis die Seite bedienbar ist",
+  },
+  {
+    value: 40,
+    suffix: "+",
+    label: "Websites",
+    hint: "gebaut und laufend betreut",
   },
   {
     value: 24,
-    suffix: "/7",
-    label: "Monitoring",
-    hint: "Bereitschaft mit echtem Menschen",
-  },
-  {
-    value: 100,
-    suffix: "+",
-    label: "Global Nodes",
-    hint: "über 9 Regionen verteilt",
+    suffix: "h",
+    label: "Reaktionszeit",
+    hint: "im Schnitt, werktags deutlich schneller",
   },
 ];
 
-/* ---------------------------------- Pricing ------------------------------ */
+/* ---------------------------------- Preise ------------------------------- */
 
-export const pricingPlans: PricingPlan[] = [
-  {
-    slug: "starter",
-    name: "Starter",
-    tagline: "Für kleine Projekte und erste Deployments.",
-    price: 4.9,
-    spec: "1 vCPU · 2 GB RAM · 40 GB NVMe",
-    features: [
-      "1 TB Traffic inklusive",
-      "Kostenloses SSL-Zertifikat",
-      "Tägliches Backup, 7 Tage",
-      "Deploy per Git-Push",
-      "Community-Support",
-    ],
-    cta: "Starter wählen",
+export const pricing = {
+  eyebrow: "Preise",
+  title: "Erst die Website, dann die Betreuung.",
+  accent: "dann die Betreuung",
+  text: "Beides gehört zusammen: Ihr kauft einmalig euer Website-Paket und schließt dazu ein Betreuungs-Abo ab. Das Abo ist fester Bestandteil des Pakets — dafür bleibt eure Seite aktuell, sicher und in Betrieb.",
+  stepOne: {
+    label: "Schritt 1",
+    title: "Website-Paket",
+    note: "einmalig",
+    text: "Design, Umsetzung und Launch. Der Preis steht nach dem Erstgespräch fest.",
   },
+  stepTwo: {
+    label: "Schritt 2",
+    title: "Betreuung",
+    note: "monatlich, ab Launch",
+    text: "Verpflichtend ab dem Launch. Jedes Abo enthält ein festes Änderungskontingent.",
+  },
+  /** Erklaert die Kontingent-Logik unter den Abos. */
+  overageTitle: "Und wenn das Kontingent aufgebraucht ist?",
+  overageText:
+    "Dann wird nichts abgelehnt und nichts heimlich berechnet. Wir melden uns mit einer Schätzung, bevor wir weiterarbeiten, und rechnen darüber hinaus je angefangene halbe Stunde ab. Nicht genutzte Zeit verfällt am Monatsende und wird nicht übertragen.",
+  footnote:
+    "Alle Preise zzgl. USt. · Mindestlaufzeit des Abos 12 Monate, danach monatlich kündbar · Änderungskontingent gilt pro Kalendermonat",
+} as const;
+
+/**
+ * Die Website-Pakete — der einmalige Kauf am Anfang.
+ * Die Betraege sind Vorschlaege und noch zu bestaetigen.
+ */
+export const websitePackages: WebsitePackage[] = [
   {
-    slug: "pro",
-    name: "Pro",
-    tagline: "Für wachsende Anwendungen mit echtem Traffic.",
-    price: 19.9,
-    spec: "4 vCPU · 8 GB RAM · 160 GB NVMe",
+    slug: "start",
+    name: "Start",
+    tagline: "Eine Seite, die alles Wichtige sagt.",
+    price: 1490,
+    note: "einmalig",
     features: [
-      "Unbegrenzter Traffic",
-      "Staging-Umgebung inklusive",
-      "Stündliches Backup, 30 Tage",
-      "DDoS Protection Layer 7",
-      "Priority-Support in 30 Min.",
-      "API- und Terraform-Zugriff",
+      "Onepager mit bis zu 6 Abschnitten",
+      "Design in Figma, 2 Entwürfe",
+      "Kontaktformular",
+      "Für Handy, Tablet und Desktop",
+      "Einrichtung und Launch",
     ],
-    cta: "Pro wählen",
-    featured: true,
+    cta: "Start anfragen",
   },
   {
     slug: "business",
     name: "Business",
-    tagline: "Für professionelle Workloads im Dauerbetrieb.",
-    price: 59,
-    spec: "8 vCPU · 32 GB RAM · 480 GB NVMe",
+    tagline: "Mehrere Seiten, selbst pflegbar.",
+    price: 2990,
+    note: "einmalig",
     features: [
-      "Alles aus Pro",
-      "Dedizierte Ressourcen",
-      "Load Balancer inklusive",
-      "Private Networking",
-      "SLA 99,99 % vertraglich",
-      "Technischer Ansprechpartner",
+      "Bis zu 8 Unterseiten",
+      "Design in Figma, 2 Entwürfe",
+      "Redaktionssystem für eigene Änderungen",
+      "Blog oder Neuigkeiten",
+      "SEO-Grundeinrichtung",
+      "Einweisung für euer Team",
     ],
-    cta: "Business wählen",
+    cta: "Business anfragen",
+    featured: true,
   },
   {
-    slug: "enterprise",
-    name: "Enterprise",
-    tagline: "Individuelle Infrastruktur nach Maß.",
+    slug: "individuell",
+    name: "Individuell",
+    tagline: "Shop, Buchung oder etwas ganz Eigenes.",
     price: null,
-    spec: "Dedizierte Hardware · eigenes Netzsegment",
+    note: "nach Aufwand",
     features: [
-      "Alles aus Business",
-      "Eigene Hardware-Konfiguration",
-      "Compliance-Dokumentation",
-      "Onboarding und Migration",
-      "24/7 Bereitschaft mit Rufnummer",
+      "Beliebig viele Seiten",
+      "Onlineshop oder Buchungsstrecke",
+      "Anbindung eurer bestehenden Systeme",
+      "Mehrsprachigkeit",
+      "Festpreis nach Konzeptphase",
     ],
     cta: "Angebot anfragen",
   },
 ];
 
-/* -------------------------------- Developers ----------------------------- */
-
-/** Das grosse Terminal in der Developer-Section. */
-export const deployTerminal: TerminalLine[] = [
-  { kind: "prompt", text: "nova deploy production" },
-  { kind: "blank", text: "" },
-  { kind: "log", text: "Connecting to infrastructure..." },
-  { kind: "success", text: "Server online" },
-  { kind: "success", text: "Database connected" },
-  { kind: "success", text: "SSL enabled" },
-  { kind: "success", text: "Deployment successful" },
-  { kind: "blank", text: "" },
-  { kind: "log", text: "Deployment completed in 12.4s" },
+/**
+ * Die Betreuungs-Abos.
+ *
+ * `included` ist die Grenze, die verhindert, dass Aenderungswuensche
+ * unbegrenzt und kostenfrei laufen. Alles darueber wird nach `overageRate`
+ * je angefangene halbe Stunde abgerechnet.
+ */
+export const carePlans: CarePlan[] = [
+  {
+    slug: "basis",
+    name: "Basis",
+    tagline: "Für Seiten, an denen selten etwas geändert wird.",
+    price: 49.99,
+    included: "30 Minuten Änderungen pro Monat",
+    response: "Antwort innerhalb von 48 Stunden",
+    overageRate: 39,
+    features: [
+      "Updates und Sicherheitsprüfung",
+      "Wöchentliches Backup",
+      "SSL-Überwachung",
+      "Erreichbarkeits-Monitoring",
+    ],
+    cta: "Basis wählen",
+  },
+  {
+    slug: "plus",
+    name: "Plus",
+    tagline: "Für Seiten, an denen regelmäßig etwas passiert.",
+    price: 99.99,
+    included: "2 Stunden Änderungen pro Monat",
+    response: "Antwort innerhalb von 24 Stunden",
+    overageRate: 35,
+    features: [
+      "Alles aus Basis",
+      "Tägliches Backup",
+      "Inhaltspflege durch uns",
+      "Quartalsbericht zu Tempo und Sichtbarkeit",
+    ],
+    cta: "Plus wählen",
+    featured: true,
+  },
+  {
+    slug: "pro",
+    name: "Pro",
+    tagline: "Für Seiten, die zum Tagesgeschäft gehören.",
+    price: 199.99,
+    included: "5 Stunden Änderungen pro Monat",
+    response: "Antwort innerhalb von 8 Stunden",
+    overageRate: 29,
+    features: [
+      "Alles aus Plus",
+      "Neue Unterseiten im Kontingent",
+      "Monatlicher Bericht und Abstimmung",
+      "Vorrang bei Terminen",
+    ],
+    cta: "Pro wählen",
+  },
+  {
+    slug: "individuell",
+    name: "Individuell",
+    tagline: "Eigener Umfang, eigene Absprachen.",
+    price: null,
+    included: "Kontingent nach Absprache",
+    response: "Reaktionszeit nach Vereinbarung",
+    overageRate: null,
+    features: [
+      "Alles aus Pro",
+      "Feste Stundenkontingente",
+      "Mehrere Websites in einem Vertrag",
+      "Individuelle Vereinbarung",
+    ],
+    cta: "Angebot anfragen",
+  },
 ];
 
-export const developerFeatures = [
+/* -------------------------------- Handarbeit ----------------------------- */
+
+/** Das grosse Terminal in der Handarbeits-Section. */
+export const buildTerminal: TerminalLine[] = [
+  { kind: "prompt", text: "nova build kundenprojekt" },
+  { kind: "blank", text: "" },
+  { kind: "log", text: "Prüfe Seiten ..." },
+  { kind: "success", text: "Bilder optimiert" },
+  { kind: "success", text: "Für Handy und Desktop geprüft" },
+  { kind: "success", text: "Lighthouse 98 / 100" },
+  { kind: "success", text: "Website veröffentlicht" },
+  { kind: "blank", text: "" },
+  { kind: "log", text: "Fertig in 12.4s" },
+];
+
+export const craftFeatures = [
   {
-    title: "CLI & API first",
-    text: "Alles, was im Interface geht, geht auch über die CLI, die REST-API und den Terraform-Provider.",
-    code: "npm i -g @novahost/cli",
+    title: "Kein Baukasten",
+    text: "Wir schreiben den Code selbst. Dadurch lädt die Seite schneller und sieht nicht aus wie tausend andere.",
+    code: "handgeschrieben",
   },
   {
-    title: "Git-basierte Deploys",
-    text: "Push auf main, Nova baut und rollt aus. Preview-Umgebungen entstehen automatisch pro Branch.",
-    code: "git push nova main",
+    title: "Auf jedem Gerät geprüft",
+    text: "Jede Seite wird auf Handy, Tablet und Desktop durchgesehen — nicht nur im Browserfenster am Schreibtisch.",
+    code: "320px – 2560px",
   },
   {
-    title: "Logs in Echtzeit",
-    text: "Strukturierte Logs und Metriken direkt im Terminal — ohne Umweg über ein Dashboard.",
-    code: "nova logs --follow",
+    title: "Ihr bekommt alles",
+    text: "Code, Design-Dateien und Zugänge gehören euch. Kein Anbieter, aus dem ihr nicht wieder herauskommt.",
+    code: "keine Bindung",
   },
 ];
 
-/* --------------------------------- Security ------------------------------ */
+/* -------------------------------- Betreuung ------------------------------ */
 
-export const securityItems: SecurityItem[] = [
+export const careItems: CareItem[] = [
   {
-    icon: "shield",
-    title: "DDoS Protection",
-    text: "Filterung auf Layer 3, 4 und 7 direkt am Netzrand — Angriffe erreichen euren Server gar nicht erst.",
-    status: "mitigation: automatic",
-  },
-  {
-    icon: "lock",
-    title: "SSL / TLS",
-    text: "Zertifikate werden automatisch ausgestellt und erneuert. TLS 1.3 ist überall Standard.",
-    status: "tls: 1.3 · auto-renew",
-  },
-  {
-    icon: "firewall",
-    title: "Firewall",
-    text: "Regelwerke pro Projekt, versionierbar und über die API steuerbar. Default-deny ab Werk.",
-    status: "policy: default-deny",
+    icon: "update",
+    title: "Updates",
+    text: "Wir halten die technische Grundlage eurer Website aktuell und prüfen nach jedem Update, ob alles läuft.",
+    status: "turnus: monatlich",
   },
   {
     icon: "backup",
-    title: "Automated Backups",
-    text: "Stündliche Snapshots, getrennt vom Produktivsystem gespeichert und regelmäßig testweise zurückgespielt.",
-    status: "retention: 30 days",
+    title: "Backups",
+    text: "Regelmäßige Sicherungen, getrennt von der laufenden Seite gespeichert. Im Ernstfall ist die Seite schnell wieder da.",
+    status: "aufbewahrung: 30 tage",
+  },
+  {
+    icon: "lock",
+    title: "SSL & Sicherheit",
+    text: "Wir behalten Zertifikate und bekannte Schwachstellen im Blick und melden uns, bevor etwas ausläuft.",
+    status: "prüfung: laufend",
   },
   {
     icon: "monitor",
-    title: "24/7 Monitoring",
-    text: "Jeder Node meldet Zustand, Last und Latenz im Sekundentakt an ein System, das nachts jemanden weckt.",
-    status: "interval: 1s",
+    title: "Erreichbarkeit",
+    text: "Eure Seite wird regelmäßig geprüft. Fällt sie aus, erfahren wir es — und ihr hört es von uns, nicht von euren Kunden.",
+    status: "intervall: 5 min",
   },
   {
     icon: "compliance",
-    title: "Secure Infrastructure",
-    text: "Rechenzentren nach ISO 27001, Zutritt biometrisch geregelt, Datenverarbeitung vollständig in der EU.",
-    status: "iso 27001 · gdpr",
+    title: "DSGVO",
+    text: "Impressum, Datenschutz und Einwilligung bleiben auf Stand. Bei Gesetzesänderungen melden wir uns von selbst.",
+    status: "prüfung: jährlich",
+  },
+  {
+    icon: "support",
+    title: "Ansprechpartner",
+    text: "Dieselbe Person, die eure Seite gebaut hat, kümmert sich auch danach. Kein Ticketsystem, keine Warteschleife.",
+    status: "kanal: mail & telefon",
   },
 ];
 
 /* ----------------------------------- About ------------------------------- */
 
 export const about = {
-  eyebrow: "About",
-  title: "Betrieben von Leuten, die selbst deployen.",
-  text: "Nova Host ist aus der Praxis entstanden: aus Nächten, in denen ein Deployment hing, und aus Support-Tickets, die drei Tage unbeantwortet blieben. Wir bauen die Infrastruktur, die wir selbst gebraucht hätten — schnell, nachvollziehbar und mit einem Team, das antwortet.",
+  eyebrow: "Über uns",
+  title: "Klein genug, um zurückzurufen.",
+  text: "Nova Host baut Websites für kleine und mittlere Betriebe — Handwerk, Praxen, Gastronomie, Dienstleistung. Keine Agentur mit Zwischenebenen: Wer eure Seite baut, ist auch die Person, die ans Telefon geht. Das Abo gibt es, weil eine Website mit dem Launch nicht fertig ist, sondern anfängt.",
   points: [
     {
       num: "01",
-      title: "Eigene Hardware",
-      text: "Wir mieten keine fremden Ressourcen weiter. Jede Maschine gehört uns, steht in einem Rechenzentrum, das wir betreten dürfen.",
+      title: "Feste Grenzen statt Streit",
+      text: "Jedes Abo hat ein klares Änderungskontingent. Ihr wisst vorher, was enthalten ist — und wir müssen nicht bei jeder Kleinigkeit über Aufwand diskutieren.",
     },
     {
       num: "02",
-      title: "Antwort statt Ticketnummer",
-      text: "Der Support wird von denselben Menschen gemacht, die die Plattform betreiben. Erste Antwort im Schnitt in 14 Minuten.",
+      title: "Wir sagen vorher Bescheid",
+      text: "Reicht das Kontingent für einen Wunsch nicht, hört ihr das vorher mit einer Schätzung. Keine Rechnung, mit der ihr nicht gerechnet habt.",
     },
     {
       num: "03",
-      title: "Keine versteckten Grenzen",
-      text: "Preise, Limits und Wartungsfenster stehen öffentlich. Was im Tarif steht, gilt auch unter Last.",
+      title: "Kein Anbieter-Gefängnis",
+      text: "Code, Design und Zugänge gehören euch. Wenn ihr gehen wollt, bekommt ihr alles mit — daran lassen wir uns messen.",
     },
   ],
 } as const;
@@ -397,14 +503,14 @@ export const about = {
 /* ---------------------------------- Kontakt ------------------------------ */
 
 export const contact = {
-  eyebrow: "Contact",
-  title: "Sprechen wir über eure Infrastruktur.",
-  text: "Ob Migration, Neuaufbau oder eine zweite Meinung zur bestehenden Umgebung — schreibt uns kurz, worum es geht.",
-  /** Kleine technische Kennzahlen neben dem Formular. */
+  eyebrow: "Kontakt",
+  title: "Erzählt uns von eurem Vorhaben.",
+  text: "Neue Website, Relaunch oder nur eine Einschätzung zur bestehenden Seite — schreibt kurz, worum es geht. Das Erstgespräch kostet nichts.",
+  /** Kleine Kennzahlen neben dem Formular. */
   facts: [
-    { label: "Antwortzeit", value: "Ø 14 Minuten" },
-    { label: "Erreichbarkeit", value: "24/7, auch am Wochenende" },
-    { label: "Onboarding", value: "Migration ohne Aufpreis" },
+    { label: "Erstgespräch", value: "kostenlos" },
+    { label: "Antwortzeit", value: "meist am selben Tag" },
+    { label: "Angebot", value: "Festpreis, kein Stundenzettel" },
   ],
 } as const;
 
@@ -412,48 +518,52 @@ export const contact = {
 
 export const footerColumns: FooterColumn[] = [
   {
-    heading: "Services",
+    heading: "Leistungen",
     links: [
-      { label: "Web Hosting", href: "#services" },
-      { label: "VPS", href: "#services" },
-      { label: "Dedicated Servers", href: "#services" },
-      { label: "Cloud Infrastructure", href: "#services" },
-      { label: "Game Hosting", href: "#services" },
-      { label: "Managed IT", href: "#services" },
+      { label: "Webdesign", href: "#services" },
+      { label: "Umsetzung", href: "#services" },
+      { label: "Relaunch", href: "#services" },
+      { label: "Betreuung", href: "#services" },
+      { label: "SEO & Tempo", href: "#services" },
+      { label: "Inhalte", href: "#services" },
     ],
   },
   {
-    heading: "Platform",
+    heading: "Zusammenarbeit",
     links: [
-      { label: "Infrastructure", href: "#infrastructure" },
-      { label: "Performance", href: "#performance" },
-      { label: "Security", href: "#security" },
-      { label: "Pricing", href: "#pricing" },
-      { label: "For Developers", href: "#developers" },
+      { label: "Ablauf", href: "#process" },
+      { label: "Website-Pakete", href: "#pricing" },
+      { label: "Betreuungs-Abos", href: "#pricing" },
+      { label: "Was im Abo steckt", href: "#care" },
+      { label: "Handarbeit", href: "#craft" },
     ],
   },
   {
-    heading: "Resources",
+    heading: "Kontakt",
     links: [
-      { label: "Dokumentation", href: "#developers" },
-      { label: "API-Referenz", href: "#developers" },
-      { label: "Status", href: "#performance" },
-      { label: "Changelog", href: "#about" },
-      { label: "Support", href: "#contact" },
+      { label: "Erstgespräch", href: "#contact" },
+      { label: "Über uns", href: "#about" },
+      { label: "Kennzahlen", href: "#performance" },
+      { label: "E-Mail schreiben", href: "mailto:hello@novahost.dev", external: true },
     ],
   },
 ];
 
 /** Social-Links im Footer. `label` ist das Kürzel im Button. */
 export const socialLinks = [
-  { label: "GH", href: "https://github.com", title: "GitHub" },
   { label: "IN", href: "https://www.linkedin.com", title: "LinkedIn" },
-  { label: "X", href: "https://x.com", title: "X" },
+  { label: "IG", href: "https://www.instagram.com", title: "Instagram" },
+  { label: "GH", href: "https://github.com", title: "GitHub" },
 ] as const;
 
 /** Das kleine Terminal-Element im Footer. */
-export const footerSnippet = `$ curl -s https://status.novahost.dev
-{ "status": "operational", "uptime": "99.99%" }`;
+export const footerSnippet = `$ nova abo --status
+{ "abo": "plus", "rest": "1h 15min" }`;
+
+export const legalLinks: LegalLink[] = [
+  { label: "Impressum", href: "/impressum" },
+  { label: "Datenschutz", href: "/datenschutz" },
+];
 
 /* --------------------------------- Consent ------------------------------- */
 
@@ -475,7 +585,8 @@ export const consent = {
   back: "Zurück",
   close: "Abfrage schließen",
   settingsTitle: "Einstellungen",
-  settingsText: "Wählt aus, was gespeichert werden darf. Notwendiges lässt sich nicht abwählen — ohne diesen Eintrag ließe sich eure Entscheidung nicht merken.",
+  settingsText:
+    "Wählt aus, was gespeichert werden darf. Notwendiges lässt sich nicht abwählen — ohne diesen Eintrag ließe sich eure Entscheidung nicht merken.",
   /** Link zur ausführlichen Erklärung. */
   privacyLabel: "Zur Datenschutzerklärung",
   privacyHref: "/datenschutz",
@@ -485,8 +596,8 @@ export const consentCategories: ConsentCategoryInfo[] = [
   {
     id: "necessary",
     title: "Notwendig",
-    text: "Speichert allein eure Entscheidung aus dieser Abfrage, damit sie beim nächsten Besuch nicht erneut erscheint. Keine Weitergabe, keine Auswertung.",
-    detail: "localStorage · nova-host-consent",
+    text: "Speichert allein eure Entscheidung aus dieser Abfrage und die gewählte Ansicht (hell oder dunkel), damit beides beim nächsten Besuch erhalten bleibt. Keine Weitergabe, keine Auswertung.",
+    detail: "localStorage · nova-host-consent · nova-host-theme",
     locked: true,
   },
   {
@@ -501,11 +612,6 @@ export const consentCategories: ConsentCategoryInfo[] = [
     text: "Misst, über welche Kampagne ihr zu uns gefunden habt. Ohne Zustimmung wird dafür nichts gespeichert und nichts geladen.",
     detail: "opt-in · standardmäßig aus",
   },
-];
-
-export const legalLinks: LegalLink[] = [
-  { label: "Impressum", href: "/impressum" },
-  { label: "Datenschutz", href: "/datenschutz" },
 ];
 
 /* -------------------------------- Rechtstexte ---------------------------- */
@@ -531,10 +637,7 @@ export const impressum: LegalPageContent = {
     },
     {
       heading: "Kontakt",
-      paragraphs: [
-        "E-Mail: hello@novahost.dev",
-        "Telefon: +49 30 5555 0170",
-      ],
+      paragraphs: ["E-Mail: hello@novahost.dev", "Telefon: +49 30 5555 0170"],
     },
     {
       heading: "Registereintrag",
@@ -583,7 +686,7 @@ export const datenschutz: LegalPageContent = {
       ],
     },
     {
-      heading: "Hosting und Server-Logfiles",
+      heading: "Server-Logfiles",
       paragraphs: [
         "Diese Website wird auf Servern in der Europäischen Union betrieben. Beim Aufruf werden automatisch Zugriffsdaten in Logfiles gespeichert: aufgerufene Adresse, Zeitpunkt, übertragene Datenmenge, Referrer, Browsertyp und die IP-Adresse in gekürzter Form.",
         "Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO. Das berechtigte Interesse liegt im sicheren und stabilen Betrieb der Website. Die Logfiles werden nach spätestens 14 Tagen gelöscht.",
@@ -606,7 +709,7 @@ export const datenschutz: LegalPageContent = {
       heading: "Cookies und lokale Speicherung",
       paragraphs: [
         "Beim ersten Besuch fragen wir, was gespeichert werden darf. Ohne Ihre Zustimmung setzen wir keine Cookies zu Analyse- oder Werbezwecken und binden keine Tracking-Dienste ein.",
-        "Gespeichert wird in jedem Fall Ihre Entscheidung selbst — im lokalen Speicher Ihres Browsers unter dem Schlüssel „nova-host-consent“, zusammen mit dem Zeitpunkt der Entscheidung. Sie verlässt Ihr Gerät nicht. Rechtsgrundlage ist § 25 Abs. 2 Nr. 2 TDDDG: ohne diesen Eintrag ließe sich Ihre Auswahl nicht merken.",
+        "Gespeichert wird in jedem Fall Ihre Entscheidung selbst — im lokalen Speicher Ihres Browsers unter dem Schlüssel „nova-host-consent“, zusammen mit dem Zeitpunkt der Entscheidung. Ebenfalls lokal gespeichert wird unter „nova-host-theme“, ob Sie die helle oder die dunkle Darstellung gewählt haben. Beide Angaben verlassen Ihr Gerät nicht. Rechtsgrundlage ist § 25 Abs. 2 Nr. 2 TDDDG: ohne diese Einträge ließen sich Ihre Auswahl und Ihre Ansicht nicht merken.",
         "Ihre Einwilligung ist freiwillig und jederzeit mit Wirkung für die Zukunft widerruflich. Über „Cookie-Einstellungen“ im Fußbereich der Seite können Sie Ihre Auswahl jederzeit ändern oder vollständig zurücknehmen.",
       ],
     },

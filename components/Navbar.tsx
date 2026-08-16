@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import Container from "@/components/ui/Container";
 import LogoLink from "@/components/ui/LogoLink";
+import ThemeToggle from "@/components/ThemeToggle";
 import { navLinks } from "@/lib/content";
 import { cn } from "@/lib/utils";
 
@@ -139,12 +140,14 @@ export default function Navbar() {
               href={hrefFor("#contact")}
               className="text-[13.5px] font-medium text-nh-body transition-colors duration-[var(--dur-hover)] hover:text-nh-ink max-[560px]:hidden"
             >
-              Login
+              Erstgespräch
             </Link>
 
             <Link href={hrefFor("#pricing")} className="btn btn-sm max-[420px]:hidden">
-              Get Started
+              Angebot holen
             </Link>
+
+            <ThemeToggle />
 
             {/* Burger — nur unterhalb der Breite, ab der die Links passen. */}
             <button
@@ -185,7 +188,7 @@ export default function Navbar() {
           Deutlich deckender als die uebrigen Glasflaechen: hier liegt Text auf
           Text, und ein durchscheinender Hero macht die Links unlesbar.
         */}
-        <div className="glass glass-edge overflow-hidden rounded-[18px] bg-white/[0.97]">
+        <div className="glass glass-edge overflow-hidden rounded-[18px] bg-nh-surface/[0.97]">
           <div className="flex flex-col p-2">
             {navLinks.map((link) => (
               <Link
@@ -193,7 +196,7 @@ export default function Navbar() {
                 href={hrefFor(link.hash)}
                 onClick={() => setIsMenuOpen(false)}
                 tabIndex={isMenuOpen ? undefined : -1}
-                className="rounded-xl px-4 py-3 text-[15px] font-medium text-nh-body transition-colors duration-[var(--dur-hover)] hover:bg-white/70 hover:text-nh-blue"
+                className="rounded-xl px-4 py-3 text-[15px] font-medium text-nh-body transition-colors duration-[var(--dur-hover)] hover:bg-nh-surface/70 hover:text-nh-blue"
               >
                 {link.label}
               </Link>
@@ -205,7 +208,7 @@ export default function Navbar() {
               tabIndex={isMenuOpen ? undefined : -1}
               className="btn mt-2 hidden max-[420px]:inline-flex"
             >
-              Get Started
+              Angebot holen
             </Link>
           </div>
         </div>

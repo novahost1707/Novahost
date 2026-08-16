@@ -115,9 +115,9 @@ export default function HeroBackdrop() {
 
       {/* Zwei weiche Lichtflaechen, gegenlaeufig zum Raster. */}
       <div ref={orbsRef} className="absolute inset-0 will-change-transform">
-        <div className="float absolute top-[6%] right-[8%] h-[380px] w-[380px] rounded-full bg-[radial-gradient(circle,rgba(0,194,224,0.22),transparent_66%)] blur-[6px] max-[760px]:h-[240px] max-[760px]:w-[240px]" />
+        <div className="float absolute top-[6%] right-[8%] h-[380px] w-[380px] rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--color-nh-cyan)_22%,transparent),transparent_66%)] blur-[6px] max-[760px]:h-[240px] max-[760px]:w-[240px]" />
         <div
-          className="float absolute bottom-[4%] left-[2%] h-[420px] w-[420px] rounded-full bg-[radial-gradient(circle,rgba(26,92,255,0.18),transparent_66%)] blur-[6px] max-[760px]:h-[260px] max-[760px]:w-[260px]"
+          className="float absolute bottom-[4%] left-[2%] h-[420px] w-[420px] rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--color-nh-blue)_18%,transparent),transparent_66%)] blur-[6px] max-[760px]:h-[260px] max-[760px]:w-[260px]"
           style={{ animationDelay: "-4.5s", animationDuration: "12s" }}
         />
       </div>

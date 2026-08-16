@@ -1,4 +1,4 @@
-import type { SecurityIconName, ServiceIconName } from "@/types";
+import type { CareIconName, ServiceIconName } from "@/types";
 
 /**
  * Das Icon-Set der Seite — bewusst selbst gezeichnet statt als Paket.
@@ -8,72 +8,78 @@ import type { SecurityIconName, ServiceIconName } from "@/types";
  * ganz unterschiedliche Dinge zeigen. Farbe kommt immer von `currentColor`.
  */
 
-export type IconName = ServiceIconName | SecurityIconName | "check" | "arrow" | "spark";
+export type IconName = ServiceIconName | CareIconName | "check" | "arrow" | "spark";
 
 const PATHS: Record<IconName, React.ReactNode> = {
-  /* --- Services --- */
+  /* --- Leistungen --- */
 
-  // Browserfenster mit Adresszeile.
-  web: (
+  // Zeichenflaeche mit Stift.
+  design: (
     <>
-      <rect x="3" y="4.5" width="18" height="15" rx="2.5" />
-      <path d="M3 9h18" />
-      <path d="M6.4 6.75h.01M9 6.75h.01" />
-      <path d="M7.5 13h5.5M7.5 16h9" />
+      <rect x="3" y="4" width="18" height="16" rx="2.5" />
+      <path d="M3 8.5h18" />
+      <path d="M6 7h.01" />
+      <path d="m14.6 12.2-4.2 4.2-2.4.6.6-2.4 4.2-4.2a1.3 1.3 0 0 1 1.8 1.8Z" />
     </>
   ),
 
-  // Gestapelte virtuelle Instanzen.
-  vps: (
+  // Spitze Klammern mit Schraegstrich.
+  code: (
     <>
-      <rect x="3" y="4" width="18" height="6" rx="2" />
-      <rect x="3" y="14" width="18" height="6" rx="2" />
-      <path d="M6.6 7h.01M6.6 17h.01" />
-      <path d="M10 7h5M10 17h5" />
+      <path d="m8.4 8.6-4 3.4 4 3.4" />
+      <path d="m15.6 8.6 4 3.4-4 3.4" />
+      <path d="m13.4 5.6-2.8 12.8" />
     </>
   ),
 
-  // Server-Rack mit Statusleuchte.
-  dedicated: (
+  // Kreislauf mit Pfeilspitzen — neu aufbauen.
+  relaunch: (
     <>
-      <rect x="4" y="3" width="16" height="18" rx="2.5" />
-      <path d="M4 9h16M4 15h16" />
-      <path d="M7.5 6h.01M7.5 12h.01M7.5 18h.01" />
-      <path d="M11 6h5.5M11 12h5.5M11 18h5.5" />
+      <path d="M20 11.4a8 8 0 1 0-.7 4.6" />
+      <path d="M20.2 5.6v5.8h-5.8" />
     </>
   ),
 
-  // Wolke mit aufsteigendem Pfeil.
-  cloud: (
+  // Schraubenschluessel — laufende Pflege.
+  care: (
+    <path d="M15.8 3.6a5 5 0 0 0-5.9 6.6L3.9 16.2a2.1 2.1 0 0 0 3 3l6-6a5 5 0 0 0 6.5-6l-3.1 3.1-2.7-.7-.7-2.7 2.9-3.4Z" />
+  ),
+
+  // Lupe mit Balken — Sichtbarkeit messen.
+  seo: (
     <>
-      <path d="M7.2 18.5A4.2 4.2 0 0 1 7 10.1a5.4 5.4 0 0 1 10.3 1.2 3.6 3.6 0 0 1-.6 7.2H7.2Z" />
-      <path d="M12 15.6V9.8M9.9 11.9 12 9.8l2.1 2.1" />
+      <circle cx="10.6" cy="10.6" r="6.4" />
+      <path d="m15.4 15.4 4.4 4.4" />
+      <path d="M8.4 12.2v-1.8M10.8 12.2V8.6M13.2 12.2v-3" />
     </>
   ),
 
-  // Gamepad.
-  game: (
+  // Dokument mit Textzeilen.
+  content: (
     <>
-      <path d="M8 8h8a5 5 0 0 1 4.9 4l.7 4a2.6 2.6 0 0 1-4.7 2L15.6 16H8.4l-1.3 2a2.6 2.6 0 0 1-4.7-2l.7-4A5 5 0 0 1 8 8Z" />
-      <path d="M7 11v2.4M5.8 12.2h2.4" />
-      <path d="M15.6 11.6h.01M17.6 13.2h.01" />
+      <path d="M14 3.2H7a2 2 0 0 0-2 2v13.6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8.2L14 3.2Z" />
+      <path d="M13.8 3.4v5h5" />
+      <path d="M8.6 13h6.8M8.6 16.4h4.6" />
     </>
   ),
 
-  // Zahnrad als Sinnbild fuer betreuten Betrieb.
-  managed: (
+  /* --- Betreuung --- */
+
+  // Kreislauf mit Haken — regelmaessige Updates.
+  update: (
     <>
-      <circle cx="12" cy="12" r="3.1" />
-      <path d="M12 2.8v2.4M12 18.8v2.4M4.5 12H2.1M21.9 12h-2.4M6.7 6.7 5 5M19 19l-1.7-1.7M6.7 17.3 5 19M19 5l-1.7 1.7" />
+      <path d="M20 11.4a8 8 0 1 0-.7 4.6" />
+      <path d="M20.2 5.6v5.8h-5.8" />
+      <path d="m9.6 12 1.8 1.8 3.4-3.6" />
     </>
   ),
 
-  /* --- Security --- */
-
-  shield: (
+  // Datenbank-Zylinder.
+  backup: (
     <>
-      <path d="M12 3 5 6v5.6c0 4 2.9 7.6 7 9.4 4.1-1.8 7-5.4 7-9.4V6l-7-3Z" />
-      <path d="m9.2 12 2 2 3.6-3.8" />
+      <path d="M12 3.6c3.9 0 7 1.1 7 2.4s-3.1 2.4-7 2.4-7-1.1-7-2.4S8.1 3.6 12 3.6Z" />
+      <path d="M5 6v11.8c0 1.3 3.1 2.4 7 2.4s7-1.1 7-2.4V6" />
+      <path d="M5 12c0 1.3 3.1 2.4 7 2.4s7-1.1 7-2.4" />
     </>
   ),
 
@@ -82,24 +88,6 @@ const PATHS: Record<IconName, React.ReactNode> = {
       <rect x="4.5" y="10.5" width="15" height="10" rx="2.5" />
       <path d="M8 10.5V7.8a4 4 0 0 1 8 0v2.7" />
       <path d="M12 14.4v2.3" />
-    </>
-  ),
-
-  // Mauerwerk mit Durchlass.
-  firewall: (
-    <>
-      <rect x="3" y="4.5" width="18" height="15" rx="2.5" />
-      <path d="M3 9.5h18M3 14.5h18" />
-      <path d="M9 4.5v5M15 9.5v5M9 14.5v5" />
-    </>
-  ),
-
-  // Datenbank-Zylinder mit Pfeil zurueck.
-  backup: (
-    <>
-      <path d="M12 3.6c3.9 0 7 1.1 7 2.4s-3.1 2.4-7 2.4-7-1.1-7-2.4S8.1 3.6 12 3.6Z" />
-      <path d="M5 6v11.8c0 1.3 3.1 2.4 7 2.4s7-1.1 7-2.4V6" />
-      <path d="M5 12c0 1.3 3.1 2.4 7 2.4s7-1.1 7-2.4" />
     </>
   ),
 
@@ -112,12 +100,20 @@ const PATHS: Record<IconName, React.ReactNode> = {
     </>
   ),
 
-  // Siegel / Zertifikat.
+  // Siegel mit Haken.
   compliance: (
     <>
       <circle cx="12" cy="9.6" r="5.4" />
       <path d="m9.8 9.6 1.6 1.6 3-3.2" />
       <path d="m8.6 14.4-1.2 6 4.6-2.3 4.6 2.3-1.2-6" />
+    </>
+  ),
+
+  // Sprechblase — erreichbarer Ansprechpartner.
+  support: (
+    <>
+      <path d="M20.4 13.4a7.4 7.4 0 0 1-8 7.3L4 21.4l1.2-4.2a7.4 7.4 0 1 1 15.2-3.8Z" />
+      <path d="M9 12.4h.01M12 12.4h.01M15 12.4h.01" />
     </>
   ),
 

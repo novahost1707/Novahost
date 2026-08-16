@@ -30,7 +30,7 @@ export default function Contact() {
             <div className="mt-9 flex flex-col gap-3">
               <a
                 href={`mailto:${siteMeta.email}`}
-                className="glow-hover group flex items-center justify-between gap-4 rounded-[14px] border border-nh-line bg-white/60 px-5 py-4 hover:-translate-y-0.5 hover:border-[rgba(26,92,255,0.28)]"
+                className="glow-hover group flex items-center justify-between gap-4 rounded-[14px] border border-nh-line bg-nh-surface/60 px-5 py-4 hover:-translate-y-0.5 hover:border-[color-mix(in_oklab,var(--color-nh-blue)_28%,transparent)]"
               >
                 <span className="font-mono text-[11px] tracking-[0.14em] text-nh-mute uppercase">
                   E-Mail
@@ -42,7 +42,7 @@ export default function Contact() {
 
               <a
                 href={`tel:${siteMeta.phone.replace(/\s/g, "")}`}
-                className="glow-hover group flex items-center justify-between gap-4 rounded-[14px] border border-nh-line bg-white/60 px-5 py-4 hover:-translate-y-0.5 hover:border-[rgba(26,92,255,0.28)]"
+                className="glow-hover group flex items-center justify-between gap-4 rounded-[14px] border border-nh-line bg-nh-surface/60 px-5 py-4 hover:-translate-y-0.5 hover:border-[color-mix(in_oklab,var(--color-nh-blue)_28%,transparent)]"
               >
                 <span className="font-mono text-[11px] tracking-[0.14em] text-nh-mute uppercase">
                   Telefon

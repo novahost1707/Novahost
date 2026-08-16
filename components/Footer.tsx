@@ -32,12 +32,12 @@ export default function Footer() {
             <LogoLink uid="footer" />
 
             <p className="mt-5 max-w-[280px] text-[14px] leading-[1.7] text-nh-mute">
-              {siteMeta.claim} Hosting, Server und Cloud-Infrastruktur aus
-              europäischen Rechenzentren.
+              {siteMeta.claim} Design, Umsetzung und laufende Betreuung für
+              kleine und mittlere Betriebe.
             </p>
 
             {/* Statusabfrage als Code-Zeile */}
-            <div className="mt-6 overflow-x-auto rounded-[12px] border border-nh-line bg-white/70 px-3.5 py-3">
+            <div className="mt-6 overflow-x-auto rounded-[12px] border border-nh-line bg-nh-surface/70 px-3.5 py-3">
               <pre className="font-mono text-[11px] leading-[1.7] whitespace-pre text-nh-mute">
                 {footerSnippet}
               </pre>

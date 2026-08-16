@@ -53,12 +53,12 @@ export default function About() {
             {about.points.map((point) => (
               <div
                 key={point.num}
-                className="group relative bg-white px-7 py-7 transition-colors duration-[var(--dur-hover)] hover:bg-nh-canvas max-[560px]:px-5"
+                className="group relative bg-nh-surface px-7 py-7 transition-colors duration-[var(--dur-hover)] hover:bg-nh-canvas max-[560px]:px-5"
               >
                 {/* Der Akzentstrich faehrt beim Hover von oben herunter. */}
                 <span
                   aria-hidden="true"
-                  className="absolute top-0 bottom-0 left-0 w-[2px] origin-top scale-y-0 bg-[linear-gradient(180deg,#1a5cff,#00c2e0)] transition-transform duration-[var(--dur-slow)] ease-[var(--ease-nh)] group-hover:scale-y-100"
+                  className="absolute top-0 bottom-0 left-0 w-[2px] origin-top scale-y-0 bg-[linear-gradient(180deg,var(--color-nh-blue),var(--color-nh-cyan))] transition-transform duration-[var(--dur-slow)] ease-[var(--ease-nh)] group-hover:scale-y-100"
                 />
 
                 <div className="font-mono text-[11px] tracking-[0.16em] text-nh-blue">

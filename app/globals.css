@@ -2,16 +2,21 @@
 
 /* ---------------------------------------------------------------------------
    Design Tokens
-   Ein einziges visuelles System: helle Flaechen, ein Blau, ein Cyan, eine
-   Bewegungskurve. Ueber @theme entstehen daraus zusaetzlich Tailwind-
-   Utilities, z. B. bg-nh-canvas, text-nh-mute, border-nh-line, font-display,
-   max-w-wrap.
+   Ein einziges visuelles System, zwei Modi. Ueber @theme entstehen aus den
+   Farben zusaetzlich Tailwind-Utilities, z. B. bg-nh-surface, text-nh-mute,
+   border-nh-line, font-display, max-w-wrap.
+
+   Die Namen sind bewusst nach ihrer Rolle benannt (bg, surface, ink, body)
+   und nicht nach ihrer Farbe: im dunklen Modus bekommen dieselben Tokens
+   andere Werte, und "nh-white" waere dort schlicht gelogen.
 --------------------------------------------------------------------------- */
 @theme {
   /* Flaechen — hell, mit einem sehr leichten Blaustich statt reinem Grau. */
-  --color-nh-white: #ffffff;
+  --color-nh-bg: #ffffff;
   --color-nh-canvas: #f6f9ff;
   --color-nh-panel: #eef4ff;
+  /* Grundton von Karten, Feldern und Chips — meist mit Deckkraft benutzt. */
+  --color-nh-surface: #ffffff;
 
   /* Text — drei Stufen reichen fuer die komplette Hierarchie. */
   --color-nh-ink: #08111f;
@@ -25,9 +30,10 @@
   --color-nh-blue-deep: #0b3bbf;
   --color-nh-cyan: #00c2e0;
   --color-nh-ok: #0eaa72;
+  --color-nh-warn: #f0a72c;
   --color-nh-error: #e11d48;
 
-  /* Linien und Schleier auf hellem Grund. */
+  /* Linien und Schleier. */
   --color-nh-line: rgba(11, 39, 96, 0.1);
   --color-nh-line-2: rgba(11, 39, 96, 0.06);
 
@@ -48,6 +54,8 @@
    Zentrale Werte statt verstreuter Einzelangaben.
 --------------------------------------------------------------------------- */
 :root {
+  color-scheme: light;
+
   --dur-hover: 460ms;
   --dur-slow: 700ms;
 
@@ -69,6 +77,14 @@
     0 2px 10px -4px rgba(11, 39, 96, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.95);
 
+  /* Die Lichtkante am Rahmen einer Glasflaeche. */
+  --glass-edge: linear-gradient(
+    140deg,
+    rgba(255, 255, 255, 0.95),
+    rgba(26, 92, 255, 0.22) 40%,
+    rgba(255, 255, 255, 0) 70%
+  );
+
   /* Glow: mehrere sehr weiche Ebenen statt eines harten farbigen Schattens —
      es soll wirken, als laege Licht hinter dem Element. */
   --glow-soft:
@@ -88,6 +104,155 @@
     var(--color-nh-blue) 42%,
     var(--color-nh-cyan)
   );
+
+  /* Deckkraft der Hintergrund-Lichtflaechen im Hero. */
+  --aurora-strength: 1;
+
+  /* Zeichenketten im Code-Fenster — das einzige Gruen der Seite. */
+  --color-code-string: #0a8f6a;
+}
+
+/* ---------------------------------------------------------------------------
+   Dunkler Modus
+
+   Die Werte stehen genau einmal, in einer Mixin-artigen Regel, und werden von
+   zwei Selektoren benutzt:
+   1. [data-theme="dark"] — der Besucher hat dunkel gewaehlt.
+   2. prefers-color-scheme: dark, solange keine eigene Wahl vorliegt.
+
+   Der zweite Fall ist bewusst auf :root:not([data-theme]) beschraenkt: wer
+   ausdruecklich hell gewaehlt hat, bekommt hell — auch wenn das System dunkel
+   steht.
+
+   Blau und Cyan sind hier heller als im hellen Modus. Ein Blau, das auf Weiss
+   gut sitzt, verschwindet auf dunklem Grund fast; die Werte sind so gewaehlt,
+   dass der Kontrast in beiden Modi ausreicht.
+--------------------------------------------------------------------------- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+
+    --color-nh-bg: #070b14;
+    --color-nh-canvas: #0a1020;
+    --color-nh-panel: #101a2c;
+    --color-nh-surface: #16223a;
+
+    --color-nh-ink: #f1f5ff;
+    --color-nh-body: #b3c1dc;
+    --color-nh-mute: #8493b2;
+    --color-nh-mute-2: #64738f;
+
+    --color-nh-blue: #5b8cff;
+    --color-nh-blue-2: #85aaff;
+    --color-nh-blue-deep: #2f6bff;
+    --color-nh-cyan: #2fd8f0;
+    --color-nh-ok: #34d399;
+    --color-nh-warn: #fbbf4c;
+    --color-nh-error: #fb7185;
+
+    --color-nh-line: rgba(170, 200, 255, 0.14);
+    --color-nh-line-2: rgba(170, 200, 255, 0.07);
+
+    --glass-bg: linear-gradient(
+      160deg,
+      rgba(34, 48, 76, 0.72),
+      rgba(16, 25, 44, 0.52)
+    );
+    --glass-border: rgba(170, 200, 255, 0.16);
+    --glass-shadow:
+      0 24px 60px -30px rgba(0, 0, 0, 0.9),
+      0 2px 10px -4px rgba(0, 0, 0, 0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.07);
+    --glass-edge: linear-gradient(
+      140deg,
+      rgba(255, 255, 255, 0.22),
+      rgba(91, 140, 255, 0.28) 40%,
+      rgba(255, 255, 255, 0) 70%
+    );
+
+    --glow-soft:
+      0 0 0 1px rgba(91, 140, 255, 0.22),
+      0 14px 38px -18px rgba(91, 140, 255, 0.42),
+      0 30px 80px -40px rgba(47, 216, 240, 0.36);
+    --glow-strong:
+      0 0 0 1px rgba(91, 140, 255, 0.3),
+      0 18px 44px -16px rgba(91, 140, 255, 0.55),
+      0 40px 100px -46px rgba(47, 216, 240, 0.45);
+
+    --aurora-strength: 1.5;
+      --color-code-string: #4ade9b;
+  }
+}
+
+/* Ausdrueckliche Wahl schlaegt die Systemeinstellung — deshalb steht dieser
+   Block nach der Media Query. */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --color-nh-bg: #070b14;
+  --color-nh-canvas: #0a1020;
+  --color-nh-panel: #101a2c;
+  --color-nh-surface: #16223a;
+
+  --color-nh-ink: #f1f5ff;
+  --color-nh-body: #b3c1dc;
+  --color-nh-mute: #8493b2;
+  --color-nh-mute-2: #64738f;
+
+  --color-nh-blue: #5b8cff;
+  --color-nh-blue-2: #85aaff;
+  --color-nh-blue-deep: #2f6bff;
+  --color-nh-cyan: #2fd8f0;
+  --color-nh-ok: #34d399;
+  --color-nh-warn: #fbbf4c;
+  --color-nh-error: #fb7185;
+
+  --color-nh-line: rgba(170, 200, 255, 0.14);
+  --color-nh-line-2: rgba(170, 200, 255, 0.07);
+
+  --glass-bg: linear-gradient(
+    160deg,
+    rgba(34, 48, 76, 0.72),
+    rgba(16, 25, 44, 0.52)
+  );
+  --glass-border: rgba(170, 200, 255, 0.16);
+  --glass-shadow:
+    0 24px 60px -30px rgba(0, 0, 0, 0.9),
+    0 2px 10px -4px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  --glass-edge: linear-gradient(
+    140deg,
+    rgba(255, 255, 255, 0.22),
+    rgba(91, 140, 255, 0.28) 40%,
+    rgba(255, 255, 255, 0) 70%
+  );
+
+  --glow-soft:
+    0 0 0 1px rgba(91, 140, 255, 0.22),
+    0 14px 38px -18px rgba(91, 140, 255, 0.42),
+    0 30px 80px -40px rgba(47, 216, 240, 0.36);
+  --glow-strong:
+    0 0 0 1px rgba(91, 140, 255, 0.3),
+    0 18px 44px -16px rgba(91, 140, 255, 0.55),
+    0 40px 100px -46px rgba(47, 216, 240, 0.45);
+
+  --aurora-strength: 1.5;
+  --color-code-string: #4ade9b;
+}
+
+/*
+ * Waehrend des Moduswechsels laufen Farbwechsel kurz weich ineinander.
+ * components/ThemeToggle.tsx setzt dafuer data-theme-switching am <html>.
+ * Ohne diese Begrenzung wuerde jede Hover-Transition mitgefaerbt werden.
+ */
+:root[data-theme-switching] *,
+:root[data-theme-switching] *::before,
+:root[data-theme-switching] *::after {
+  transition:
+    background-color 320ms ease,
+    border-color 320ms ease,
+    color 320ms ease,
+    box-shadow 320ms ease !important;
 }
 
 /* ---------------------------------------------------------------------------
@@ -115,7 +280,7 @@
   }
 
   body {
-    background: var(--color-nh-white);
+    background: var(--color-nh-bg);
     color: var(--color-nh-body);
     font-family: var(--font-body);
     overflow-x: hidden;
@@ -295,15 +460,13 @@
     color: var(--color-nh-ink);
     box-shadow:
       0 0 0 1px var(--color-nh-line) inset,
-      0 10px 26px -18px rgba(11, 39, 96, 0.4),
-      inset 0 1px 0 rgba(255, 255, 255, 0.9);
+      var(--glass-shadow);
   }
 
   .btn-ghost:hover {
     color: var(--color-nh-blue);
     box-shadow:
-      0 0 0 1px rgba(26, 92, 255, 0.28) inset,
-      inset 0 1px 0 rgba(255, 255, 255, 0.95),
+      0 0 0 1px color-mix(in oklab, var(--color-nh-blue) 30%, transparent) inset,
       var(--glow-soft);
   }
 
@@ -348,12 +511,7 @@
     border-radius: inherit;
     padding: 1px;
     pointer-events: none;
-    background: linear-gradient(
-      140deg,
-      rgba(255, 255, 255, 0.95),
-      rgba(26, 92, 255, 0.22) 40%,
-      rgba(255, 255, 255, 0) 70%
-    );
+    background: var(--glass-edge);
     /* Nur der Rahmen bleibt stehen, die Fuellung wird ausgestanzt. */
     -webkit-mask:
       linear-gradient(#000 0 0) content-box,
@@ -480,7 +638,7 @@
     inset: 0;
     pointer-events: none;
     background-image: radial-gradient(
-      rgba(11, 39, 96, 0.14) 1px,
+      color-mix(in oklab, var(--color-nh-mute) 45%, transparent) 1px,
       transparent 1px
     );
     background-size: 26px 26px;
@@ -495,7 +653,7 @@
       radial-gradient(ellipse 60% 50% at 78% 8%, rgba(0, 194, 224, 0.16), transparent 62%),
       radial-gradient(ellipse 70% 55% at 12% 20%, rgba(26, 92, 255, 0.14), transparent 60%),
       radial-gradient(ellipse 90% 60% at 50% 100%, rgba(26, 92, 255, 0.07), transparent 65%),
-      var(--color-nh-white);
+      var(--color-nh-bg);
   }
 
   /**
@@ -527,10 +685,10 @@
   .panel-backdrop {
     background: linear-gradient(
       180deg,
-      var(--color-nh-white),
+      var(--color-nh-bg),
       var(--color-nh-canvas) 30%,
       var(--color-nh-canvas) 70%,
-      var(--color-nh-white)
+      var(--color-nh-bg)
     );
   }
 
@@ -538,7 +696,7 @@
     background:
       radial-gradient(ellipse 60% 55% at 50% 0%, rgba(26, 92, 255, 0.1), transparent 62%),
       radial-gradient(ellipse 50% 50% at 82% 100%, rgba(0, 194, 224, 0.1), transparent 62%),
-      var(--color-nh-white);
+      var(--color-nh-bg);
   }
 
   /** Trennlinie zwischen zwei Abschnitten: in der Mitte hell, aussen weg. */
@@ -573,17 +731,17 @@
 
   .header-backdrop[data-scrolled="true"] {
     padding-block: 11px;
+    /* Dieselbe Flaeche wie die Karten, nur etwas deckender —
+       darunter laeuft der gesamte Seiteninhalt durch. */
     background: linear-gradient(
       180deg,
-      rgba(255, 255, 255, 0.86),
-      rgba(255, 255, 255, 0.68)
+      color-mix(in oklab, var(--color-nh-bg) 88%, transparent),
+      color-mix(in oklab, var(--color-nh-bg) 70%, transparent)
     );
     -webkit-backdrop-filter: blur(20px) saturate(180%);
     backdrop-filter: blur(20px) saturate(180%);
     border-bottom-color: var(--color-nh-line);
-    box-shadow:
-      0 18px 40px -34px rgba(11, 39, 96, 0.55),
-      inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    box-shadow: var(--glass-shadow);
   }
 
   /**
@@ -788,7 +946,7 @@
 
   /* Eingeschraenkter Betrieb — bernstein statt rot, es ist kein Ausfall. */
   .status-dot[data-tone="warn"] {
-    background: #f0a72c;
+    background: var(--color-nh-warn);
   }
 
   @keyframes statusPing {
@@ -878,7 +1036,7 @@
   }
 
   .code-window .tok-str {
-    color: #0a8f6a;
+    color: var(--color-code-string);
   }
 
   .code-window .tok-com {
@@ -985,7 +1143,11 @@
     width: var(--size);
     height: var(--size);
     border-radius: 999px;
-    background: radial-gradient(circle, rgba(26, 92, 255, 0.6), transparent 68%);
+    background: radial-gradient(
+      circle,
+      color-mix(in oklab, var(--color-nh-blue) 60%, transparent),
+      transparent 68%
+    );
     opacity: 0;
     animation: particleRise var(--dur) linear infinite;
     animation-delay: var(--delay);
@@ -1007,62 +1169,28 @@
   }
 
   /* ---------------------------------------------------------------------------
-     Netzwerk-Visualisierung
+     Ablauf-Zeitleiste
   --------------------------------------------------------------------------- */
 
-  /** Die Verbindungslinie zeichnet sich einmal und bleibt dann stehen. */
-  .net-line {
-    stroke-dasharray: var(--len, 400);
-    stroke-dashoffset: var(--len, 400);
-    animation: netDraw 2.4s var(--ease-nh-out) forwards;
-    animation-delay: var(--delay, 0s);
+  /*
+   * Die Linie zwischen den Schritten waechst beim Einblenden von oben nach
+   * unten mit. Sie liegt hinter den Knoten und ist rein dekorativ — die
+   * Reihenfolge steht ohnehin als <ol> im Markup.
+   */
+  .process-line {
+    background: linear-gradient(
+      180deg,
+      var(--color-nh-blue),
+      var(--color-nh-cyan) 55%,
+      transparent
+    );
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 1.6s var(--ease-nh-out);
   }
 
-  @keyframes netDraw {
-    to {
-      stroke-dashoffset: 0;
-    }
-  }
-
-  /** Ein Lichtpaket, das dauerhaft ueber die Verbindung laeuft. */
-  .net-pulse {
-    animation: netPulse var(--dur, 4s) linear infinite;
-    animation-delay: var(--delay, 0s);
-  }
-
-  @keyframes netPulse {
-    0% {
-      offset-distance: 0%;
-      opacity: 0;
-    }
-    12%,
-    80% {
-      opacity: 1;
-    }
-    100% {
-      offset-distance: 100%;
-      opacity: 0;
-    }
-  }
-
-  /** Der Ring um einen Standort. */
-  .net-ring {
-    transform-origin: center;
-    transform-box: fill-box;
-    animation: netRing 3.2s var(--ease-nh-out) infinite;
-    animation-delay: var(--delay, 0s);
-  }
-
-  @keyframes netRing {
-    0% {
-      transform: scale(0.5);
-      opacity: 0.75;
-    }
-    70%,
-    100% {
-      transform: scale(2.4);
-      opacity: 0;
-    }
+  .stagger.in .process-line {
+    transform: scaleY(1);
   }
 
   /* ---------------------------------------------------------------------------
@@ -1219,7 +1347,7 @@
     padding: 13px 15px;
     border-radius: 12px;
     border: 1px solid var(--color-nh-line);
-    background: rgba(255, 255, 255, 0.7);
+    background: color-mix(in oklab, var(--color-nh-surface) 70%, transparent);
     color: var(--color-nh-ink);
     font-family: var(--font-body);
     font-size: 14.5px;
@@ -1243,25 +1371,38 @@
   .field input:hover,
   .field select:hover,
   .field textarea:hover {
-    border-color: rgba(26, 92, 255, 0.28);
+    border-color: color-mix(in oklab, var(--color-nh-blue) 30%, transparent);
   }
 
   .field input:focus,
   .field select:focus,
   .field textarea:focus {
     outline: none;
-    background: #ffffff;
+    background: var(--color-nh-surface);
     border-color: var(--color-nh-blue);
-    box-shadow: 0 0 0 4px rgba(26, 92, 255, 0.12);
+    box-shadow: 0 0 0 4px color-mix(in oklab, var(--color-nh-blue) 14%, transparent);
   }
 
   .field select {
     appearance: none;
     /* Eigener Pfeil, damit das Feld in allen Browsern gleich aussieht. */
+    /* Der Pfeil ist ein Bild und kann keine CSS-Variable lesen — deshalb
+       liegt die dunkle Fassung als eigene Regel weiter unten. */
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5l5-5' stroke='%236d7d9e' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 15px center;
     padding-right: 40px;
+  }
+
+  /* Der Pfeil des Auswahlfelds im dunklen Modus — helleres Grau. */
+  :root[data-theme="dark"] .field select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5l5-5' stroke='%238493b2' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .field select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5l5-5' stroke='%238493b2' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    }
   }
 
   .err-msg {
@@ -1281,7 +1422,7 @@
   .field.error select,
   .field.error textarea {
     border-color: var(--color-nh-error);
-    box-shadow: 0 0 0 4px rgba(225, 29, 72, 0.1);
+    box-shadow: 0 0 0 4px color-mix(in oklab, var(--color-nh-error) 14%, transparent);
   }
 
   .field.error .err-msg {
@@ -1507,17 +1648,16 @@
   .status-dot::after,
   .caret,
   .logo-glow,
-  .net-pulse,
-  .net-ring,
   .hero-backdrop::before,
   .terminal-line {
     animation: none;
   }
 
-  /* Ohne Animation muessen die gezeichneten Linien trotzdem sichtbar sein. */
-  .net-line {
-    stroke-dashoffset: 0;
-    animation: none;
+  /* Ohne Animation muss die Zeitleiste trotzdem durchgezogen sein. */
+  .process-line,
+  .stagger.in .process-line {
+    transform: scaleY(1);
+    transition: none;
   }
 
   .particle,
@@ -1588,7 +1728,7 @@
   padding: 11px 18px;
   border-radius: 999px;
   background: var(--color-nh-ink);
-  color: #ffffff;
+  color: var(--color-nh-bg);
   font-size: 14px;
   font-weight: 600;
   transform: translateY(-160%);

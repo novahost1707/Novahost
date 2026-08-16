@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import ScrollReveal from "@/components/ScrollReveal";
 import { siteMeta } from "@/lib/content";
+import { THEME_INIT_SCRIPT } from "@/lib/theme";
 import "./globals.css";
 
 /** Headlines — fett bis extrafett, das Rueckgrat der Typografie. */
@@ -36,13 +37,13 @@ export const metadata: Metadata = {
   description: siteMeta.description,
   applicationName: siteMeta.name,
   keywords: [
-    "Hosting",
-    "VPS",
-    "Dedicated Server",
-    "Cloud Infrastructure",
-    "Managed IT",
-    "Game Hosting",
-    "Rechenzentrum Deutschland",
+    "Webdesign",
+    "Website erstellen lassen",
+    "Website Relaunch",
+    "Website Betreuung",
+    "Webentwicklung",
+    "SEO",
+    "Website Wartung Abo",
   ],
   ...(siteUrl ? { metadataBase: new URL(siteUrl) } : {}),
   alternates: { canonical: "/" },
@@ -61,8 +62,11 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  // Faerbt die Browserleiste auf Mobilgeraeten im Weiss der Seite ein.
-  themeColor: "#ffffff",
+  // Faerbt die Browserleiste auf Mobilgeraeten passend zum jeweiligen Modus.
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#070b14" },
+  ],
 };
 
 export default function RootLayout({
@@ -72,7 +76,23 @@ export default function RootLayout({
     <html
       lang="de"
       className={`${sora.variable} ${inter.variable} ${jetbrainsMono.variable}`}
+      /*
+       * Das Init-Skript unten setzt data-theme noch vor dem ersten Bild.
+       * React weiss davon nichts und wuerde die Abweichung sonst als
+       * Hydration-Fehler melden.
+       */
+      suppressHydrationWarning
     >
+      <head>
+        {/*
+          Muss vor jedem Stylesheet und vor dem ersten Zeichnen laufen, sonst
+          blitzt bei dunkler Ansicht kurz die helle Seite auf. Deshalb inline
+          und nicht als eigene Datei — ein zusaetzlicher Request waere genau
+          der Moment, den es zu vermeiden gilt.
+        */}
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+      </head>
+
       <body>
         {/* Erste Tabulator-Station: direkt zum Inhalt, an der Navigation vorbei. */}
         <a href="#main" className="skip-link">
