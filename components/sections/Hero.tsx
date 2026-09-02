@@ -39,7 +39,9 @@ export default function Hero() {
             <h1 className="hero-rise hero-rise-2 mt-5 text-[clamp(40px,6.2vw,74px)]">
               {hero.headlineTop}
               <br />
-              <span className="text-gradient">{hero.headlineAccent}</span>
+              <span className="text-accent" data-caret>
+                {hero.headlineAccent}
+              </span>
             </h1>
 
             <p className="hero-rise hero-rise-3 mt-6 max-w-[520px] text-[17px] leading-[1.7] text-nh-body">

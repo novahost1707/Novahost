@@ -49,7 +49,7 @@ export default function About() {
             </div>
           </div>
 
-          <div className="stagger flex flex-col gap-px overflow-hidden rounded-[20px] border border-nh-line bg-nh-line">
+          <div className="stagger flex flex-col gap-px overflow-hidden rounded-panel border border-nh-line bg-nh-line">
             {about.points.map((point) => (
               <div
                 key={point.num}

@@ -121,7 +121,7 @@ export default function Pricing() {
         <div className="reveal mt-12 flex items-center gap-4 max-[560px]:flex-col">
           <span aria-hidden="true" className="h-px flex-1 bg-nh-line max-[560px]:w-full" />
 
-          <span className="flex items-center gap-2.5 rounded-full border border-nh-line bg-nh-surface/70 px-4 py-2 font-mono text-[11.5px] whitespace-nowrap text-nh-mute">
+          <span className="flex items-center gap-2.5 rounded-chip border border-nh-line bg-nh-surface/70 px-4 py-2 font-mono text-[11.5px] whitespace-nowrap text-nh-mute">
             <Icon name="arrow" className="h-3.5 w-3.5 rotate-90 text-nh-blue" />
             danach verpflichtend
           </span>
@@ -182,7 +182,7 @@ export default function Pricing() {
                     einem Kasten — das sind die drei Angaben, wegen derer man
                     sich fuer oder gegen ein Abo entscheidet.
                   */}
-                  <dl className="mt-5 flex flex-col gap-2 rounded-[12px] border border-nh-line bg-nh-surface/60 px-3.5 py-3">
+                  <dl className="mt-5 flex flex-col gap-2 rounded-card border border-nh-line bg-nh-surface/60 px-3.5 py-3">
                     <div>
                       <dt className="font-mono text-[10px] tracking-[0.14em] text-nh-mute uppercase">
                         enthalten
@@ -249,8 +249,8 @@ export default function Pricing() {
         </div>
 
         {/* Erklaerung zur Nachzahlung — die Frage stellt sich sonst jeder. */}
-        <div className="reveal glass glass-edge mt-8 flex items-start gap-5 rounded-[20px] p-6 max-[620px]:flex-col max-[620px]:gap-4">
-          <span className="flex h-11 w-11 flex-none items-center justify-center rounded-[13px] border border-nh-line bg-nh-surface/70 text-nh-blue">
+        <div className="reveal glass glass-edge mt-8 flex items-start gap-5 rounded-panel p-6 max-[620px]:flex-col max-[620px]:gap-4">
+          <span className="flex h-11 w-11 flex-none items-center justify-center rounded-card border border-nh-line bg-nh-surface/70 text-nh-blue">
             <Icon name="spark" className="h-5 w-5" />
           </span>
 
@@ -281,7 +281,7 @@ function FeaturedMarks() {
         aria-hidden="true"
         className="absolute inset-x-0 top-0 h-[3px] bg-[linear-gradient(90deg,var(--color-nh-blue-deep),var(--color-nh-blue),var(--color-nh-cyan))]"
       />
-      <span className="absolute top-5 right-5 rounded-full bg-[linear-gradient(140deg,var(--color-nh-blue),var(--color-nh-cyan))] px-2.5 py-1 font-mono text-[10px] tracking-[0.12em] text-white uppercase">
+      <span className="absolute top-5 right-5 rounded-chip bg-nh-blue px-2.5 py-1 font-mono text-[10px] tracking-[0.12em] text-white uppercase">
         beliebt
       </span>
     </>
@@ -302,7 +302,7 @@ function StepHeading({ label, title, note, text, first }: StepHeadingProps) {
   return (
     <div className={cn("reveal mb-7", first ? "mt-0" : "mt-12")}>
       <div className="flex flex-wrap items-center gap-3">
-        <span className="rounded-full bg-[linear-gradient(140deg,var(--color-nh-blue),var(--color-nh-cyan))] px-3 py-1 font-mono text-[10.5px] tracking-[0.14em] text-white uppercase">
+        <span className="rounded-chip bg-nh-blue px-3 py-1 font-mono text-[10.5px] tracking-[0.14em] text-white uppercase">
           {label}
         </span>
 

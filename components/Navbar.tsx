@@ -157,7 +157,7 @@ export default function Navbar() {
               aria-expanded={isMenuOpen}
               aria-controls="mobile-nav"
               aria-label={isMenuOpen ? "Menü schließen" : "Menü öffnen"}
-              className="burger glass ml-1 hidden h-10 w-10 flex-col items-center justify-center gap-[4px] rounded-xl max-[980px]:flex"
+              className="burger glass ml-1 hidden h-10 w-10 flex-col items-center justify-center gap-[4px] rounded-card max-[980px]:flex"
             >
               <span className="burger-line" />
               <span className="burger-line" />
@@ -188,7 +188,7 @@ export default function Navbar() {
           Deutlich deckender als die uebrigen Glasflaechen: hier liegt Text auf
           Text, und ein durchscheinender Hero macht die Links unlesbar.
         */}
-        <div className="glass glass-edge overflow-hidden rounded-[18px] bg-nh-surface/[0.97]">
+        <div className="glass glass-edge overflow-hidden rounded-card bg-nh-surface/[0.97]">
           <div className="flex flex-col p-2">
             {navLinks.map((link) => (
               <Link
@@ -196,7 +196,7 @@ export default function Navbar() {
                 href={hrefFor(link.hash)}
                 onClick={() => setIsMenuOpen(false)}
                 tabIndex={isMenuOpen ? undefined : -1}
-                className="rounded-xl px-4 py-3 text-[15px] font-medium text-nh-body transition-colors duration-[var(--dur-hover)] hover:bg-nh-surface/70 hover:text-nh-blue"
+                className="rounded-card px-4 py-3 text-[15px] font-medium text-nh-body transition-colors duration-[var(--dur-hover)] hover:bg-nh-surface/70 hover:text-nh-blue"
               >
                 {link.label}
               </Link>

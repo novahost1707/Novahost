@@ -35,7 +35,7 @@ export default function TiltCard({ children, className, noGlow }: TiltCardProps)
       }}
       onPointerLeave={onPointerLeave}
       className={cn(
-        "tilt glass glass-edge glow-hover group relative overflow-hidden rounded-[22px]",
+        "tilt panel glow-hover group relative overflow-hidden rounded-panel",
         !noGlow && "pointer-glow",
         className,
       )}

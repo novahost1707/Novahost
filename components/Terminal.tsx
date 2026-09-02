@@ -34,7 +34,7 @@ export default function Terminal({ lines, title, className, compact }: TerminalP
     <div
       ref={ref}
       className={cn(
-        "terminal overflow-hidden rounded-[18px] shadow-[0_30px_70px_-40px_rgba(8,17,31,0.85)]",
+        "terminal overflow-hidden rounded-card shadow-[0_30px_70px_-40px_rgba(8,17,31,0.85)]",
         className,
       )}
     >

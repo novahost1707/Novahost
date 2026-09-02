@@ -45,7 +45,7 @@ export default function SectionHead({
         ) : (
           <>
             {title.slice(0, at)}
-            <span className="text-gradient">{accent}</span>
+            <span className="text-accent">{accent}</span>
             {title.slice(at + accent.length)}
           </>
         )}

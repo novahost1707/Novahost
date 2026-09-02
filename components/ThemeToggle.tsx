@@ -5,10 +5,11 @@ import { cn } from "@/lib/utils";
 import {
   THEME_EVENT,
   applyTheme,
-  nextTheme,
   readStoredTheme,
+  resolveTheme,
   storeTheme,
-  themeLabel,
+  themeActionLabel,
+  toggleTheme,
 } from "@/lib/theme";
 import type { ThemeChoice } from "@/types";
 
@@ -17,19 +18,24 @@ interface ThemeToggleProps {
 }
 
 /**
- * Schaltet zwischen heller Ansicht, dunkler Ansicht und Systemeinstellung.
+ * Schaltet zwischen heller und dunkler Ansicht.
  *
- * Bewusst ein Knopf zum Durchschalten statt eines Dropdowns: drei Zustaende
- * sind noch ueberschaubar, und in der Navigationsleiste ist Platz knapp. Das
- * jeweils aktive Symbol zeigt, was gerade gilt; `aria-label` und `title`
- * nennen es im Klartext.
+ * Der Knopf richtet sich nach dem *dargestellten* Modus, nicht nach der
+ * gespeicherten Wahl — sonst gaebe es einen Klick, der nichts sichtbar
+ * veraendert (siehe toggleTheme() in lib/theme.ts). Jeder Druck kippt also
+ * die Ansicht.
  *
- * Vor dem Mounten wird nichts angezeigt, was von der gespeicherten Wahl
- * abhaengt — der Server kennt sie nicht. Bis dahin steht ein Platzhalter
- * gleicher Groesse, damit die Navigationsleiste nicht springt.
+ * "System" bleibt trotzdem erhalten: faellt das Ziel mit der Systemeinstellung
+ * zusammen, wird wieder "system" gespeichert. Ein kleiner Punkt am Knopf zeigt,
+ * dass die Seite gerade dem System folgt.
+ *
+ * Vor dem Mounten wird nichts Zustandsabhaengiges gezeichnet — der Server
+ * kennt die Wahl nicht. Bis dahin steht ein Platzhalter gleicher Groesse,
+ * damit die Navigationsleiste nicht springt.
  */
 export default function ThemeToggle({ className }: ThemeToggleProps) {
   const [choice, setChoice] = useState<ThemeChoice>("system");
+  const [systemPrefersDark, setSystemPrefersDark] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -37,8 +43,23 @@ export default function ThemeToggle({ className }: ThemeToggleProps) {
     setMounted(true);
   }, []);
 
-  // Mehrere Schalter auf derselben Seite (Navigation und mobiles Menue)
-  // halten sich ueber dieses Event gegenseitig auf Stand.
+  /*
+   * Die Systemeinstellung wird mitgelesen und nicht nur einmal abgefragt:
+   * solange "system" gilt, muss ein Wechsel im Betriebssystem auch das Symbol
+   * am Knopf umstellen.
+   */
+  useEffect(() => {
+    const query = window.matchMedia("(prefers-color-scheme: dark)");
+    setSystemPrefersDark(query.matches);
+
+    const onChange = (event: MediaQueryListEvent) =>
+      setSystemPrefersDark(event.matches);
+
+    query.addEventListener("change", onChange);
+    return () => query.removeEventListener("change", onChange);
+  }, []);
+
+  // Mehrere Schalter auf derselben Seite halten sich hierueber auf Stand.
   useEffect(() => {
     const onChange = (event: Event) => {
       const detail = (event as CustomEvent<ThemeChoice>).detail;
@@ -49,8 +70,10 @@ export default function ThemeToggle({ className }: ThemeToggleProps) {
     return () => window.removeEventListener(THEME_EVENT, onChange);
   }, []);
 
+  const resolved = resolveTheme(choice, systemPrefersDark);
+
   const handleClick = useCallback(() => {
-    const next = nextTheme(choice);
+    const next = toggleTheme(resolved, systemPrefersDark);
 
     /*
      * Waehrend des Wechsels laufen Farben kurz weich ineinander. Das Attribut
@@ -71,33 +94,50 @@ export default function ThemeToggle({ className }: ThemeToggleProps) {
     setChoice(next);
     applyTheme(next);
     storeTheme(next);
-  }, [choice]);
+  }, [resolved, systemPrefersDark]);
 
-  const label = themeLabel(choice);
+  const label = themeActionLabel(resolved);
 
   return (
     <button
       type="button"
       onClick={handleClick}
-      aria-label={`Ansicht umschalten — aktuell: ${label}`}
-      title={label}
+      aria-label={label}
+      title={
+        choice === "system" ? `${label} (folgt gerade dem System)` : label
+      }
+      data-theme-choice={choice}
       className={cn(
-        "glow-hover glass relative flex h-10 w-10 flex-none items-center justify-center rounded-xl text-nh-body hover:text-nh-blue",
+        "glow-hover panel relative flex h-10 w-10 flex-none items-center justify-center rounded-chip text-nh-body hover:text-nh-blue",
         className,
       )}
     >
-      {mounted ? <ThemeIcon choice={choice} /> : <span className="h-[18px] w-[18px]" />}
+      {mounted ? (
+        <>
+          <ThemeIcon dark={resolved === "dark"} />
+
+          {/* Zeigt an, dass gerade die Systemeinstellung gilt. */}
+          {choice === "system" ? (
+            <span
+              aria-hidden="true"
+              className="absolute right-1.5 bottom-1.5 h-[3px] w-[3px] rounded-full bg-nh-blue"
+            />
+          ) : null}
+        </>
+      ) : (
+        <span className="h-[18px] w-[18px]" />
+      )}
     </button>
   );
 }
 
 /**
- * Sonne, Mond oder Halbkreis — je nach Wahl.
+ * Sonne oder Mond — was gerade gilt.
  *
- * Alle drei teilen Raster, Strichstaerke und runde Enden mit dem uebrigen
+ * Beide teilen Raster, Strichstaerke und runde Enden mit dem uebrigen
  * Icon-Set, damit der Schalter nicht wie ein Fremdkoerper wirkt.
  */
-function ThemeIcon({ choice }: { choice: ThemeChoice }) {
+function ThemeIcon({ dark }: { dark: boolean }) {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -109,24 +149,14 @@ function ThemeIcon({ choice }: { choice: ThemeChoice }) {
       aria-hidden="true"
       className="h-[18px] w-[18px]"
     >
-      {choice === "light" ? (
+      {dark ? (
+        <path d="M20 13.6A8.2 8.2 0 0 1 10.4 4a8.2 8.2 0 1 0 9.6 9.6Z" />
+      ) : (
         <>
           <circle cx="12" cy="12" r="4.2" />
           <path d="M12 2.8v2.2M12 19v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.8 12H5M19 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6" />
         </>
-      ) : null}
-
-      {choice === "dark" ? (
-        <path d="M20 13.6A8.2 8.2 0 0 1 10.4 4a8.2 8.2 0 1 0 9.6 9.6Z" />
-      ) : null}
-
-      {choice === "system" ? (
-        <>
-          <circle cx="12" cy="12" r="8.2" />
-          {/* Die gefuellte Haelfte steht fuer "richtet sich nach dem System". */}
-          <path d="M12 3.8a8.2 8.2 0 0 1 0 16.4Z" fill="currentColor" stroke="none" />
-        </>
-      ) : null}
+      )}
     </svg>
   );
 }

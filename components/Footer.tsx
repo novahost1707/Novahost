@@ -37,7 +37,7 @@ export default function Footer() {
             </p>
 
             {/* Statusabfrage als Code-Zeile */}
-            <div className="mt-6 overflow-x-auto rounded-[12px] border border-nh-line bg-nh-surface/70 px-3.5 py-3">
+            <div className="mt-6 overflow-x-auto rounded-card border border-nh-line bg-nh-surface/70 px-3.5 py-3">
               <pre className="font-mono text-[11px] leading-[1.7] whitespace-pre text-nh-mute">
                 {footerSnippet}
               </pre>
@@ -96,7 +96,7 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`${siteMeta.name} auf ${social.title}`}
-                  className="glow-hover glass flex h-9 w-9 items-center justify-center rounded-[11px] font-mono text-[11px] text-nh-mute hover:-translate-y-0.5 hover:text-nh-blue"
+                  className="glow-hover glass flex h-9 w-9 items-center justify-center rounded-chip font-mono text-[11px] text-nh-mute hover:-translate-y-0.5 hover:text-nh-blue"
                 >
                   {social.label}
                 </a>

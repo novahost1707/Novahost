@@ -19,11 +19,11 @@ import { dashboardProjects, dashboardStats, heroTerminal } from "@/lib/content";
  */
 export default function HeroDashboard() {
   return (
-    <div className="glass glass-edge sheen relative rounded-[26px] p-6 max-[520px]:p-4.5">
+    <div className="glass glass-edge sheen relative rounded-panel p-6 max-[520px]:p-4.5">
       {/* Kopfzeile */}
       <div className="relative z-[1] flex items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <span className="flex h-9 w-9 flex-none items-center justify-center rounded-[11px] bg-[linear-gradient(140deg,var(--color-nh-blue),var(--color-nh-cyan))] text-white shadow-[0_8px_20px_-10px_color-mix(in_oklab,var(--color-nh-blue)_90%,transparent)]">
+          <span className="flex h-9 w-9 flex-none items-center justify-center rounded-chip bg-[linear-gradient(140deg,var(--color-nh-blue),var(--color-nh-cyan))] text-white shadow-[0_8px_20px_-10px_color-mix(in_oklab,var(--color-nh-blue)_90%,transparent)]">
             <Icon name="design" className="h-[19px] w-[19px]" />
           </span>
 
@@ -37,7 +37,7 @@ export default function HeroDashboard() {
           </div>
         </div>
 
-        <div className="flex items-center gap-2 rounded-full border border-nh-line bg-nh-surface/70 px-3 py-1.5">
+        <div className="flex items-center gap-2 rounded-chip border border-nh-line bg-nh-surface/70 px-3 py-1.5">
           <StatusDot />
           <span className="font-mono text-[11px] whitespace-nowrap text-nh-ok">
             live
@@ -50,7 +50,7 @@ export default function HeroDashboard() {
         {dashboardStats.map((stat) => (
           <div
             key={stat.label}
-            className="rounded-[14px] border border-nh-line bg-nh-surface/55 px-3.5 py-3"
+            className="rounded-card border border-nh-line bg-nh-surface/55 px-3.5 py-3"
           >
             <div className="font-mono text-[10.5px] tracking-[0.14em] text-nh-mute uppercase">
               {stat.label}
@@ -72,7 +72,7 @@ export default function HeroDashboard() {
       </div>
 
       {/* Laufende Projekte */}
-      <div className="relative z-[1] mt-3 rounded-[14px] border border-nh-line bg-nh-surface/55 p-3.5">
+      <div className="relative z-[1] mt-3 rounded-card border border-nh-line bg-nh-surface/55 p-3.5">
         <div className="mb-2.5 flex items-center justify-between font-mono text-[10.5px] tracking-[0.14em] text-nh-mute uppercase">
           <span>Projekte</span>
           <span>Stand</span>

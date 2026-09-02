@@ -23,24 +23,26 @@ export default function CodeSnippet({ title, code, className }: CodeSnippetProps
   return (
     <div
       className={cn(
-        "glass glass-edge overflow-hidden rounded-[18px]",
+        "panel overflow-hidden rounded-card",
         className,
       )}
     >
-      <div className="flex items-center gap-3 border-b border-nh-line px-4 py-2.5">
-        <div className="flex gap-[6px]">
-          <span className="h-[7px] w-[7px] rounded-full bg-nh-line" />
-          <span className="h-[7px] w-[7px] rounded-full bg-nh-line" />
-          <span className="h-[7px] w-[7px] rounded-full bg-nh-line" />
-        </div>
-
-        <span className="font-mono text-[11px] text-nh-mute">{title}</span>
+      {/* Kopfzeile wie ein Dateireiter im Editor. */}
+      <div className="panel-head">
+        <span className="h-2 w-2 rounded-[2px] bg-nh-blue/60" />
+        <span>{title}</span>
       </div>
 
       <pre className="code-window overflow-x-auto px-4 py-4">
         <code>
           {code.split("\n").map((line, index) => (
-            <span key={index} className="block">
+            <span key={index} className="code-line">
+              {/*
+                Zeilennummer als Pseudo-Spalte: sie steht im Markup, damit sie
+                beim Kopieren nicht mitkommt — `user-select: none` in
+                globals.css sorgt dafuer.
+              */}
+              <span className="code-line-no">{index + 1}</span>
               {highlight(line)}
               {"\n"}
             </span>

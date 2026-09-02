@@ -47,17 +47,43 @@ export function resolveTheme(
   return choice;
 }
 
-/** Die naechste Wahl beim Durchschalten: hell → dunkel → System → hell. */
-export function nextTheme(current: ThemeChoice): ThemeChoice {
-  const index = THEME_ORDER.indexOf(current);
-  return THEME_ORDER[(index + 1) % THEME_ORDER.length] as ThemeChoice;
+/**
+ * Die naechste Wahl beim Klick auf den Schalter.
+ *
+ * Entscheidend ist der *dargestellte* Modus, nicht die gespeicherte Wahl. Ein
+ * reiner Dreier-Zyklus (hell → dunkel → System) enthaelt naemlich immer einen
+ * unsichtbaren Schritt: steht das System auf dunkel, sehen "dunkel" und
+ * "System" identisch aus — der Klick wirkt dann wirkungslos und man muss ein
+ * zweites Mal druecken.
+ *
+ * Deshalb wird hier immer auf das Gegenteil des gerade Sichtbaren geschaltet.
+ * Faellt dieses Ziel mit der Systemeinstellung zusammen, wird "system"
+ * gespeichert statt des festen Werts: das Ergebnis sieht gleich aus, aber die
+ * Bindung an das System bleibt erhalten. Dadurch aendert jeder Klick sichtbar
+ * etwas, und "System" bleibt trotzdem erreichbar.
+ */
+export function toggleTheme(
+  resolved: ResolvedTheme,
+  systemPrefersDark: boolean,
+): ThemeChoice {
+  const target: ResolvedTheme = resolved === "dark" ? "light" : "dark";
+  const systemResolved: ResolvedTheme = systemPrefersDark ? "dark" : "light";
+
+  return target === systemResolved ? "system" : target;
 }
 
-/** Beschriftung fuer Screenreader und Tooltip. */
+/** Beschriftung des aktuellen Zustands. */
 export function themeLabel(choice: ThemeChoice): string {
   if (choice === "light") return "Helle Ansicht";
   if (choice === "dark") return "Dunkle Ansicht";
   return "Systemeinstellung";
+}
+
+/** Beschreibt, was ein Klick bewirkt — fuer aria-label und Tooltip. */
+export function themeActionLabel(resolved: ResolvedTheme): string {
+  return resolved === "dark"
+    ? "Zur hellen Ansicht wechseln"
+    : "Zur dunklen Ansicht wechseln";
 }
 
 /* -------------------------------------------------------------------------

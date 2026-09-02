@@ -2,7 +2,7 @@ import Container from "@/components/ui/Container";
 import Section from "@/components/ui/Section";
 import SectionHead from "@/components/ui/SectionHead";
 import CodeSnippet from "@/components/CodeSnippet";
-import { processFacts, processSnippet, processSteps } from "@/lib/content";
+import { processFacts, processSnippet, processSteps, sectionHeads } from "@/lib/content";
 
 /**
  * Der Projektablauf vom Erstgespraech bis zur laufenden Betreuung.
@@ -20,10 +20,10 @@ export default function Process() {
     <Section id="process" className="accent-backdrop">
       <Container>
         <SectionHead
-          eyebrow="Ablauf"
-          title="Von der ersten Frage bis zur laufenden Seite."
-          accent="bis zur laufenden Seite"
-          text="Fünf Schritte, feste Ansprechpartner und ein Preis, der nach dem Erstgespräch steht. Ihr wisst jederzeit, woran wir gerade arbeiten."
+          eyebrow={sectionHeads.process.eyebrow}
+          title={sectionHeads.process.title}
+          accent={sectionHeads.process.accent}
+          text={sectionHeads.process.text}
         />
 
         <div className="grid grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)] items-start gap-14 max-[1000px]:grid-cols-1 max-[1000px]:gap-10">
@@ -48,7 +48,7 @@ export default function Process() {
                       {step.title}
                     </h3>
 
-                    <span className="rounded-md border border-nh-line bg-nh-surface/70 px-2 py-1 font-mono text-[10.5px] leading-none text-nh-mute">
+                    <span className="rounded-chip border border-nh-line bg-nh-surface/70 px-2 py-1 font-mono text-[10.5px] leading-none text-nh-mute">
                       {step.duration}
                     </span>
                   </div>
@@ -67,7 +67,7 @@ export default function Process() {
               {processFacts.map((fact) => (
                 <div
                   key={fact.label}
-                  className="glow-hover rounded-[16px] border border-nh-line bg-nh-surface/60 px-4 py-3.5"
+                  className="glow-hover rounded-card border border-nh-line bg-nh-surface/60 px-4 py-3.5"
                 >
                   <div className="font-mono text-[10.5px] tracking-[0.14em] text-nh-mute uppercase">
                     {fact.label}

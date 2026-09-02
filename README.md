@@ -1,8 +1,8 @@
 # Nova Host
 
-Website einer Agentur für Webdesign und Website-Betreuung. Viel Weißraum,
-Glassmorphism, ein Blau — in hellem und dunklem Modus, mit einer durchgehenden
-Developer-Ästhetik aus Monospace-Labels, Terminals und Kennzahlen.
+Website einer Agentur für Webdesign und Website-Betreuung. Kantige Flächen,
+ein Akzentblau und viel Weißraum — in hellem und dunklem Modus, mit einer
+durchgehenden Werkzeug-Ästhetik aus Monospace, Terminals und Code-Fenstern.
 
 Gebaut mit **Next.js 16 (App Router)**, **React 19**, **TypeScript** (strict) und
 **Tailwind CSS 4**. Ohne Animations-, Icon- oder UI-Bibliothek: alle Bewegungen
@@ -114,7 +114,26 @@ verschwindet auf dunklem Grund fast.
 Typografie: **Sora** für Headlines (800), **Inter** für Fließtext,
 **JetBrains Mono** für Labels, Kennzahlen, Terminal und Code.
 
-Wiederverwendbare Klassen: `.glass`, `.glass-edge` (Lichtkante am Rahmen),
+Die Formsprache ist bewusst die eines Entwicklerwerkzeugs, nicht die einer
+Consumer-App:
+
+- **Kantige Radien** über drei Stufen (`--radius-chip` 6px, `--radius-card`
+  8px, `--radius-panel` 10px) statt weicher 22px-Ecken.
+- **`.panel`** ist die Grundfläche der meisten Karten: deckend, eine haarfeine
+  Linie, kaum Schatten. `.glass` bleibt denen vorbehalten, die wirklich über
+  dem Inhalt schweben — Hero-Karte, Kopfzeile, Einwilligungsbanner.
+- **Eyebrows sind Code-Kommentare** (`// Leistungen`) statt Label mit
+  Verlaufsstrich.
+- **Buttons** sind rechteckig und in Monospace beschriftet.
+- **Ein Akzent statt Verlauf**: hervorgehobene Wörter in Headlines stehen in
+  einer Farbe. Ein Blau-Cyan-Verlauf quer durch die Überschrift liest sich als
+  Marketing-Seite.
+- **Fadenkreuz-Raster** im Hintergrund, angelehnt an eine
+  Konstruktionszeichnung.
+- **Zeilennummern** im Code-Fenster, `data-caret` setzt einen blinkenden
+  Blockcursor hinter eine Headline.
+
+Wiederverwendbare Klassen: `.panel`, `.panel-head`, `.glass`, `.glass-edge`,
 `.glow-hover`, `.pointer-glow`, `.sheen`, `.tilt`, `.terminal`, `.meter`,
 `.process-line`, `.tech-grid`, `.eyebrow`, `.btn` / `.btn-ghost`.
 
@@ -127,14 +146,20 @@ Wiederverwendbare Klassen: `.glass`, `.glass-edge` (Lichtkante am Rahmen),
 
 ### Heller und dunkler Modus
 
-Drei Zustände, per Knopf in der Navigation durchgeschaltet:
-**hell → dunkel → System → hell**. Voreinstellung ist „System“.
+Ein Knopf in der Navigation, der zwischen hell und dunkel umschaltet.
+Voreinstellung ist „System".
 
-- Gespeichert wird die **Wahl**, nicht das Ergebnis. Wer „System“ stehen lässt,
-  bekommt morgens hell und abends dunkel; hätten wir den aufgelösten Modus
-  gespeichert, wäre die Verbindung zur Systemeinstellung nach dem ersten Besuch
-  gekappt.
-- Bei „System“ wird `data-theme` **entfernt** statt gesetzt — dann greift die
+- Der Knopf richtet sich nach dem **dargestellten** Modus, nicht nach der
+  gespeicherten Wahl. Ein reiner Dreier-Zyklus (hell → dunkel → System)
+  enthält immer einen unsichtbaren Schritt: steht das System auf dunkel, sehen
+  „dunkel" und „System" identisch aus — der Klick wirkt wirkungslos und man
+  muss zweimal drücken. So kippt jeder Klick sichtbar die Ansicht.
+- „System" bleibt trotzdem erreichbar: fällt das Ziel mit der
+  Systemeinstellung zusammen, wird wieder `system` gespeichert. Ein kleiner
+  Punkt am Knopf zeigt, dass die Seite gerade dem System folgt.
+- Gespeichert wird die **Wahl**, nicht das Ergebnis. Wer „System" stehen lässt,
+  bekommt morgens hell und abends dunkel.
+- Bei „System" wird `data-theme` **entfernt** statt gesetzt — dann greift die
   `prefers-color-scheme`-Regel, auch bei einem Wechsel während des Besuchs.
 - Ein winziges Inline-Skript im `<head>` (`THEME_INIT_SCRIPT`) setzt das
   Attribut **vor dem ersten Bild**. Ohne diesen Schritt blitzt bei jedem Aufruf

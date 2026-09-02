@@ -13,10 +13,11 @@ import {
   THEME_ORDER,
   THEME_STORAGE_KEY,
   isThemeChoice,
-  nextTheme,
   parseTheme,
   resolveTheme,
+  themeActionLabel,
   themeLabel,
+  toggleTheme,
 } from "@/lib/theme";
 import type { ThemeChoice } from "@/types";
 
@@ -71,24 +72,50 @@ describe("resolveTheme", () => {
   });
 });
 
-describe("nextTheme", () => {
-  it("schaltet im Kreis: hell → dunkel → System → hell", () => {
-    assert.equal(nextTheme("light"), "dark");
-    assert.equal(nextTheme("dark"), "system");
-    assert.equal(nextTheme("system"), "light");
+describe("toggleTheme", () => {
+  it("kippt immer die dargestellte Ansicht", () => {
+    // Der eigentliche Fehler von vorher: ein Klick, der nichts sichtbar tut.
+    for (const systemPrefersDark of [true, false]) {
+      assert.notEqual(
+        resolveTheme(toggleTheme("dark", systemPrefersDark), systemPrefersDark),
+        "dark",
+      );
+      assert.notEqual(
+        resolveTheme(toggleTheme("light", systemPrefersDark), systemPrefersDark),
+        "light",
+      );
+    }
   });
 
-  it("erreicht in einem vollen Durchlauf jeden Zustand genau einmal", () => {
-    const seen = new Set<ThemeChoice>();
-    let current: ThemeChoice = "light";
+  it("speichert „system“, wenn das Ziel der Systemeinstellung entspricht", () => {
+    // System dunkel, gerade hell dargestellt → Ziel dunkel == System.
+    assert.equal(toggleTheme("light", true), "system");
+    // System hell, gerade dunkel dargestellt → Ziel hell == System.
+    assert.equal(toggleTheme("dark", false), "system");
+  });
 
-    for (let step = 0; step < THEME_ORDER.length; step += 1) {
-      seen.add(current);
-      current = nextTheme(current);
+  it("speichert einen festen Wert, wenn er vom System abweicht", () => {
+    assert.equal(toggleTheme("dark", true), "light");
+    assert.equal(toggleTheme("light", false), "dark");
+  });
+
+  it("führt in zwei Klicks zurück zum Ausgangszustand", () => {
+    for (const systemPrefersDark of [true, false]) {
+      for (const start of ["light", "dark"] as const) {
+        const afterFirst = toggleTheme(start, systemPrefersDark);
+        const shown = resolveTheme(afterFirst, systemPrefersDark);
+        const afterSecond = toggleTheme(shown, systemPrefersDark);
+
+        assert.equal(resolveTheme(afterSecond, systemPrefersDark), start);
+      }
     }
+  });
+});
 
-    assert.equal(seen.size, THEME_ORDER.length);
-    assert.equal(current, "light", "nach einem vollen Durchlauf wieder am Anfang");
+describe("themeActionLabel", () => {
+  it("beschreibt das Ziel, nicht den aktuellen Zustand", () => {
+    assert.match(themeActionLabel("dark"), /hellen/);
+    assert.match(themeActionLabel("light"), /dunklen/);
   });
 });
 

@@ -177,7 +177,7 @@ export default function CookieConsent() {
         tabIndex={-1}
         role="region"
         aria-label={texts.title}
-        className="consent-banner glass glass-edge fixed right-4 bottom-4 left-4 z-[120] mx-auto max-w-[860px] rounded-[22px] p-6 max-[560px]:p-5"
+        className="consent-banner glass glass-edge fixed right-4 bottom-4 left-4 z-[120] mx-auto max-w-[860px] rounded-panel p-6 max-[560px]:p-5"
       >
         <div className="flex items-start gap-5 max-[760px]:flex-col max-[760px]:gap-4">
           <div className="min-w-0 flex-1">
@@ -249,7 +249,7 @@ export default function CookieConsent() {
         aria-labelledby="consent-title"
         aria-describedby="consent-text"
         tabIndex={-1}
-        className="consent-dialog glass glass-edge relative max-h-[86vh] w-full max-w-[560px] overflow-y-auto rounded-[24px] p-7 max-[560px]:p-5"
+        className="consent-dialog glass glass-edge relative max-h-[86vh] w-full max-w-[560px] overflow-y-auto rounded-panel p-7 max-[560px]:p-5"
       >
         <div className="flex items-start justify-between gap-4">
           <div>
@@ -269,7 +269,7 @@ export default function CookieConsent() {
             type="button"
             onClick={dismissSettings}
             aria-label={texts.close}
-            className="glow-hover flex h-9 w-9 flex-none items-center justify-center rounded-xl border border-nh-line bg-nh-surface/70 text-nh-mute hover:text-nh-blue"
+            className="glow-hover flex h-9 w-9 flex-none items-center justify-center rounded-card border border-nh-line bg-nh-surface/70 text-nh-mute hover:text-nh-blue"
           >
             <svg
               viewBox="0 0 24 24"
@@ -299,7 +299,7 @@ export default function CookieConsent() {
               <label
                 key={category.id}
                 className={cn(
-                  "flex gap-4 rounded-[16px] border border-nh-line bg-nh-surface/60 p-4 transition-colors duration-[var(--dur-hover)]",
+                  "flex gap-4 rounded-card border border-nh-line bg-nh-surface/60 p-4 transition-colors duration-[var(--dur-hover)]",
                   locked
                     ? "cursor-default"
                     : "cursor-pointer hover:border-[color-mix(in_oklab,var(--color-nh-blue)_28%,transparent)]",
@@ -325,7 +325,7 @@ export default function CookieConsent() {
                     </span>
 
                     {locked ? (
-                      <span className="rounded-md border border-nh-line bg-nh-surface/70 px-1.5 py-0.5 font-mono text-[10px] text-nh-mute">
+                      <span className="rounded-chip border border-nh-line bg-nh-surface/70 px-1.5 py-0.5 font-mono text-[10px] text-nh-mute">
                         immer aktiv
                       </span>
                     ) : null}

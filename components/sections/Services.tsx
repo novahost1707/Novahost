@@ -3,7 +3,7 @@ import Section from "@/components/ui/Section";
 import SectionHead from "@/components/ui/SectionHead";
 import Icon from "@/components/ui/Icon";
 import TiltCard from "@/components/TiltCard";
-import { services } from "@/lib/content";
+import { sectionHeads, services } from "@/lib/content";
 
 /**
  * Die sechs Angebote als Glaskarten.
@@ -17,10 +17,10 @@ export default function Services() {
     <Section id="services" className="panel-backdrop" grid>
       <Container>
         <SectionHead
-          eyebrow="Services"
-          title="Alles, worauf euer Produkt läuft."
-          accent="euer Produkt"
-          text="Vom ersten Prototyp bis zur dedizierten Maschine unter Dauerlast — dieselbe Plattform, dieselbe Konsole, dieselbe Bereitschaft."
+          eyebrow={sectionHeads.services.eyebrow}
+          title={sectionHeads.services.title}
+          accent={sectionHeads.services.accent}
+          text={sectionHeads.services.text}
         />
 
         <div className="stagger grid grid-cols-3 gap-5 max-[1000px]:grid-cols-2 max-[680px]:grid-cols-1">
@@ -35,7 +35,7 @@ export default function Services() {
               </span>
 
               <div className="tilt-layer relative z-[2]">
-                <span className="flex h-12 w-12 items-center justify-center rounded-[15px] border border-nh-line bg-nh-surface/70 text-nh-blue transition-all duration-[var(--dur-hover)] group-hover:-translate-y-0.5 group-hover:border-transparent group-hover:bg-[linear-gradient(140deg,var(--color-nh-blue),var(--color-nh-cyan))] group-hover:text-white group-hover:shadow-[0_12px_26px_-12px_color-mix(in_oklab,var(--color-nh-blue)_85%,transparent)]">
+                <span className="flex h-12 w-12 items-center justify-center rounded-card border border-nh-line bg-nh-surface/70 text-nh-blue transition-all duration-[var(--dur-hover)] group-hover:-translate-y-0.5 group-hover:border-transparent group-hover:bg-[linear-gradient(140deg,var(--color-nh-blue),var(--color-nh-cyan))] group-hover:text-white group-hover:shadow-[0_12px_26px_-12px_color-mix(in_oklab,var(--color-nh-blue)_85%,transparent)]">
                   <Icon name={service.icon} className="h-[23px] w-[23px]" />
                 </span>
 
@@ -52,7 +52,7 @@ export default function Services() {
                   {service.specs.map((spec) => (
                     <li
                       key={spec}
-                      className="rounded-md border border-nh-line bg-nh-surface/60 px-2 py-1 font-mono text-[10.5px] leading-none text-nh-mute"
+                      className="rounded-chip border border-nh-line bg-nh-surface/60 px-2 py-1 font-mono text-[10.5px] leading-none text-nh-mute"
                     >
                       {spec}
                     </li>

@@ -24,7 +24,7 @@ export default function Craft() {
 
             <h2 className="mt-[18px] text-[clamp(30px,4.4vw,52px)]">
               Gebaut, nicht{" "}
-              <span className="text-gradient">zusammengeklickt.</span>
+              <span className="text-accent">zusammengeklickt.</span>
             </h2>
 
             <p className="mt-5 max-w-[520px] text-[16.5px] leading-[1.7] text-nh-body">
@@ -37,14 +37,14 @@ export default function Craft() {
               {craftFeatures.map((feature) => (
                 <div
                   key={feature.title}
-                  className="glow-hover group rounded-[16px] border border-nh-line bg-nh-surface/55 p-5 hover:-translate-y-0.5 hover:border-[color-mix(in_oklab,var(--color-nh-blue)_28%,transparent)]"
+                  className="glow-hover group rounded-card border border-nh-line bg-nh-surface/55 p-5 hover:-translate-y-0.5 hover:border-[color-mix(in_oklab,var(--color-nh-blue)_28%,transparent)]"
                 >
                   <div className="flex items-center justify-between gap-4">
                     <h3 className="font-display text-[16px] font-extrabold text-nh-ink">
                       {feature.title}
                     </h3>
 
-                    <code className="rounded-md bg-nh-panel px-2.5 py-1.5 font-mono text-[11px] whitespace-nowrap text-nh-blue transition-colors duration-[var(--dur-hover)] group-hover:bg-[color-mix(in_oklab,var(--color-nh-blue)_12%,transparent)]">
+                    <code className="rounded-chip bg-nh-panel px-2.5 py-1.5 font-mono text-[11px] whitespace-nowrap text-nh-blue transition-colors duration-[var(--dur-hover)] group-hover:bg-[color-mix(in_oklab,var(--color-nh-blue)_12%,transparent)]">
                       {feature.code}
                     </code>
                   </div>
@@ -81,7 +81,7 @@ export default function Craft() {
 
             {/* Kleine schwebende Kennzahl, halb ueber dem Terminal. */}
             <div
-              className="glass glass-edge float absolute -right-4 -bottom-6 rounded-[14px] px-4 py-3 max-[560px]:right-0 max-[560px]:-bottom-4"
+              className="glass glass-edge float absolute -right-4 -bottom-6 rounded-card px-4 py-3 max-[560px]:right-0 max-[560px]:-bottom-4"
               style={{ animationDelay: "-3s", animationDuration: "10s" }}
             >
               <div className="font-mono text-[10.5px] tracking-[0.14em] text-nh-mute uppercase">

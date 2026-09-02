@@ -3,7 +3,7 @@ import Section from "@/components/ui/Section";
 import SectionHead from "@/components/ui/SectionHead";
 import Icon from "@/components/ui/Icon";
 import StatusDot from "@/components/ui/StatusDot";
-import { careItems } from "@/lib/content";
+import { careItems, sectionHeads } from "@/lib/content";
 
 /**
  * Was im monatlichen Abo steckt.
@@ -19,20 +19,20 @@ export default function Care() {
       <Container>
         <SectionHead
           centered
-          eyebrow="Im Abo enthalten"
-          title="Was wir übernehmen, damit ihr es nicht müsst."
-          accent="damit ihr es nicht müsst"
-          text="Eine Website ist mit dem Launch nicht fertig. Das Betreuungs-Abo hält sie aktuell, sicher und erreichbar — in jedem Tarif, vom kleinsten aufwärts."
+          eyebrow={sectionHeads.care.eyebrow}
+          title={sectionHeads.care.title}
+          accent={sectionHeads.care.accent}
+          text={sectionHeads.care.text}
         />
 
         <div className="stagger grid grid-cols-3 gap-4 max-[900px]:grid-cols-2 max-[560px]:grid-cols-1">
           {careItems.map((item) => (
             <div
               key={item.title}
-              className="glass glass-edge glow-hover group relative overflow-hidden rounded-[20px] p-6 hover:-translate-y-1"
+              className="panel glow-hover group relative overflow-hidden rounded-panel p-6 hover:-translate-y-1"
             >
               <div className="flex items-start gap-4">
-                <span className="flex h-11 w-11 flex-none items-center justify-center rounded-[13px] border border-nh-line bg-nh-surface/70 text-nh-blue transition-all duration-[var(--dur-hover)] group-hover:border-transparent group-hover:bg-[linear-gradient(140deg,var(--color-nh-blue),var(--color-nh-cyan))] group-hover:text-white">
+                <span className="flex h-11 w-11 flex-none items-center justify-center rounded-card border border-nh-line bg-nh-surface/70 text-nh-blue transition-all duration-[var(--dur-hover)] group-hover:border-transparent group-hover:bg-[linear-gradient(140deg,var(--color-nh-blue),var(--color-nh-cyan))] group-hover:text-white">
                   <Icon name={item.icon} className="h-[21px] w-[21px]" />
                 </span>
 

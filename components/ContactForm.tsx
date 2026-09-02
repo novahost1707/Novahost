@@ -104,7 +104,7 @@ export default function ContactForm() {
       noValidate
       onSubmit={handleSubmit}
       onPointerMove={handlePointerMove}
-      className="pointer-glow glass glass-edge relative rounded-[24px] p-8 max-[560px]:p-6"
+      className="pointer-glow glass glass-edge relative rounded-panel p-8 max-[560px]:p-6"
     >
       {/* Honeypot — für Menschen unsichtbar. */}
       <input
@@ -242,7 +242,7 @@ export default function ContactForm() {
         {submitError && (
           <div
             role="alert"
-            className="mb-4 rounded-[12px] border border-nh-error/40 bg-[rgba(225,29,72,0.06)] px-4 py-3 font-mono text-[11.5px] leading-[1.6] text-nh-error"
+            className="mb-4 rounded-card border border-nh-error/40 bg-[rgba(225,29,72,0.06)] px-4 py-3 font-mono text-[11.5px] leading-[1.6] text-nh-error"
           >
             {submitError}
           </div>
@@ -303,7 +303,7 @@ function SuccessState({ notice }: { notice: string | null }) {
   return (
     <div
       role="status"
-      className="glass glass-edge rounded-[24px] px-6 py-14 text-center"
+      className="glass glass-edge rounded-panel px-6 py-14 text-center"
     >
       <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-[linear-gradient(140deg,var(--color-nh-blue),var(--color-nh-cyan))] text-white shadow-[0_14px_30px_-14px_color-mix(in_oklab,var(--color-nh-blue)_90%,transparent)]">
         <Icon name="check" strokeWidth={2.4} className="h-6 w-6" />

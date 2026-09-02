@@ -2,7 +2,7 @@ import Container from "@/components/ui/Container";
 import Section from "@/components/ui/Section";
 import SectionHead from "@/components/ui/SectionHead";
 import Counter from "@/components/Counter";
-import { metrics } from "@/lib/content";
+import { metrics, sectionHeads } from "@/lib/content";
 
 /**
  * Die vier grossen Kennzahlen.
@@ -17,10 +17,10 @@ export default function Performance() {
       <Container>
         <SectionHead
           centered
-          eyebrow="Performance"
-          title="Zahlen, die wir öffentlich messen."
-          accent="öffentlich"
-          text="Alle Werte stammen aus dem eigenen Monitoring der letzten zwölf Monate und werden auf der Statusseite fortlaufend aktualisiert."
+          eyebrow={sectionHeads.performance.eyebrow}
+          title={sectionHeads.performance.title}
+          accent={sectionHeads.performance.accent}
+          text={sectionHeads.performance.text}
         />
 
         <div className="stagger grid grid-cols-4 gap-6 max-[900px]:grid-cols-2 max-[480px]:grid-cols-1">
@@ -30,7 +30,7 @@ export default function Performance() {
                   ganze Reihe dauerhaft und nichts hebt sich mehr ab. */}
               <div
                 aria-hidden="true"
-                className="pointer-events-none absolute inset-0 rounded-[24px] bg-[radial-gradient(circle_at_50%_30%,color-mix(in_oklab,var(--color-nh-blue)_12%,transparent),transparent_68%)] opacity-0 transition-opacity duration-[var(--dur-slow)] group-hover:opacity-100"
+                className="pointer-events-none absolute inset-0 rounded-panel bg-[radial-gradient(circle_at_50%_30%,color-mix(in_oklab,var(--color-nh-blue)_12%,transparent),transparent_68%)] opacity-0 transition-opacity duration-[var(--dur-slow)] group-hover:opacity-100"
               />
 
               <div className="relative px-2 py-6">
@@ -40,7 +40,7 @@ export default function Performance() {
                     decimals={metric.decimals}
                     prefix={metric.prefix}
                   />
-                  <span className="text-gradient">{metric.suffix}</span>
+                  <span className="text-accent">{metric.suffix}</span>
                 </div>
 
                 <div className="mt-4 font-mono text-[11.5px] tracking-[0.16em] text-nh-blue uppercase">

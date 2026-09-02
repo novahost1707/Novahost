@@ -47,6 +47,15 @@
   --font-mono: var(--font-jetbrains-mono), monospace;
 
   --container-wrap: 1200px;
+
+  /*
+   * Radien. Bewusst klein: weiche 22px-Ecken lesen sich als Consumer-App,
+   * ein Entwicklerwerkzeug hat kantigere Flaechen. Drei Stufen reichen —
+   * Chip, Karte, Panel — und ersetzen die frueheren Einzelwerte.
+   */
+  --radius-chip: 6px;
+  --radius-card: 8px;
+  --radius-panel: 10px;
 }
 
 /* ---------------------------------------------------------------------------
@@ -105,8 +114,9 @@
     var(--color-nh-cyan)
   );
 
-  /* Deckkraft der Hintergrund-Lichtflaechen im Hero. */
-  --aurora-strength: 1;
+  /* Deckkraft der Hintergrund-Lichtflaechen im Hero. Bewusst niedrig:
+     den technischen Charakter traegt das Raster, nicht der Farbschleier. */
+  --aurora-strength: 0.55;
 
   /* Zeichenketten im Code-Fenster — das einzige Gruen der Seite. */
   --color-code-string: #0a8f6a;
@@ -179,7 +189,7 @@
       0 18px 44px -16px rgba(91, 140, 255, 0.55),
       0 40px 100px -46px rgba(47, 216, 240, 0.45);
 
-    --aurora-strength: 1.5;
+    --aurora-strength: 1;
       --color-code-string: #4ade9b;
   }
 }
@@ -236,7 +246,7 @@
     0 18px 44px -16px rgba(91, 140, 255, 0.55),
     0 40px 100px -46px rgba(47, 216, 240, 0.45);
 
-  --aurora-strength: 1.5;
+  --aurora-strength: 1;
   --color-code-string: #4ade9b;
 }
 
@@ -341,48 +351,43 @@
    */
 
   /* --- Eyebrow (kleines Mono-Label mit Strich) --- */
+  /*
+   * Eyebrow als Code-Kommentar.
+   *
+   * Frueher ein Verlaufsstrich vor dem Label — das sieht man auf jeder zweiten
+   * SaaS-Seite. Zwei Schraegstriche sagen dasselbe ("hier kommt eine
+   * Einordnung") und passen zur Sprache, in der hier gearbeitet wird.
+   */
   .eyebrow {
     font-family: var(--font-mono);
     font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.18em;
+    font-weight: 500;
+    letter-spacing: 0.04em;
     line-height: 1.5;
-    text-transform: uppercase;
-    color: var(--color-nh-blue);
+    color: var(--color-nh-mute);
   }
 
-  /*
-   * Der Strich sitzt inline vor dem Text, nicht als Flex-Item daneben.
-   * Bricht das Label auf schmalen Geraeten auf zwei Zeilen, bleibt er dadurch
-   * an der ersten Zeile — als Flex-Item wuerde er auf halber Hoehe schweben.
-   */
   .eyebrow::before {
-    content: "";
-    display: inline-block;
-    width: 22px;
-    height: 1px;
-    margin-right: 10px;
-    vertical-align: 0.32em;
-    background: linear-gradient(90deg, var(--color-nh-blue), var(--color-nh-cyan));
+    content: "// ";
+    color: var(--color-nh-blue);
+    font-weight: 600;
   }
 
   /**
-   * Text im Akzentverlauf. Nur fuer einzelne Woerter in Headlines — als
-   * Fliesstext waere es weder lesbar noch ruhig.
+   * Hervorgehobenes Wort in einer Headline.
+   *
+   * Bewusst eine einzige Farbe statt eines Verlaufs: ein Blau-Cyan-Verlauf
+   * quer durch die Ueberschrift liest sich als Marketing-Seite. Ein klarer
+   * Akzent passt zu einem Betrieb, der Software baut.
    */
-  .text-gradient {
-    background: var(--gradient-accent);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    /* Ohne das schneidet der Verlauf Unterlaengen bei manchen Schriften ab. */
-    padding-bottom: 0.06em;
+  .text-accent {
+    color: var(--color-nh-blue);
   }
 
   /* --- Buttons ---
-     Hover: minimal anheben, Licht dahinter, ein einmaliger Light-Sweep.
-     Klick: sehr kurzer Press-Effekt. Bewusst lange Dauern, damit es ruhig
-     statt sprunghaft wirkt. */
+     Rechteckig mit kleinem Radius statt Pille, Beschriftung in Monospace: die
+     Seite gehoert einem Betrieb, der Code schreibt, nicht einer Consumer-App.
+     Hover: minimal anheben, Licht dahinter, ein einmaliger Light-Sweep. */
   .btn {
     position: relative;
     overflow: hidden;
@@ -391,23 +396,22 @@
     align-items: center;
     justify-content: center;
     gap: 9px;
-    padding: 14px 26px;
-    border-radius: 999px;
-    font-family: var(--font-body);
+    padding: 13px 22px;
+    border-radius: var(--radius-card);
+    font-family: var(--font-mono);
     font-weight: 600;
-    font-size: 14.5px;
-    letter-spacing: -0.01em;
+    font-size: 13.5px;
+    letter-spacing: -0.005em;
     color: #ffffff;
-    background: var(--gradient-accent);
-    background-size: 160% 160%;
-    background-position: 0% 50%;
+    background: var(--color-nh-blue);
     box-shadow:
-      0 1px 0 rgba(255, 255, 255, 0.3) inset,
-      0 10px 26px -10px rgba(26, 92, 255, 0.6);
+      inset 0 1px 0 rgba(255, 255, 255, 0.22),
+      0 1px 0 color-mix(in oklab, var(--color-nh-blue-deep) 60%, transparent),
+      0 8px 20px -12px color-mix(in oklab, var(--color-nh-blue) 80%, transparent);
     transition:
       transform var(--dur-hover) var(--ease-nh),
       box-shadow var(--dur-hover) ease,
-      background-position var(--dur-slow) var(--ease-nh),
+      background-color var(--dur-hover) ease,
       color var(--dur-hover) ease;
   }
 
@@ -421,7 +425,7 @@
     background: linear-gradient(
       115deg,
       transparent 34%,
-      rgba(255, 255, 255, 0.4) 50%,
+      rgba(255, 255, 255, 0.34) 50%,
       transparent 66%
     );
     transform: translateX(-130%);
@@ -434,11 +438,11 @@
 
   .btn:hover {
     transform: translateY(-2px);
-    background-position: 100% 50%;
+    background: var(--color-nh-blue-2);
     box-shadow:
-      0 1px 0 rgba(255, 255, 255, 0.35) inset,
-      0 16px 34px -12px rgba(26, 92, 255, 0.66),
-      0 0 60px -16px rgba(0, 194, 224, 0.7);
+      inset 0 1px 0 rgba(255, 255, 255, 0.28),
+      0 14px 28px -14px color-mix(in oklab, var(--color-nh-blue) 90%, transparent),
+      0 0 0 1px color-mix(in oklab, var(--color-nh-blue) 40%, transparent);
   }
 
   .btn:hover::after {
@@ -447,47 +451,77 @@
   }
 
   .btn:active {
-    transform: translateY(0) scale(0.985);
-    transition-duration: 120ms;
+    transform: translateY(0);
+    transition-duration: 110ms;
   }
 
-  /** Glasvariante — gleiche Geometrie, zurueckhaltende Wirkung. */
+  /** Zurueckhaltende Variante — wie ein Sekundaerbefehl im Editor. */
   .btn-ghost {
-    background: var(--glass-bg);
-    background-size: auto;
-    -webkit-backdrop-filter: var(--glass-blur);
-    backdrop-filter: var(--glass-blur);
+    background: var(--color-nh-surface);
     color: var(--color-nh-ink);
     box-shadow:
       0 0 0 1px var(--color-nh-line) inset,
-      var(--glass-shadow);
+      0 1px 2px rgba(11, 39, 96, 0.06);
   }
 
   .btn-ghost:hover {
+    background: var(--color-nh-surface);
     color: var(--color-nh-blue);
     box-shadow:
-      0 0 0 1px color-mix(in oklab, var(--color-nh-blue) 30%, transparent) inset,
-      var(--glow-soft);
+      0 0 0 1px color-mix(in oklab, var(--color-nh-blue) 45%, transparent) inset,
+      0 8px 20px -14px color-mix(in oklab, var(--color-nh-blue) 60%, transparent);
   }
 
   .btn-ghost::after {
     background: linear-gradient(
       115deg,
       transparent 34%,
-      rgba(26, 92, 255, 0.14) 50%,
+      color-mix(in oklab, var(--color-nh-blue) 12%, transparent) 50%,
       transparent 66%
     );
   }
 
   /** Kleinere Variante fuer die Navigation. */
   .btn-sm {
-    padding: 10px 18px;
-    font-size: 13.5px;
+    padding: 9px 15px;
+    font-size: 12.5px;
   }
+
 
   /* ---------------------------------------------------------------------------
      Wiederverwendbare Oberflaechen
   --------------------------------------------------------------------------- */
+
+  /**
+   * Panel — die neue Grundflaeche der meisten Karten.
+   *
+   * Deckende Flaeche, eine haarfeine Linie, kleiner Radius, kaum Schatten:
+   * eine Werkzeugoberflaeche, kein schwebendes Glasplaettchen. Glas bleibt
+   * denen vorbehalten, die wirklich ueber dem Inhalt schweben (Hero-Karte,
+   * Kopfzeile, Einwilligungsbanner) — dort traegt der Effekt etwas bei.
+   */
+  .panel {
+    position: relative;
+    background: var(--color-nh-surface);
+    border: 1px solid var(--color-nh-line);
+    box-shadow: 0 1px 2px rgba(11, 39, 96, 0.05);
+  }
+
+  /**
+   * Kopfzeile eines Panels — wie ein Dateireiter im Editor.
+   * Wird von Code- und Terminalfenstern benutzt.
+   */
+  .panel-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--color-nh-line);
+    background: color-mix(in oklab, var(--color-nh-panel) 60%, transparent);
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--color-nh-mute);
+  }
 
   /** Glass — die Grundflaeche fast aller Karten. */
   .glass {
@@ -611,15 +645,42 @@
      Technische Hintergrundelemente
   --------------------------------------------------------------------------- */
 
-  /** Feines Raster, ueberall als Untergrund technischer Abschnitte. */
+  /**
+   * Technisches Raster mit Fadenkreuzen an den Schnittpunkten — angelehnt an
+   * eine Konstruktionszeichnung. Die durchgezogenen Linien bleiben sehr blass,
+   * die kleinen Kreuze geben dem Untergrund den technischen Charakter.
+   */
   .tech-grid {
     position: absolute;
     inset: 0;
     pointer-events: none;
     background-image:
       linear-gradient(var(--color-nh-line-2) 1px, transparent 1px),
-      linear-gradient(90deg, var(--color-nh-line-2) 1px, transparent 1px);
-    background-size: 56px 56px;
+      linear-gradient(90deg, var(--color-nh-line-2) 1px, transparent 1px),
+      linear-gradient(
+        90deg,
+        transparent calc(50% - 3px),
+        var(--color-nh-line) calc(50% - 3px),
+        var(--color-nh-line) calc(50% + 3px),
+        transparent calc(50% + 3px)
+      ),
+      linear-gradient(
+        180deg,
+        transparent calc(50% - 3px),
+        var(--color-nh-line) calc(50% - 3px),
+        var(--color-nh-line) calc(50% + 3px),
+        transparent calc(50% + 3px)
+      );
+    background-size:
+      56px 56px,
+      56px 56px,
+      56px 1px,
+      1px 56px;
+    background-position:
+      0 0,
+      0 0,
+      28px 28px,
+      28px 28px;
   }
 
   /** Variante mit weicher Kante — fuer den Hero und grosse Flaechen. */
@@ -666,8 +727,19 @@
     inset: -15%;
     pointer-events: none;
     background:
-      radial-gradient(ellipse 34% 30% at 74% 22%, rgba(0, 194, 224, 0.22), transparent 64%),
-      radial-gradient(ellipse 30% 28% at 22% 68%, rgba(26, 92, 255, 0.18), transparent 64%);
+      radial-gradient(
+        ellipse 34% 30% at 74% 22%,
+        color-mix(in oklab, var(--color-nh-cyan) 22%, transparent),
+        transparent 64%
+      ),
+      radial-gradient(
+        ellipse 30% 28% at 22% 68%,
+        color-mix(in oklab, var(--color-nh-blue) 18%, transparent),
+        transparent 64%
+      );
+    /* Im hellen Modus zurueckgenommen — dort traegt das Raster den technischen
+       Charakter; im dunklen darf das Licht deutlicher sein. */
+    opacity: var(--aurora-strength);
     animation: auroraDrift 30s ease-in-out infinite;
   }
 
@@ -1029,6 +1101,23 @@
     font-size: 13px;
     line-height: 1.8;
     color: var(--color-nh-body);
+  }
+
+  /* Zeilennummern-Spalte. Nicht markierbar, damit sie beim Kopieren des
+     Codes nicht mit im Text landet. */
+  .code-line {
+    display: block;
+  }
+
+  .code-line-no {
+    display: inline-block;
+    width: 2.2em;
+    margin-right: 1em;
+    text-align: right;
+    color: var(--color-nh-mute-2);
+    opacity: 0.75;
+    user-select: none;
+    -webkit-user-select: none;
   }
 
   .code-window .tok-key {
@@ -1542,6 +1631,21 @@
     opacity: 1;
   }
 
+  /**
+   * Blockcursor hinter einer Headline — wie in einem Terminal.
+   * Wird ueber `data-caret` am Element gesetzt.
+   */
+  [data-caret]::after {
+    content: "";
+    display: inline-block;
+    width: 0.34em;
+    height: 0.62em;
+    margin-left: 0.1em;
+    vertical-align: baseline;
+    background: var(--color-nh-blue);
+    animation: caretBlink 1.05s steps(2, start) infinite;
+  }
+
   /* --- Scroll-Cue --- */
   .scroll-cue-line {
     width: 1px;
@@ -1649,6 +1753,7 @@
   .caret,
   .logo-glow,
   .hero-backdrop::before,
+  [data-caret]::after,
   .terminal-line {
     animation: none;
   }

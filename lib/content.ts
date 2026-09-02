@@ -111,6 +111,42 @@ export const marqueeItems: string[] = [
   "Ladezeit unter 1,5s",
 ];
 
+/* ------------------------------ Abschnittskoepfe -------------------------- */
+
+/**
+ * Eyebrow, Headline und Einleitung der Abschnitte.
+ *
+ * Standen vorher direkt in den Komponenten — dadurch ist beim Wechsel des
+ * Angebots zweimal alter Hosting-Text stehen geblieben. Jetzt liegt auch
+ * dieser Text an derselben Stelle wie alles andere.
+ */
+export const sectionHeads = {
+  services: {
+    eyebrow: "Leistungen",
+    title: "Von der ersten Skizze bis zur laufenden Seite.",
+    accent: "bis zur laufenden Seite",
+    text: "Design, Umsetzung und Betreuung aus einer Hand — kein Weiterreichen zwischen Agentur, Freelancer und Hoster.",
+  },
+  process: {
+    eyebrow: "Ablauf",
+    title: "Von der ersten Frage bis zum Launch.",
+    accent: "bis zum Launch",
+    text: "Fünf Schritte, ein fester Ansprechpartner und ein Preis, der nach dem Erstgespräch steht. Ihr wisst jederzeit, woran wir gerade arbeiten.",
+  },
+  performance: {
+    eyebrow: "Kennzahlen",
+    title: "Woran ihr uns messen könnt.",
+    accent: "messen",
+    text: "Werte aus den Seiten, die wir gebaut haben und betreuen. Gemessen wird beim Launch und danach im laufenden Betrieb.",
+  },
+  care: {
+    eyebrow: "Im Abo enthalten",
+    title: "Was wir übernehmen, damit ihr es nicht müsst.",
+    accent: "damit ihr es nicht müsst",
+    text: "Eine Website ist mit dem Launch nicht fertig. Das Betreuungs-Abo hält sie aktuell, sicher und erreichbar — in jedem Tarif, vom kleinsten aufwärts.",
+  },
+} as const;
+
 /* --------------------------------- Services ------------------------------ */
 
 export const services: ServiceItem[] = [
