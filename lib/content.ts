@@ -43,6 +43,26 @@ export const navLinks: NavLink[] = [
   { label: "Kontakt", hash: "#contact" },
 ];
 
+/**
+ * Alle Abschnitte der Startseite in ihrer Reihenfolge.
+ *
+ * Die Navigation zeigt bewusst nur eine Auswahl — sonst waere sie zu lang.
+ * Die Statusleiste und die Abschnittsmarken brauchen dagegen die vollstaendige
+ * Liste, sonst zeigen sie in Kennzahlen, Handarbeit oder Betreuung den Namen
+ * des jeweils vorigen Abschnitts an.
+ */
+export const pageSections = [
+  { id: "hero", label: "start" },
+  { id: "services", label: "leistungen" },
+  { id: "process", label: "ablauf" },
+  { id: "performance", label: "kennzahlen" },
+  { id: "pricing", label: "preise" },
+  { id: "craft", label: "handarbeit" },
+  { id: "care", label: "betreuung" },
+  { id: "about", label: "ueber-uns" },
+  { id: "contact", label: "kontakt" },
+] as const;
+
 /* ----------------------------------- Hero -------------------------------- */
 
 export const hero = {

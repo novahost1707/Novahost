@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { navLinks } from "@/lib/content";
+import { pageSections } from "@/lib/content";
 
 /**
  * Statusleiste am unteren Rand — wie in einem Editor.
@@ -18,7 +18,7 @@ import { navLinks } from "@/lib/content";
  * Einwilligungsbanner sitzt an derselben Stelle.
  */
 export default function StatusBar() {
-  const [section, setSection] = useState<string>("hero");
+  const [section, setSection] = useState<string>(pageSections[0].label);
   const [progress, setProgress] = useState(0);
   const frame = useRef<number | null>(null);
 
@@ -31,15 +31,21 @@ export default function StatusBar() {
         document.documentElement.scrollHeight - window.innerHeight;
       setProgress(scrollable > 0 ? Math.min(scrollY / scrollable, 1) : 0);
 
-      // Derselbe Schwellenwert wie in der Navigation: ein Abschnitt gilt als
-      // aktiv, sobald seine Oberkante ein Drittel der Hoehe passiert hat.
+      /*
+       * Derselbe Schwellenwert wie in der Navigation: ein Abschnitt gilt als
+       * aktiv, sobald seine Oberkante ein Drittel der Hoehe passiert hat.
+       *
+       * Bewusst ueber pageSections und nicht ueber die Navigation: die zeigt
+       * nur eine Auswahl, wodurch die Leiste in Kennzahlen, Handarbeit und
+       * Betreuung den Namen des vorigen Abschnitts angezeigt hat.
+       */
       const line = window.innerHeight * 0.34;
-      let current = "hero";
+      let current: string = pageSections[0].label;
 
-      for (const link of navLinks) {
-        const element = document.querySelector(link.hash);
+      for (const entry of pageSections) {
+        const element = document.getElementById(entry.id);
         if (element && element.getBoundingClientRect().top <= line) {
-          current = link.hash.slice(1);
+          current = entry.label;
         }
       }
 
