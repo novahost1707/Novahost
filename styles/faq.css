@@ -1,0 +1,73 @@
+/* ============================================================
+   FAQ — Accordion
+   ============================================================ */
+
+.faq__layout { display: grid; gap: var(--s-7); margin-top: var(--s-6); }
+.faq__aside { display: grid; gap: var(--s-4); align-content: start; }
+.faq__aside h2 { text-transform: uppercase; }
+.faq__aside .btn { justify-self: start; }
+
+@media (min-width: 900px) {
+  .faq__layout {
+    grid-template-columns: minmax(0, 0.7fr) minmax(0, 1fr);
+    gap: var(--s-9);
+    align-items: start;
+  }
+  .faq__aside { position: sticky; top: 120px; }
+}
+
+.faq__list { border-top: var(--border); }
+.faq__item { border-bottom: var(--border); }
+
+.faq__q {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: baseline;
+  gap: var(--s-4);
+  width: 100%;
+  padding: var(--s-5) 0;
+  background: none;
+  border: 0;
+  text-align: left;
+  cursor: pointer;
+  color: var(--fog-200);
+  font-size: var(--t-h4);
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: var(--ls-normal);
+  transition: color var(--dur-1) var(--ease-out);
+}
+.faq__q:hover { color: var(--paper); }
+.faq__item[data-open="true"] .faq__q { color: var(--paper); }
+
+.faq__num { color: var(--fog-600); font-family: var(--font-pixel); }
+.faq__item[data-open="true"] .faq__num { color: var(--accent); }
+
+.faq__glyph {
+  position: relative;
+  width: 12px; height: 12px;
+  align-self: center;
+}
+.faq__glyph i {
+  position: absolute;
+  inset: 50% 0 auto 0;
+  height: 1px;
+  background: currentColor;
+  transition: transform var(--dur-2) var(--ease-out), opacity var(--dur-2) var(--ease-out);
+}
+.faq__glyph i:last-child { transform: rotate(90deg); }
+.faq__item[data-open="true"] .faq__glyph i:last-child { transform: rotate(0deg); opacity: 0; }
+
+.faq__a {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--dur-3) var(--ease-out);
+}
+.faq__item[data-open="true"] .faq__a { grid-template-rows: 1fr; }
+.faq__a-inner { overflow: hidden; }
+.faq__a-inner p {
+  max-width: 68ch;
+  padding: 0 var(--s-7) var(--s-5) calc(var(--s-4) + 2ch);
+  font-size: var(--t-sm);
+  color: var(--fog-400);
+}

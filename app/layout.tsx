@@ -1,111 +1,135 @@
 import type { Metadata, Viewport } from "next";
-import type { ReactNode } from "react";
-import { Inter, JetBrains_Mono, Sora } from "next/font/google";
-import CookieConsent from "@/components/CookieConsent";
-import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
-import ScrollReveal from "@/components/ScrollReveal";
-import StatusBar from "@/components/StatusBar";
-import { siteMeta } from "@/lib/content";
-import { THEME_INIT_SCRIPT } from "@/lib/theme";
+import { Inter, Inter_Tight, Silkscreen } from "next/font/google";
+import { Cursor } from "@/components/fx/Cursor";
+import { DinoGame } from "@/components/easteregg/DinoGame";
+import { Header } from "@/components/layout/Header";
+import { Footer } from "@/components/layout/Footer";
+import { site, siteUrl } from "@/lib/site";
 import "./globals.css";
 
-/** Headlines — fett bis extrafett, das Rueckgrat der Typografie. */
-const sora = Sora({
-  subsets: ["latin"],
-  variable: "--font-sora",
-  display: "swap",
-});
-
-/** Fliesstext. */
+/* Zwei typografische Ebenen: ca. 80 % moderne Sans, ca. 20 % Pixel. */
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
   display: "swap",
+  weight: ["400", "500", "600"],
 });
 
-/** Alles Technische: Labels, Kennzahlen, Terminal, Code. */
-const jetbrainsMono = JetBrains_Mono({
+const interTight = Inter_Tight({
   subsets: ["latin"],
-  variable: "--font-jetbrains-mono",
+  variable: "--font-inter-tight",
   display: "swap",
+  weight: ["600", "700", "800"],
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+const silkscreen = Silkscreen({
+  subsets: ["latin"],
+  variable: "--font-silkscreen",
+  display: "swap",
+  weight: ["400", "700"],
+});
 
 export const metadata: Metadata = {
-  title: siteMeta.title,
-  description: siteMeta.description,
-  applicationName: siteMeta.name,
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: `${site.name} - Websites, die aus Besuchern Kunden machen`,
+    template: `%s - ${site.name}`,
+  },
+  description: site.description,
+  applicationName: site.name,
   keywords: [
-    "Webdesign",
     "Website erstellen lassen",
-    "Website Relaunch",
-    "Website Betreuung",
-    "Webentwicklung",
-    "SEO",
-    "Website Wartung Abo",
+    "Webdesign für Unternehmen",
+    "Website Agentur",
+    "Website für Handwerker",
+    "Website für lokale Unternehmen",
+    "professionelle Unternehmenswebsite",
+    "Conversion Optimierung",
   ],
-  ...(siteUrl ? { metadataBase: new URL(siteUrl) } : {}),
   alternates: { canonical: "/" },
   openGraph: {
-    title: siteMeta.title,
-    description: siteMeta.description,
-    siteName: siteMeta.name,
-    locale: "de_DE",
     type: "website",
+    locale: site.locale,
+    url: siteUrl,
+    siteName: site.name,
+    title: `${site.name} - Websites, die aus Besuchern Kunden machen`,
+    description: site.description,
   },
   twitter: {
     card: "summary_large_image",
-    title: siteMeta.title,
-    description: siteMeta.description,
+    title: `${site.name} - Websites, die aus Besuchern Kunden machen`,
+    description: site.description,
   },
+  robots: { index: true, follow: true },
+  formatDetection: { telephone: false },
 };
 
 export const viewport: Viewport = {
-  // Faerbt die Browserleiste auf Mobilgeraeten passend zum jeweiligen Modus.
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#070b14" },
+  themeColor: "#0a0b0a",
+  colorScheme: "dark",
+};
+
+/**
+ * Strukturierte Daten bewusst minimal: nur Angaben, die tatsächlich zutreffen
+ * (Name, URL, Beschreibung, Leistungsangebot). Keine erfundene Adresse, keine
+ * erfundenen Bewertungen.
+ */
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": `${siteUrl}/#website`,
+      url: siteUrl,
+      name: site.name,
+      description: site.description,
+      inLanguage: "de-DE",
+      publisher: { "@id": `${siteUrl}/#organization` },
+    },
+    {
+      "@type": "Organization",
+      "@id": `${siteUrl}/#organization`,
+      name: site.name,
+      url: siteUrl,
+      description: site.description,
+      slogan: site.tagline,
+      ...(site.email ? { email: site.email } : {}),
+      ...(site.phone ? { telephone: site.phone } : {}),
+    },
+    {
+      "@type": "Service",
+      name: "Webdesign und Webentwicklung für Unternehmen",
+      provider: { "@id": `${siteUrl}/#organization` },
+      areaServed: "DE",
+      serviceType: "Webdesign, Webentwicklung, Conversion-Optimierung",
+      offers: [
+        { "@type": "Offer", name: "Launch", price: "1490", priceCurrency: "EUR" },
+        { "@type": "Offer", name: "Business", price: "2490", priceCurrency: "EUR" },
+        { "@type": "Offer", name: "Custom", price: "4900", priceCurrency: "EUR" },
+      ],
+    },
   ],
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{ children: ReactNode }>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html
-      lang="de"
-      className={`${sora.variable} ${inter.variable} ${jetbrainsMono.variable}`}
-      /*
-       * Das Init-Skript unten setzt data-theme noch vor dem ersten Bild.
-       * React weiss davon nichts und wuerde die Abweichung sonst als
-       * Hydration-Fehler melden.
-       */
-      suppressHydrationWarning
-    >
-      <head>
-        {/*
-          Muss vor jedem Stylesheet und vor dem ersten Zeichnen laufen, sonst
-          blitzt bei dunkler Ansicht kurz die helle Seite auf. Deshalb inline
-          und nicht als eigene Datei — ein zusaetzlicher Request waere genau
-          der Moment, den es zu vermeiden gilt.
-        */}
-        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
-      </head>
-
+    <html lang="de" className={`${inter.variable} ${interTight.variable} ${silkscreen.variable}`}>
       <body>
-        {/* Erste Tabulator-Station: direkt zum Inhalt, an der Navigation vorbei. */}
-        <a href="#main" className="skip-link">
-          Zum Inhalt springen
-        </a>
-
-        <Navbar />
+        {/* Ohne JavaScript darf kein Inhalt unsichtbar bleiben. */}
+        <noscript>
+          <style>{".reveal{opacity:1 !important;transform:none !important}"}</style>
+        </noscript>
+        <a className="skip" href="#main">Zum Inhalt springen</a>
+        <div className="texture" aria-hidden="true" />
+        <Cursor />
+        <Header />
         <main id="main">{children}</main>
         <Footer />
-        <ScrollReveal />
-        <StatusBar />
-        <CookieConsent />
+        <DinoGame />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
       </body>
     </html>
   );

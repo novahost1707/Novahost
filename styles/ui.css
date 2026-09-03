@@ -1,0 +1,271 @@
+/* ============================================================
+   UI — Buttons, Chips, Inputs, Cursor, Pixel-Ornamente
+   ============================================================ */
+
+/* --- BUTTONS ---------------------------------------------------------- */
+.btn {
+  --btn-bg: transparent;
+  --btn-fg: var(--text);
+  --btn-line: var(--line-strong);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-3);
+  min-height: 52px;
+  padding: 0 var(--s-5);
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  border: 1px solid var(--btn-line);
+  border-radius: var(--radius);
+  font-size: var(--t-sm);
+  font-weight: 500;
+  letter-spacing: 0.005em;
+  cursor: pointer;
+  overflow: hidden;
+  isolation: isolate;
+  transition:
+    color var(--dur-2) var(--ease-out),
+    border-color var(--dur-2) var(--ease-out),
+    transform var(--dur-2) var(--ease-out);
+}
+.btn__label { position: relative; z-index: 1; white-space: nowrap; }
+.btn__arrow {
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  transition: transform var(--dur-2) var(--ease-out);
+}
+/* Wisch-Fuellung von unten statt Glow */
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--btn-hover, var(--paper));
+  transform: translate3d(0, 101%, 0);
+  transition: transform var(--dur-3) var(--ease-out);
+}
+.btn:hover::before,
+.btn:focus-visible::before { transform: translate3d(0, 0, 0); }
+.btn:hover .btn__arrow { transform: translate3d(3px, -3px, 0); }
+
+.btn--primary {
+  --btn-bg: var(--paper);
+  --btn-fg: var(--ink-050);
+  --btn-line: var(--paper);
+  --btn-hover: var(--moss-400);
+  font-weight: 600;
+}
+.btn--primary:hover, .btn--primary:focus-visible { color: var(--ink-050); }
+
+.btn--ghost { --btn-hover: rgba(238, 240, 234, 0.07); }
+.btn--ghost:hover, .btn--ghost:focus-visible { border-color: var(--line-accent); color: var(--paper); }
+
+.btn--solid-moss {
+  --btn-bg: var(--moss-700);
+  --btn-fg: var(--paper);
+  --btn-line: var(--moss-600);
+  --btn-hover: var(--paper);
+}
+.btn--solid-moss:hover, .btn--solid-moss:focus-visible { color: var(--ink-050); }
+
+.btn--lg { min-height: 60px; padding: 0 var(--s-6); font-size: var(--t-body); }
+.btn--sm { min-height: 40px; padding: 0 var(--s-4); font-size: var(--t-xs); }
+.btn--block { width: 100%; justify-content: center; }
+.btn[disabled] { opacity: 0.45; cursor: not-allowed; }
+.btn[disabled]::before { display: none; }
+
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3);
+}
+
+/* Auf schmalen Screens volle Breite: groessere Touch-Flaeche, ruhigere Kante */
+@media (max-width: 559px) {
+  .btn-row { display: grid; grid-template-columns: minmax(0, 1fr); }
+  .btn-row .btn { width: 100%; justify-content: space-between; }
+}
+
+/* --- LINK MIT UNTERSTRICH-ANIMATION ----------------------------------- */
+.tlink {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 2px;
+}
+.tlink::after {
+  content: "";
+  position: absolute;
+  left: 0; bottom: 0;
+  width: 100%; height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform var(--dur-2) var(--ease-out);
+}
+.tlink:hover::after, .tlink:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* --- STATUS CHIP ------------------------------------------------------ */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding: var(--s-2) var(--s-3);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  color: var(--fog-400);
+  background: rgba(238, 240, 234, 0.02);
+}
+.chip__dot {
+  width: var(--pixel-unit);
+  height: var(--pixel-unit);
+  background: var(--accent);
+  animation: pixelPulse 2.4s var(--ease-pixel) infinite;
+}
+@keyframes pixelPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
+}
+
+/* --- PIXEL-ORNAMENT: Eck-Ticks statt abgerundeter Cards --------------- */
+.ticks { position: relative; }
+.ticks::before,
+.ticks::after {
+  content: "";
+  position: absolute;
+  width: 7px; height: 7px;
+  border: 1px solid var(--line-accent);
+  opacity: 0;
+  transition: opacity var(--dur-2) var(--ease-out);
+}
+.ticks::before { top: -1px; left: -1px; border-right: 0; border-bottom: 0; }
+.ticks::after { bottom: -1px; right: -1px; border-left: 0; border-top: 0; }
+.ticks:hover::before, .ticks:hover::after { opacity: 1; }
+
+/* --- FORM ------------------------------------------------------------- */
+.field { display: flex; flex-direction: column; gap: var(--s-2); }
+.field__label { color: var(--fog-400); }
+.field__hint { color: var(--text-faint); font-size: var(--t-xs); }
+
+.input, .textarea, .select {
+  width: 100%;
+  min-height: 52px;
+  padding: var(--s-3) var(--s-4);
+  background: var(--ink-100);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-size: var(--t-body);
+  transition: border-color var(--dur-1) var(--ease-out), background var(--dur-1) var(--ease-out);
+}
+.textarea { min-height: 132px; padding-top: var(--s-3); resize: vertical; line-height: 1.5; }
+.input::placeholder, .textarea::placeholder { color: var(--fog-600); }
+.input:hover, .textarea:hover, .select:hover { border-color: var(--line-accent); }
+.input:focus, .textarea:focus, .select:focus {
+  outline: none;
+  border-color: var(--moss-400);
+  background: var(--ink-200);
+}
+.input[aria-invalid="true"], .textarea[aria-invalid="true"] { border-color: #b4736a; }
+
+.error { color: #d59a92; font-size: var(--t-xs); }
+
+/* Auswahl-Kacheln statt Radio/Checkbox-Listen */
+.choice {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  padding: var(--s-4);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  background: var(--ink-100);
+  cursor: pointer;
+  text-align: left;
+  color: var(--fog-200);
+  transition: border-color var(--dur-1) var(--ease-out), background var(--dur-1) var(--ease-out), color var(--dur-1) var(--ease-out);
+}
+.choice:hover { border-color: var(--line-accent); background: var(--ink-200); }
+.choice[aria-pressed="true"], .choice[data-selected="true"] {
+  border-color: var(--moss-500);
+  background: var(--moss-900);
+  color: var(--paper);
+}
+.choice__box {
+  flex: none;
+  width: 14px; height: 14px;
+  border: 1px solid var(--line-strong);
+  position: relative;
+}
+.choice[aria-pressed="true"] .choice__box::after,
+.choice[data-selected="true"] .choice__box::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  background: var(--moss-400);
+}
+.choice-grid {
+  display: grid;
+  gap: var(--s-2);
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+/* --- CUSTOM CURSOR (nur feine Zeiger, nie auf Touch) ------------------ */
+.cursor {
+  position: fixed;
+  top: 0; left: 0;
+  z-index: var(--z-cursor);
+  pointer-events: none;
+  mix-blend-mode: difference;
+  will-change: transform;
+}
+.cursor__dot {
+  position: absolute;
+  width: 6px; height: 6px;
+  margin: -3px 0 0 -3px;
+  background: var(--paper);
+  transition: width var(--dur-2) var(--ease-out), height var(--dur-2) var(--ease-out),
+              margin var(--dur-2) var(--ease-out), opacity var(--dur-2) var(--ease-out);
+}
+.cursor[data-mode="label"] .cursor__dot { width: 0; height: 0; margin: 0; opacity: 0; }
+.cursor__label {
+  position: absolute;
+  transform: translate(-50%, -50%) scale(0.7);
+  padding: var(--s-2) var(--s-3);
+  background: var(--paper);
+  color: var(--ink-050);
+  font-family: var(--font-pixel);
+  font-size: var(--t-pixel);
+  letter-spacing: var(--ls-pixel);
+  text-transform: uppercase;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity var(--dur-2) var(--ease-out), transform var(--dur-2) var(--ease-out);
+}
+.cursor[data-mode="label"] .cursor__label { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+
+@media (hover: hover) and (pointer: fine) {
+  body.has-cursor, body.has-cursor * { cursor: none; }
+  body.has-cursor input,
+  body.has-cursor textarea,
+  body.has-cursor select { cursor: text; }
+}
+
+/* --- MARQUEE ---------------------------------------------------------- */
+.marquee {
+  display: flex;
+  overflow: hidden;
+  user-select: none;
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+.marquee__track {
+  display: flex;
+  flex: none;
+  gap: var(--s-7);
+  padding-right: var(--s-7);
+  animation: marquee 46s linear infinite;
+}
+.marquee:hover .marquee__track { animation-play-state: paused; }
+@keyframes marquee { to { transform: translate3d(-100%, 0, 0); } }

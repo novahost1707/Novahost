@@ -1,163 +1,125 @@
-import type {
-  ContactFieldName,
-  ContactFormErrors,
-  ContactFormValues,
-  ContactRole,
-} from "@/types";
-
-/** Regeln gelten im Browser und serverseitig identisch. */
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const PHONE_PATTERN = /^[0-9+()\-\s]{6,}$/;
-
-const REQUIRED_FIELDS: ContactFieldName[] = ["name", "role", "email", "message"];
-
-/** Erlaubte Werte des Auswahlfelds "Anliegen". */
-export const CONTACT_ROLES: ContactRole[] = [
-  "website",
-  "relaunch",
-  "betreuung",
-  "sonstiges",
-];
-
 /**
- * Beschriftung der Auswahl — an einer Stelle, damit Formular und
- * Benachrichtigungs-E-Mail garantiert dieselben Woerter benutzen.
+ * Serverseitige Validierung der Lead-Formulare.
+ * Bewusst ohne externe Dependency: wenig Code, kein Bundle-Overhead,
+ * dieselben Regeln laufen im Client (sofortiges Feedback) und im Server
+ * (verbindliche Prüfung).
  */
-export const CONTACT_ROLE_LABELS: Record<ContactRole, string> = {
-  website: "Neue Website",
-  relaunch: "Relaunch bestehender Seite",
-  betreuung: "Betreuung / Abo",
-  sonstiges: "Sonstiges",
+
+export type LeadType = "projekt" | "analyse";
+
+export type LeadPayload = {
+  type: LeadType;
+  company: string;
+  website: string;
+  branch: string;
+  goal: string;
+  services: string[];
+  budget: string;
+  timeframe: string;
+  name: string;
+  email: string;
+  phone: string;
+  message: string;
+  consent: boolean;
+  /** Honeypot - muss leer bleiben. */
+  fax?: string;
 };
 
-/**
- * Maximale Laengen pro Feld. Gelten im Browser (maxLength am Feld) und
- * serverseitig in der API-Route — ein direkter POST umgeht das Formular.
- * 254 Zeichen bei E-Mail entspricht der maximalen Adresslaenge nach RFC 5321.
- */
-export const FIELD_LIMITS: Record<ContactFieldName, number> = {
-  name: 120,
-  role: 32,
-  email: 254,
-  phone: 40,
-  message: 5000,
-};
+export type FieldErrors = Partial<Record<keyof LeadPayload, string>>;
 
-/** Laenge des Honeypot-Felds, ab der ein Request gar nicht erst geprueft wird. */
-const HONEYPOT_LIMIT = 200;
+export const budgetOptions = [
+  "unter 1.500 EUR",
+  "1.500-2.500 EUR",
+  "2.500-5.000 EUR",
+  "5.000 EUR+",
+  "noch unklar",
+] as const;
 
-/** Leere Startwerte fuer das Kontaktformular. */
-export const emptyContactForm: ContactFormValues = {
-  name: "",
-  role: "",
-  email: "",
-  phone: "",
-  message: "",
-  company_website: "",
-};
+export const timeframeOptions = [
+  "so schnell wie möglich",
+  "in 1-3 Monaten",
+  "in 3-6 Monaten",
+  "noch offen",
+] as const;
 
-export function isValidEmail(value: string): boolean {
-  return EMAIL_PATTERN.test(value.trim()) && value.trim().length <= FIELD_LIMITS.email;
+export const serviceOptions = [
+  "Neue Website",
+  "Relaunch",
+  "Mehr Anfragen / Conversion",
+  "SEO-Basis",
+  "Online-Shop",
+  "Laufende Betreuung",
+] as const;
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i;
+const CONTROL_RE = /[\u0000-\u001F\u007F]/g;
+
+/** Lässt "example.de", "www.example.de" und volle URLs zu. */
+export function normalizeUrl(raw: string): string | null {
+  const value = raw.trim();
+  if (!value) return null;
+  const withProtocol = /^https?:\/\//i.test(value) ? value : `https://${value}`;
+  try {
+    const url = new URL(withProtocol);
+    if (!url.hostname.includes(".") || url.hostname.endsWith(".")) return null;
+    if (!/^[a-z0-9.-]+$/i.test(url.hostname)) return null;
+    return url.toString();
+  } catch {
+    return null;
+  }
 }
 
-export function isValidPhone(value: string): boolean {
-  return PHONE_PATTERN.test(value.trim());
+function len(value: unknown): number {
+  return typeof value === "string" ? value.trim().length : 0;
 }
 
-function isValidRole(value: string): value is ContactRole {
-  return (CONTACT_ROLES as string[]).includes(value);
-}
+export function validateLead(input: Partial<LeadPayload>): FieldErrors {
+  const errors: FieldErrors = {};
+  const type: LeadType = input.type === "analyse" ? "analyse" : "projekt";
 
-/**
- * Prueft das Kontaktformular und gibt pro fehlerhaftem Feld `true` zurueck.
- * Telefon ist optional und wird nur geprueft, wenn etwas eingetragen wurde.
- *
- * Wird von beiden Seiten benutzt: im Browser fuer die Feldmarkierung und in
- * app/api/contact/route.ts als serverseitige Pruefung.
- */
-export function validateContactForm(values: ContactFormValues): ContactFormErrors {
-  const errors: ContactFormErrors = {};
+  if (len(input.name) < 2) errors.name = "Bitte geben Sie Ihren Namen an.";
+  else if (len(input.name) > 120) errors.name = "Der Name ist zu lang.";
 
-  for (const field of REQUIRED_FIELDS) {
-    if (!values[field].trim()) {
-      errors[field] = true;
+  if (!input.email || !EMAIL_RE.test(input.email.trim())) {
+    errors.email = "Bitte geben Sie eine gültige E-Mail-Adresse an.";
+  }
+
+  if (input.phone && len(input.phone) > 40) errors.phone = "Die Telefonnummer ist zu lang.";
+
+  if (type === "analyse") {
+    if (!input.website || !normalizeUrl(input.website)) {
+      errors.website = "Bitte geben Sie eine gültige Website-Adresse an.";
     }
-  }
-
-  for (const field of Object.keys(FIELD_LIMITS) as ContactFieldName[]) {
-    if (values[field].trim().length > FIELD_LIMITS[field]) {
-      errors[field] = true;
+  } else {
+    if (len(input.company) < 2) errors.company = "Bitte geben Sie Ihr Unternehmen an.";
+    if (input.website && !normalizeUrl(input.website)) {
+      errors.website = "Diese Adresse konnten wir nicht lesen.";
     }
+    if (!input.budget || !budgetOptions.includes(input.budget as (typeof budgetOptions)[number])) {
+      errors.budget = "Bitte wählen Sie einen Budgetrahmen.";
+    }
+    if (
+      !input.timeframe ||
+      !timeframeOptions.includes(input.timeframe as (typeof timeframeOptions)[number])
+    ) {
+      errors.timeframe = "Bitte wählen Sie einen Zeitraum.";
+    }
+    if (!input.services?.length) errors.services = "Bitte wählen Sie mindestens eine Leistung.";
   }
 
-  if (!isValidEmail(values.email)) {
-    errors.email = true;
-  }
-
-  if (values.role.trim() && !isValidRole(values.role.trim())) {
-    errors.role = true;
-  }
-
-  if (values.phone.trim() && !isValidPhone(values.phone)) {
-    errors.phone = true;
-  }
+  if (len(input.message) > 4000) errors.message = "Die Nachricht ist zu lang.";
+  if (len(input.goal) > 2000) errors.goal = "Der Text ist zu lang.";
+  if (!input.consent) errors.consent = "Bitte stimmen Sie der Verarbeitung Ihrer Angaben zu.";
 
   return errors;
 }
 
-/** Bots füllen versteckte Felder aus — solche Absendungen werden ignoriert. */
-export function isHoneypotTriggered(values: ContactFormValues): boolean {
-  return values.company_website.trim().length > 0;
+/** Entfernt Steuerzeichen und begrenzt die Länge - gegen Header- und Log-Injection. */
+export function clean(value: unknown, max = 500): string {
+  if (typeof value !== "string") return "";
+  return value.replace(CONTROL_RE, " ").trim().slice(0, max);
 }
 
-/**
- * Liest ein Feld als getrimmten String. `null` signalisiert einen falschen Typ
- * (Zahl, Objekt, Array) — fehlende Felder gelten als leerer String und werden
- * anschliessend regulaer von validateContactForm() bemaengelt.
- */
-function readString(source: Record<string, unknown>, key: string): string | null {
-  const value = source[key];
-  if (value === undefined || value === null) return "";
-  if (typeof value !== "string") return null;
-  return value.trim();
-}
-
-/**
- * Bringt einen ungeprueften JSON-Body in die Form von ContactFormValues.
- * Gibt `null` zurueck, wenn der Body kein Objekt ist, ein Feld kein String ist,
- * die Rolle kein bekannter Wert ist oder das Honeypot-Feld absurd lang
- * befuellt wurde.
- *
- * Werte werden getrimmt — Validierung und beide E-Mails arbeiten danach
- * ausschliesslich mit diesem normalisierten Objekt.
- */
-export function parseContactPayload(input: unknown): ContactFormValues | null {
-  if (typeof input !== "object" || input === null || Array.isArray(input)) {
-    return null;
-  }
-
-  const source = input as Record<string, unknown>;
-
-  const name = readString(source, "name");
-  const role = readString(source, "role");
-  const email = readString(source, "email");
-  const phone = readString(source, "phone");
-  const message = readString(source, "message");
-  const honeypot = readString(source, "company_website");
-
-  if (
-    name === null ||
-    role === null ||
-    email === null ||
-    phone === null ||
-    message === null ||
-    honeypot === null
-  ) {
-    return null;
-  }
-
-  if (role !== "" && !isValidRole(role)) return null;
-  if (honeypot.length > HONEYPOT_LIMIT) return null;
-
-  return { name, role, email, phone, message, company_website: honeypot };
+export function hasErrors(errors: FieldErrors): boolean {
+  return Object.keys(errors).length > 0;
 }

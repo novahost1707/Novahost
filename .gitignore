@@ -1,32 +1,12 @@
-# Dependencies
-/node_modules
-/.pnp
-.pnp.*
-
-# Next.js
-/.next/
-/out/
-next-env.d.ts
-*.tsbuildinfo
-
-# Produktion
-/build
-
-# Environment — echte Werte gehoeren NIE ins Repository.
-# Die Vorlage .env.example ist bewusst ausgenommen.
-.env
-.env.*
-!.env.example
-
-# Deployment
-.vercel
-
-# Logs
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.pnpm-debug.log*
-
-# System
+node_modules
+.next
+out
+build
 .DS_Store
 *.pem
+npm-debug.log*
+.env
+.env*.local
+.vercel
+next-env.d.ts
+tsconfig.tsbuildinfo

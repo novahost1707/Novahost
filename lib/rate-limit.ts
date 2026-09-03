@@ -1,70 +1,53 @@
 /**
- * Sehr einfacher Spam-Schutz: Zaehlung pro Schluessel (IP) in einem festen
- * Zeitfenster, im Arbeitsspeicher der Instanz.
- *
- * Bewusste Einschraenkung: Auf Vercel laeuft jede Serverless-Instanz mit
- * eigenem Speicher, und Instanzen werden recycelt. Das bremst einfache Fluten
- * zuverlaessig aus, ist aber kein verteiltes Limit. Dafuer braucht es keine
- * zusaetzliche Infrastruktur (Redis o. ae.). Zusammen mit dem Honeypot-Feld
- * im Formular reicht das fuer eine Kontaktseite dieser Groesse.
+ * Einfacher In-Memory-Rate-Limiter (Fixed Window) für die Lead-Route.
+ * Ausreichend für ein Single-Instance-Deployment. Bei mehreren Instanzen
+ * gegen einen geteilten Speicher (z. B. Redis) tauschen - die Signatur
+ * bleibt dabei gleich.
  */
 
-interface Bucket {
-  count: number;
-  resetAt: number;
-}
+type Entry = { count: number; resetAt: number };
 
-const buckets = new Map<string, Bucket>();
+const buckets = new Map<string, Entry>();
+const MAX_KEYS = 5000;
 
-/** Verhindert, dass die Map bei vielen verschiedenen IPs unbegrenzt waechst. */
-const MAX_TRACKED_KEYS = 5000;
+export type RateLimitResult = { ok: boolean; remaining: number; retryAfter: number };
 
-export interface RateLimitOptions {
-  /** Erlaubte Anfragen pro Fenster. */
-  limit: number;
-  /** Fensterlaenge in Millisekunden. */
-  windowMs: number;
-}
-
-export interface RateLimitResult {
-  allowed: boolean;
-  /** Sekunden bis zum Zuruecksetzen — fuer den Retry-After-Header. */
-  retryAfterSeconds: number;
-}
-
-function prune(now: number): void {
-  for (const [key, bucket] of buckets) {
-    if (bucket.resetAt <= now) buckets.delete(key);
-  }
-}
-
-export function checkRateLimit(
+export function rateLimit(
   key: string,
-  { limit, windowMs }: RateLimitOptions,
-  now: number = Date.now(),
+  limit = 5,
+  windowMs = 60 * 60 * 1000,
+  now = Date.now(),
 ): RateLimitResult {
-  if (buckets.size > MAX_TRACKED_KEYS) prune(now);
+  const entry = buckets.get(key);
 
-  const bucket = buckets.get(key);
-
-  if (!bucket || bucket.resetAt <= now) {
+  if (!entry || entry.resetAt <= now) {
+    if (buckets.size >= MAX_KEYS) sweep(now);
     buckets.set(key, { count: 1, resetAt: now + windowMs });
-    return { allowed: true, retryAfterSeconds: 0 };
+    return { ok: true, remaining: limit - 1, retryAfter: 0 };
   }
 
-  bucket.count += 1;
-
-  if (bucket.count > limit) {
-    return {
-      allowed: false,
-      retryAfterSeconds: Math.max(1, Math.ceil((bucket.resetAt - now) / 1000)),
-    };
+  if (entry.count >= limit) {
+    return { ok: false, remaining: 0, retryAfter: Math.ceil((entry.resetAt - now) / 1000) };
   }
 
-  return { allowed: true, retryAfterSeconds: 0 };
+  entry.count += 1;
+  return { ok: true, remaining: limit - entry.count, retryAfter: 0 };
 }
 
-/** Nur fuer Tests: setzt den Zaehlerstand zurueck. */
+function sweep(now: number): void {
+  for (const [key, entry] of buckets) {
+    if (entry.resetAt <= now) buckets.delete(key);
+  }
+  if (buckets.size >= MAX_KEYS) buckets.clear();
+}
+
 export function resetRateLimit(): void {
   buckets.clear();
+}
+
+/** Client-IP aus den üblichen Proxy-Headern - ausschließlich für Rate-Limiting. */
+export function clientKey(headers: Headers): string {
+  const forwarded = headers.get("x-forwarded-for");
+  if (forwarded) return forwarded.split(",")[0]!.trim();
+  return headers.get("x-real-ip") ?? "unknown";
 }

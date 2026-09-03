@@ -1,94 +1,89 @@
-import Container from "@/components/ui/Container";
-import Section from "@/components/ui/Section";
-import SectionHead from "@/components/ui/SectionHead";
-import CodeSnippet from "@/components/CodeSnippet";
-import { processFacts, processSnippet, processSteps, sectionHeads } from "@/lib/content";
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import { Reveal } from "@/components/fx/Reveal";
+import { SectionLabel } from "@/components/ui/SectionLabel";
+import { process as processContent } from "@/lib/content";
 
 /**
- * Der Projektablauf vom Erstgespraech bis zur laufenden Betreuung.
- *
- * Als senkrechte Zeitleiste: die Schritte haben sehr unterschiedlich lange
- * Texte, nebeneinander wuerde das Raster dadurch unruhig. Die Linie zwischen
- * den Knoten waechst beim Einblenden von oben nach unten mit — sie zeigt, dass
- * die Schritte aufeinander folgen.
- *
- * Der letzte Schritt ist bewusst die Betreuung: sie ist kein Nachklapp,
- * sondern Teil des Pakets.
+ * Prozess als vertikale Timeline. Die Fortschrittslinie folgt der
+ * Scroll-Position - eine Animation mit Funktion: sie zeigt, wo im Ablauf man
+ * sich gerade befindet. Ohne Scroll-Listener-Rechnerei pro Frame: der Wert
+ * wird nur bei Bedarf aktualisiert und als CSS-Variable gesetzt.
  */
-export default function Process() {
+export function Process() {
+  const listRef = useRef<HTMLOListElement>(null);
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const node = listRef.current;
+    if (!node) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setProgress(1);
+      return;
+    }
+
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const rect = node.getBoundingClientRect();
+      const viewport = window.innerHeight;
+      const start = viewport * 0.85;
+      const value = (start - rect.top) / (rect.height + start - viewport * 0.35);
+      setProgress(Math.min(1, Math.max(0, value)));
+    };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      cancelAnimationFrame(frame);
+    };
+  }, []);
+
   return (
-    <Section id="process" className="accent-backdrop">
-      <Container>
-        <SectionHead
-          index="02"
-          eyebrow={sectionHeads.process.eyebrow}
-          title={sectionHeads.process.title}
-          accent={sectionHeads.process.accent}
-          text={sectionHeads.process.text}
-        />
+    <section className="section process" id="prozess" aria-labelledby="process-title">
+      <div className="shell">
+        <Reveal>
+          <SectionLabel>{processContent.label}</SectionLabel>
+        </Reveal>
 
-        <div className="grid grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)] items-start gap-14 max-[1000px]:grid-cols-1 max-[1000px]:gap-10">
-          {/* Zeitleiste */}
-          <ol className="stagger relative flex flex-col">
-            {/* Die durchgehende Linie liegt hinter den Knoten. */}
-            <span
-              aria-hidden="true"
-              className="process-line absolute top-2 bottom-8 left-[19px] w-[2px] max-[560px]:left-[15px]"
-            />
-
-            {processSteps.map((step) => (
-              <li key={step.num} className="relative flex gap-5 pb-9 last:pb-0">
-                {/* Knoten */}
-                <span className="relative z-[1] flex h-10 w-10 flex-none items-center justify-center rounded-full border border-nh-line bg-nh-surface font-mono text-[12px] font-semibold text-nh-blue shadow-[0_6px_18px_-10px_rgba(11,39,96,0.5)] max-[560px]:h-8 max-[560px]:w-8 max-[560px]:text-[11px]">
-                  {step.num}
-                </span>
-
-                <div className="min-w-0 pt-1.5">
-                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-                    <h3 className="font-display text-[19px] leading-tight font-extrabold text-nh-ink">
-                      {step.title}
-                    </h3>
-
-                    <span className="rounded-chip border border-nh-line bg-nh-surface/70 px-2 py-1 font-mono text-[10.5px] leading-none text-nh-mute">
-                      {step.duration}
-                    </span>
-                  </div>
-
-                  <p className="mt-2.5 max-w-[52ch] text-[14.5px] leading-[1.7] text-nh-body">
-                    {step.text}
-                  </p>
-                </div>
-              </li>
-            ))}
-          </ol>
-
-          {/* Eckdaten und Snippet */}
-          <div className="flex flex-col gap-6">
-            <div className="reveal grid grid-cols-2 gap-3 max-[420px]:grid-cols-1">
-              {processFacts.map((fact) => (
-                <div
-                  key={fact.label}
-                  className="glow-hover rounded-card border border-nh-line bg-nh-surface/60 px-4 py-3.5"
-                >
-                  <div className="font-mono text-[10.5px] tracking-[0.14em] text-nh-mute uppercase">
-                    {fact.label}
-                  </div>
-                  <div className="mt-1.5 font-display text-[16px] leading-tight font-bold text-nh-ink">
-                    {fact.value}
-                  </div>
-                  <div className="mt-1 text-[12.5px] text-nh-mute">{fact.hint}</div>
-                </div>
-              ))}
-            </div>
-
-            <CodeSnippet
-              className="reveal"
-              title="projekt.ts"
-              code={processSnippet}
-            />
-          </div>
+        <div className="process__head">
+          <Reveal>
+            <h2 className="display h2" id="process-title">{processContent.headline}</h2>
+          </Reveal>
+          <Reveal delay={80}>
+            <p className="copy">{processContent.intro}</p>
+          </Reveal>
         </div>
-      </Container>
-    </Section>
+
+        <ol
+          className="process__list"
+          ref={listRef}
+          style={{ "--progress": progress } as React.CSSProperties}
+        >
+          <span className="process__track" aria-hidden="true">
+            <span className="process__track-fill" />
+          </span>
+
+          {processContent.steps.map((step, index) => {
+            const reached = progress * processContent.steps.length >= index + 0.35;
+            return (
+              <li className="process__step" key={step.num} data-reached={reached}>
+                <span className="process__marker" aria-hidden="true" />
+                <span className="process__num pixel">{step.num}</span>
+                <h3 className="process__title h3">{step.title}</h3>
+                <p className="process__text copy">{step.body}</p>
+              </li>
+            );
+          })}
+        </ol>
+      </div>
+    </section>
   );
 }

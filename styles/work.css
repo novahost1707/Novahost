@@ -1,0 +1,141 @@
+/* ============================================================
+   PROJEKTE — Demo-Konzepte, klar als solche markiert
+   Die Vorschauen sind generative Pixel-Kompositionen aus CSS:
+   keine Bilddateien, kein Ladegewicht, kein Stockfoto.
+   ============================================================ */
+
+.work__head { display: grid; gap: var(--s-5); margin-block: var(--s-6) var(--s-8); }
+.work__head h2 { text-transform: uppercase; }
+
+@media (min-width: 900px) {
+  .work__head { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: end; gap: var(--s-8); }
+}
+
+.work__grid {
+  display: grid;
+  gap: var(--s-5);
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+}
+
+@media (min-width: 760px) {
+  .work__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-6); }
+}
+
+/* Versatz der zweiten Spalte: bricht die Gleichfoermigkeit des Rasters auf,
+   ohne die Lesereihenfolge zu stoeren. */
+@media (min-width: 1024px) {
+  /* margin statt transform: kollidiert nicht mit der Reveal-Animation
+     und nicht mit dem Hover-Versatz der Karte */
+  .work__cell:nth-child(even) { margin-top: var(--s-8); }
+  .work__grid { margin-bottom: var(--s-8); }
+}
+
+.work__card {
+  display: block;
+  border: var(--border);
+  background: var(--ink-100);
+  transition: border-color var(--dur-2) var(--ease-out), transform var(--dur-3) var(--ease-out), background var(--dur-2) var(--ease-out);
+}
+.work__card[data-active="true"] {
+  border-color: var(--line-accent);
+  background: var(--ink-200);
+  transform: translate3d(0, -4px, 0);
+}
+
+.work__visual {
+  position: relative;
+  aspect-ratio: 16 / 11;
+  overflow: hidden;
+  background: linear-gradient(155deg, hsl(var(--hue) 9% 14%), hsl(var(--hue) 12% 7%));
+  border-bottom: var(--border);
+}
+
+/* Feines Raster als Untergrund der Skizze */
+.work__visual > .work__grid {
+  position: absolute;
+  inset: 0;
+  display: block;
+  background-image:
+    linear-gradient(hsl(var(--hue) 14% 62% / 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, hsl(var(--hue) 14% 62% / 0.08) 1px, transparent 1px);
+  background-size: 20px 20px;
+  transition: transform var(--dur-4) var(--ease-out);
+}
+.work__card[data-active="true"] .work__visual > .work__grid { transform: scale(1.06); }
+
+/* Layoutskizze */
+.work__frame {
+  position: absolute;
+  inset: 14% 12%;
+  display: flex;
+  flex-direction: column;
+  gap: 5%;
+}
+.work__frame > * {
+  display: block;
+  transform: translate3d(0, 0, 0);
+  transition: transform var(--dur-4) var(--ease-out), background var(--dur-3) var(--ease-out);
+}
+.work__nav {
+  height: 6%;
+  background: hsl(var(--hue) 12% 55% / 0.2);
+}
+.work__headline {
+  height: 16%;
+  background: hsl(var(--hue) 14% 72% / 0.34);
+}
+.work__headline--short { width: 62%; }
+.work__line {
+  height: 5%;
+  background: hsl(var(--hue) 12% 60% / 0.16);
+}
+.work__line--short { width: 44%; }
+.work__cta {
+  width: 34%;
+  height: 11%;
+  margin-top: auto;
+  background: var(--moss-600);
+  opacity: 0.55;
+}
+
+/* Gestaffelte Bewegung beim Hover - deutet den Aufbau der Seite an */
+.work__card[data-active="true"] .work__nav { transform: translate3d(0, -6px, 0); }
+.work__card[data-active="true"] .work__headline { transform: translate3d(0, -3px, 0); }
+.work__card[data-active="true"] .work__line { transform: translate3d(0, 3px, 0); }
+.work__card[data-active="true"] .work__cta { transform: translate3d(0, 6px, 0); opacity: 1; }
+
+.work__badge {
+  position: absolute;
+  top: var(--s-3);
+  left: var(--s-3);
+  padding: var(--s-1) var(--s-2);
+  background: var(--ink-000);
+  color: var(--accent);
+  border: 1px solid var(--line-accent);
+}
+
+.work__meta {
+  display: grid;
+  gap: var(--s-2);
+  padding: var(--s-5);
+  position: relative;
+}
+.work__num {
+  position: absolute;
+  top: var(--s-5);
+  right: var(--s-5);
+  color: var(--fog-600);
+}
+.work__title { color: var(--paper); }
+.work__branch { color: var(--accent); }
+.work__scope { font-size: var(--t-sm); color: var(--fog-500); }
+.work__year { color: var(--fog-600); margin-top: var(--s-2); }
+
+.work__disclaimer {
+  margin-top: var(--s-7);
+  padding-top: var(--s-5);
+  border-top: var(--border);
+  color: var(--text-faint);
+  max-width: 72ch;
+}

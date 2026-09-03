@@ -1,125 +1,99 @@
-import assert from "node:assert/strict";
-import { describe, it } from "node:test";
+import { describe, expect, it } from "vitest";
 import {
-  FIELD_LIMITS,
-  emptyContactForm,
-  parseContactPayload,
-  validateContactForm,
+  clean,
+  hasErrors,
+  normalizeUrl,
+  validateLead,
+  type LeadPayload,
 } from "@/lib/validation";
-import type { ContactFormValues } from "@/types";
 
-/** Gültige Basiswerte; einzelne Felder werden pro Test überschrieben. */
-function form(overrides: Partial<ContactFormValues> = {}): ContactFormValues {
-  return {
-    ...emptyContactForm,
-    name: "Lena Fischer",
-    role: "website",
-    email: "lena@example.com",
-    phone: "+49 170 1234567",
-    message: "Hallo, wir suchen einen neuen Hosting-Partner.",
-    ...overrides,
-  };
-}
+const projekt: Partial<LeadPayload> = {
+  type: "projekt",
+  company: "Musterbetrieb GmbH",
+  services: ["Neue Website"],
+  budget: "1.500-2.500 EUR",
+  timeframe: "in 1-3 Monaten",
+  name: "Max Mustermann",
+  email: "max@beispiel.de",
+  consent: true,
+};
 
-describe("validateContactForm", () => {
-  it("akzeptiert vollständige Eingaben", () => {
-    assert.deepEqual(validateContactForm(form()), {});
+describe("normalizeUrl", () => {
+  it("ergaenzt ein fehlendes Protokoll", () => {
+    expect(normalizeUrl("beispiel.de")).toBe("https://beispiel.de/");
+    expect(normalizeUrl("www.beispiel.de/leistungen")).toBe("https://www.beispiel.de/leistungen");
   });
 
-  it("akzeptiert eine leere Telefonnummer (optionales Feld)", () => {
-    assert.deepEqual(validateContactForm(form({ phone: "" })), {});
+  it("laesst vollstaendige URLs unveraendert gueltig", () => {
+    expect(normalizeUrl("http://beispiel.de")).toBe("http://beispiel.de/");
   });
 
-  it("bemängelt fehlende Pflichtfelder", () => {
-    const errors = validateContactForm(
-      form({ name: "  ", role: "", message: "" }),
-    );
-
-    assert.equal(errors.name, true);
-    assert.equal(errors.role, true);
-    assert.equal(errors.message, true);
-  });
-
-  it("bemängelt ungültige E-Mail-Adressen", () => {
-    for (const email of ["", "kein-at-zeichen", "a@b", "a b@c.de"]) {
-      assert.equal(
-        validateContactForm(form({ email })).email,
-        true,
-        `sollte ungültig sein: ${email}`,
-      );
-    }
-  });
-
-  it("bemängelt ungültige Telefonnummern, wenn eine angegeben ist", () => {
-    assert.equal(validateContactForm(form({ phone: "abc" })).phone, true);
-  });
-
-  it("bemängelt zu lange Eingaben", () => {
-    const tooLongName = "a".repeat(FIELD_LIMITS.name + 1);
-    const tooLongMessage = "a".repeat(FIELD_LIMITS.message + 1);
-
-    assert.equal(validateContactForm(form({ name: tooLongName })).name, true);
-    assert.equal(
-      validateContactForm(form({ message: tooLongMessage })).message,
-      true,
-    );
-  });
-
-  it("akzeptiert Eingaben exakt auf der Längengrenze", () => {
-    const maxName = "a".repeat(FIELD_LIMITS.name);
-    assert.deepEqual(validateContactForm(form({ name: maxName })), {});
+  it("weist Eingaben ohne erkennbare Domain zurueck", () => {
+    expect(normalizeUrl("beispiel")).toBeNull();
+    expect(normalizeUrl("   ")).toBeNull();
+    expect(normalizeUrl("http://")).toBeNull();
   });
 });
 
-describe("parseContactPayload", () => {
-  it("normalisiert einen gültigen Body und trimmt Werte", () => {
-    const parsed = parseContactPayload({
-      name: "  Lena Fischer  ",
-      role: "website",
-      email: " lena@example.com ",
-      phone: "",
-      message: " Hallo ",
-      company_website: "",
+describe("validateLead - Projektanfrage", () => {
+  it("akzeptiert eine vollstaendige Anfrage", () => {
+    expect(hasErrors(validateLead(projekt))).toBe(false);
+  });
+
+  it("verlangt Unternehmen, Budget, Zeitraum und Leistungen", () => {
+    const errors = validateLead({ ...projekt, company: "", budget: "", timeframe: "", services: [] });
+    expect(errors.company).toBeDefined();
+    expect(errors.budget).toBeDefined();
+    expect(errors.timeframe).toBeDefined();
+    expect(errors.services).toBeDefined();
+  });
+
+  it("akzeptiert nur Budgetwerte aus der Auswahl", () => {
+    expect(validateLead({ ...projekt, budget: "1 EUR" }).budget).toBeDefined();
+  });
+
+  it("laesst die Website leer, meldet aber eine unlesbare Adresse", () => {
+    expect(validateLead({ ...projekt, website: "" }).website).toBeUndefined();
+    expect(validateLead({ ...projekt, website: "kaputt" }).website).toBeDefined();
+  });
+
+  it("verlangt eine Einwilligung", () => {
+    expect(validateLead({ ...projekt, consent: false }).consent).toBeDefined();
+  });
+
+  it("prueft die E-Mail-Adresse", () => {
+    expect(validateLead({ ...projekt, email: "max@beispiel" }).email).toBeDefined();
+    expect(validateLead({ ...projekt, email: "max.mustermann@sub.beispiel.de" }).email).toBeUndefined();
+  });
+});
+
+describe("validateLead - Website-Analyse", () => {
+  it("verlangt eine Website, aber kein Unternehmen", () => {
+    const errors = validateLead({
+      type: "analyse",
+      name: "Max Mustermann",
+      email: "max@beispiel.de",
+      consent: true,
+      website: "beispiel.de",
     });
+    expect(hasErrors(errors)).toBe(false);
+  });
 
-    assert.deepEqual(parsed, {
-      name: "Lena Fischer",
-      role: "website",
-      email: "lena@example.com",
-      phone: "",
-      message: "Hallo",
-      company_website: "",
+  it("meldet eine fehlende Website", () => {
+    const errors = validateLead({
+      type: "analyse",
+      name: "Max Mustermann",
+      email: "max@beispiel.de",
+      consent: true,
     });
+    expect(errors.website).toBeDefined();
   });
+});
 
-  it("ergänzt fehlende Felder als leere Strings", () => {
-    const parsed = parseContactPayload({ name: "Lena" });
-
-    assert.equal(parsed?.name, "Lena");
-    assert.equal(parsed?.email, "");
-    assert.equal(parsed?.message, "");
-  });
-
-  it("lehnt Bodys ab, die kein Objekt sind", () => {
-    for (const input of [null, "string", 42, [], undefined, true]) {
-      assert.equal(parseContactPayload(input), null, `sollte null sein: ${String(input)}`);
-    }
-  });
-
-  it("lehnt Felder mit falschem Typ ab", () => {
-    assert.equal(parseContactPayload({ name: 42 }), null);
-    assert.equal(parseContactPayload({ message: { text: "hi" } }), null);
-    assert.equal(parseContactPayload({ email: ["a@b.de"] }), null);
-  });
-
-  it("lehnt unbekannte Rollen ab", () => {
-    assert.equal(parseContactPayload(form({ role: "admin" as never })), null);
-  });
-
-  it("lehnt ein absurd langes Honeypot-Feld ab", () => {
-    assert.equal(
-      parseContactPayload(form({ company_website: "x".repeat(500) })),
-      null,
-    );
+describe("clean", () => {
+  it("entfernt Steuerzeichen und kuerzt auf die Maximallaenge", () => {
+    expect(clean("Zeile1\nZeile2")).toBe("Zeile1 Zeile2");
+    expect(clean("abcdef", 3)).toBe("abc");
+    expect(clean(42)).toBe("");
   });
 });

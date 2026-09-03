@@ -1,0 +1,81 @@
+/* ============================================================
+   LOESUNG + PROZESSKETTE
+   ============================================================ */
+
+.solution__head { display: grid; gap: var(--s-5); margin-block: var(--s-6) var(--s-8); }
+.solution__title {
+  font-size: var(--t-display);
+  text-transform: uppercase;
+  line-height: 0.98;
+  color: var(--paper);
+}
+.solution__line-dim { color: var(--fog-600); }
+
+@media (min-width: 900px) {
+  .solution__head {
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+    align-items: end;
+    gap: var(--s-8);
+  }
+}
+
+/* --- KETTE ------------------------------------------------------------ */
+.chain {
+  display: grid;
+  gap: var(--s-3);
+  padding: var(--s-6) 0;
+  border-top: var(--border);
+  border-bottom: var(--border);
+}
+.chain__step {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  padding-left: var(--s-4);
+}
+.chain__dot {
+  position: absolute;
+  left: 0;
+  width: 6px; height: 6px;
+  background: var(--moss-600);
+  animation: chainOn 4.4s var(--ease-out) infinite;
+  animation-delay: calc(var(--i) * 240ms);
+}
+.chain__label { color: var(--fog-300); }
+
+@keyframes chainOn {
+  0%, 12% { background: var(--accent); box-shadow: 0 0 0 3px rgba(151, 163, 144, 0.12); }
+  40%, 100% { background: var(--moss-700); box-shadow: none; }
+}
+
+@media (min-width: 760px) {
+  .chain {
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    align-items: center;
+    gap: 0;
+  }
+  .chain__step {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--s-3);
+    padding-left: 0;
+  }
+  /* Verbindungslinie zwischen den Schritten */
+  .chain__step::after {
+    content: "";
+    position: absolute;
+    top: 2px; left: 14px; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, var(--moss-700), transparent);
+  }
+  .chain__step:last-child::after { display: none; }
+  .chain__dot { position: static; }
+}
+
+.solution__note {
+  margin-top: var(--s-4);
+  color: var(--text-faint);
+  max-width: 60ch;
+}

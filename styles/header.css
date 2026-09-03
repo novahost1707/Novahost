@@ -1,0 +1,153 @@
+/* ============================================================
+   HEADER + MOBILE MENUE
+   ============================================================ */
+
+.header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: var(--z-sticky);
+  transition: transform var(--dur-3) var(--ease-out), background var(--dur-3) var(--ease-out);
+}
+.header[data-hidden="true"] { transform: translate3d(0, -102%, 0); }
+
+.header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-5);
+  height: 84px;
+  transition: height var(--dur-3) var(--ease-out);
+}
+.header[data-condensed="true"] .header__inner { height: 64px; }
+.header[data-condensed="true"] {
+  background: color-mix(in srgb, var(--ink-000) 78%, transparent);
+  backdrop-filter: blur(14px) saturate(120%);
+  -webkit-backdrop-filter: blur(14px) saturate(120%);
+}
+
+.header__rule {
+  display: block;
+  height: 1px;
+  background: var(--line);
+  opacity: 0;
+  transition: opacity var(--dur-3) var(--ease-out);
+}
+.header[data-condensed="true"] .header__rule { opacity: 1; }
+
+/* --- WORTMARKE -------------------------------------------------------- */
+.wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-3);
+}
+.wordmark__mark {
+  color: var(--accent);
+  transition: color var(--dur-2) var(--ease-out), transform var(--dur-2) var(--ease-out);
+}
+.header__brand:hover .wordmark__mark { color: var(--paper); transform: translateY(-1px); }
+.wordmark__text {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: 0.02em;
+  color: var(--paper);
+}
+
+/* --- NAVIGATION ------------------------------------------------------- */
+.header__nav {
+  display: none;
+  align-items: center;
+  gap: var(--s-6);
+}
+.header__link {
+  font-size: var(--t-sm);
+  color: var(--fog-300);
+  transition: color var(--dur-1) var(--ease-out);
+}
+.header__link:hover { color: var(--paper); }
+
+.header__actions { display: flex; align-items: center; gap: var(--s-3); }
+.header__cta { display: none; }
+
+.header__burger {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-3);
+  min-height: 44px;
+  padding: 0 var(--s-2);
+  background: none;
+  border: 0;
+  color: var(--fog-200);
+  cursor: pointer;
+}
+.header__burger-glyph {
+  display: grid;
+  gap: 3px;
+  width: 18px;
+}
+.header__burger-glyph i {
+  display: block;
+  height: 2px;
+  background: currentColor;
+  transition: transform var(--dur-2) var(--ease-out), opacity var(--dur-2) var(--ease-out);
+}
+.header__burger-glyph[data-open="true"] i:nth-child(1) { transform: translateY(5px) rotate(45deg); }
+.header__burger-glyph[data-open="true"] i:nth-child(2) { opacity: 0; }
+.header__burger-glyph[data-open="true"] i:nth-child(3) { transform: translateY(-5px) rotate(-45deg); }
+
+@media (min-width: 900px) {
+  .header__nav { display: flex; }
+  .header__cta { display: inline-flex; }
+  .header__burger { display: none; }
+}
+
+/* --- VOLLBILD-MENUE (mobil) ------------------------------------------- */
+.menu {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-menu);
+  background: var(--ink-000);
+  display: flex;
+  align-items: center;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-2) var(--ease-out);
+}
+.menu[data-open="true"] { opacity: 1; pointer-events: auto; }
+.menu[hidden] { display: none; }
+
+.menu__nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+  width: 100%;
+  padding-block: var(--s-9) var(--s-7);
+}
+.menu__link {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-4);
+  padding-block: var(--s-3);
+  font-size: clamp(2.1rem, 10vw, 3.4rem);
+  line-height: 1.05;
+  letter-spacing: var(--ls-tight);
+  color: var(--paper);
+  border-bottom: var(--border);
+  opacity: 0;
+  transform: translate3d(0, 14px, 0);
+  transition: opacity var(--dur-3) var(--ease-out), transform var(--dur-3) var(--ease-out), color var(--dur-1) var(--ease-out);
+}
+.menu[data-open="true"] .menu__link { opacity: 1; transform: none; }
+.menu__link:hover { color: var(--accent); }
+.menu__index { color: var(--accent); font-size: var(--t-pixel); }
+
+.menu__foot { display: grid; gap: var(--s-3); margin-top: var(--s-6); }
+.menu__status {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  color: var(--fog-500);
+  margin-top: var(--s-2);
+}

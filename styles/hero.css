@@ -1,0 +1,155 @@
+/* ============================================================
+   HERO
+   Massive Typografie ueber einem Pixel-Feld. Der Verlauf sorgt dafuer,
+   dass Headline und CTA jederzeit lesbar bleiben - Effekt ist der
+   Lesbarkeit untergeordnet.
+   ============================================================ */
+
+.hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 100svh;
+  padding-top: 120px;
+  padding-bottom: var(--s-7);
+  overflow: hidden;
+  background: var(--ink-000);
+}
+
+.pixelfield {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.hero__veil {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    radial-gradient(120% 80% at 12% 92%, rgba(6, 7, 6, 0.95) 0%, rgba(6, 7, 6, 0.55) 45%, transparent 78%),
+    linear-gradient(to top, var(--ink-000) 2%, rgba(6, 7, 6, 0.35) 48%, rgba(6, 7, 6, 0.72) 100%);
+}
+
+.hero__inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(var(--s-6), 5vw, var(--s-9));
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.hero__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-4);
+}
+.hero__label { color: var(--fog-600); }
+
+/* --- HEADLINE --------------------------------------------------------- */
+.hero__title {
+  font-size: var(--t-hero);
+  line-height: 0.86;
+  letter-spacing: var(--ls-mega);
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--paper);
+  margin-left: -0.05em;
+}
+.hero__line { display: block; overflow: hidden; }
+.hero__line-inner {
+  display: block;
+  transform: translate3d(0, 100%, 0);
+  animation: heroRise 1s var(--ease-out) forwards;
+}
+.hero__line:nth-child(2) .hero__line-inner { color: var(--fog-300); }
+.hero__line:nth-child(4) .hero__line-inner { color: var(--accent); }
+
+@keyframes heroRise { to { transform: translate3d(0, 0, 0); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__line-inner { transform: none; animation: none; }
+}
+
+/* --- UNTERE ZONE ------------------------------------------------------ */
+.hero__bottom {
+  display: grid;
+  gap: var(--s-6);
+  padding-top: var(--s-5);
+  border-top: var(--border);
+}
+.hero__sub { max-width: 46ch; color: var(--fog-300); }
+
+.hero__actions { display: grid; gap: var(--s-6); }
+
+.hero__meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: var(--s-4);
+  padding-top: var(--s-5);
+  border-top: var(--border);
+}
+.hero__meta-item dt { color: var(--fog-600); margin-bottom: var(--s-1); }
+.hero__meta-item dd {
+  font-family: var(--font-display);
+  font-size: var(--t-h4);
+  font-weight: 600;
+  color: var(--fog-100);
+}
+
+.hero__scroll {
+  position: relative;
+  z-index: 2;
+  align-self: flex-start;
+  display: none;
+  gap: var(--s-2);
+  margin-left: var(--gutter);
+  margin-top: var(--s-6);
+  color: var(--fog-600);
+  transition: color var(--dur-1) var(--ease-out);
+}
+.hero__scroll span { animation: nudge 2.6s var(--ease-in-out) infinite; display: inline-block; }
+.hero__scroll:hover { color: var(--paper); }
+@keyframes nudge {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(4px); }
+}
+
+@media (min-width: 900px) {
+  .hero__bottom {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    align-items: start;
+    gap: var(--s-8);
+  }
+  .hero__scroll { display: inline-flex; }
+}
+
+@media (min-width: 1280px) {
+  .hero__title { font-size: clamp(4rem, 7.4vw, 7.4rem); }
+}
+
+/* --- TRUSTBAR --------------------------------------------------------- */
+.trustbar {
+  border-top: var(--border);
+  border-bottom: var(--border);
+  background: var(--ink-100);
+  padding-block: var(--s-4);
+}
+.trustbar__item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-3);
+  color: var(--fog-500);
+  white-space: nowrap;
+}
+.trustbar__dot {
+  width: var(--pixel-unit);
+  height: var(--pixel-unit);
+  background: var(--moss-600);
+}

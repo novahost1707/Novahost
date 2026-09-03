@@ -1,0 +1,150 @@
+/* ============================================================
+   ANALYSE + ANFRAGE — Panels und Formulare
+   ============================================================ */
+
+.analysis__inner { display: grid; gap: var(--s-8); }
+.analysis__title {
+  font-size: var(--t-display);
+  text-transform: uppercase;
+  line-height: 0.98;
+  margin-block: var(--s-5) var(--s-4);
+  color: var(--paper);
+}
+.analysis__sub { color: var(--fog-200); margin-bottom: var(--s-4); }
+
+.analysis__checks {
+  display: grid;
+  gap: var(--s-2);
+  margin-top: var(--s-6);
+  padding-top: var(--s-5);
+  border-top: var(--border);
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+.analysis__check {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-3);
+  font-size: var(--t-sm);
+  color: var(--fog-400);
+}
+.analysis__check-num { color: var(--moss-600); }
+
+@media (min-width: 1024px) {
+  .analysis__inner { grid-template-columns: minmax(0, 1fr) minmax(0, 0.85fr); gap: var(--s-9); align-items: start; }
+}
+
+/* --- PANEL ------------------------------------------------------------ */
+.panel {
+  position: relative;
+  padding: var(--s-6);
+  background: var(--ink-100);
+  border: var(--border-strong);
+  box-shadow: var(--shadow-2);
+}
+/* Pixel-Eckmarken: Markenzeichen statt abgerundeter Card */
+.panel::before,
+.panel::after {
+  content: "";
+  position: absolute;
+  width: 12px; height: 12px;
+  border: 1px solid var(--line-accent);
+}
+.panel::before { top: -1px; left: -1px; border-right: 0; border-bottom: 0; }
+.panel::after { bottom: -1px; right: -1px; border-left: 0; border-top: 0; }
+.panel--lg { padding: var(--s-6) var(--s-5); }
+
+.panel__label {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  color: var(--fog-500);
+  margin-bottom: var(--s-5);
+  padding-bottom: var(--s-4);
+  border-bottom: var(--border);
+}
+.panel__done { display: grid; gap: var(--s-3); padding-block: var(--s-5); }
+
+@media (min-width: 640px) {
+  .panel--lg { padding: var(--s-7); }
+}
+
+/* --- FORM ------------------------------------------------------------- */
+.form { display: grid; gap: var(--s-4); }
+.form__head { display: grid; gap: var(--s-2); margin-bottom: var(--s-2); }
+.form__title { color: var(--paper); }
+
+.form__progress { display: flex; gap: var(--s-1); margin-top: var(--s-3); }
+.form__progress span {
+  height: 3px;
+  flex: 1;
+  background: var(--ink-400);
+  transition: background var(--dur-2) var(--ease-out);
+}
+.form__progress span[data-active="true"] { background: var(--moss-500); }
+
+.form__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3);
+  justify-content: flex-end;
+  margin-top: var(--s-3);
+  padding-top: var(--s-5);
+  border-top: var(--border);
+}
+
+.consent {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s-3);
+  font-size: var(--t-xs);
+  color: var(--fog-500);
+  line-height: 1.55;
+  cursor: pointer;
+}
+.consent input {
+  flex: none;
+  width: 18px; height: 18px;
+  margin-top: 2px;
+  accent-color: var(--moss-500);
+}
+
+/* Honeypot: fuer Menschen unsichtbar, aber nicht display:none
+   (manche Bots ignorieren ausgeblendete Felder) */
+.hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px; height: 1px;
+  overflow: hidden;
+}
+
+/* --- ANFRAGE-SECTION -------------------------------------------------- */
+.enquiry__inner { display: grid; gap: var(--s-8); }
+.enquiry__intro { display: grid; gap: var(--s-4); align-content: start; }
+.enquiry__intro h2 { text-transform: uppercase; }
+
+/* Auf kleinen Screens weggelassen: das Panel zeigt Schritt und Fortschritt
+   bereits an, die Wiederholung wuerde die Seite nur verlaengern. */
+.enquiry__steps {
+  display: none;
+  gap: var(--s-3);
+  margin-top: var(--s-4);
+  padding-top: var(--s-5);
+  border-top: var(--border);
+  counter-reset: step;
+}
+.enquiry__steps-item {
+  display: grid;
+  gap: var(--s-1);
+  padding-left: var(--s-4);
+  border-left: 2px solid var(--ink-400);
+  color: var(--fog-600);
+  transition: border-color var(--dur-2) var(--ease-out), color var(--dur-2) var(--ease-out);
+}
+.enquiry__steps-item[data-state="current"] { border-left-color: var(--moss-500); color: var(--paper); }
+.enquiry__steps-item[data-state="done"] { border-left-color: var(--moss-700); color: var(--fog-400); }
+.enquiry__steps-title { font-size: var(--t-sm); }
+
+@media (min-width: 1024px) {
+  .enquiry__inner { grid-template-columns: minmax(0, 0.75fr) minmax(0, 1fr); gap: var(--s-9); align-items: start; }
+  .enquiry__steps { display: grid; }
+}
