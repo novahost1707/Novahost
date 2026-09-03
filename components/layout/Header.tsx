@@ -46,11 +46,13 @@ export function Header() {
   }, [open]);
 
   /** Dreifachklick auf die Wortmarke öffnet das versteckte Spiel. */
-  const onMarkClick = () => {
+  const onMarkClick = (event: React.MouseEvent) => {
     const now = Date.now();
     clicks.current = [...clicks.current.filter((t) => now - t < 900), now];
     if (clicks.current.length >= 3) {
       clicks.current = [];
+      // Der ausloesende Klick soll nicht zusaetzlich zur Startseite navigieren
+      event.preventDefault();
       window.dispatchEvent(new CustomEvent("novahost:easteregg"));
     }
   };

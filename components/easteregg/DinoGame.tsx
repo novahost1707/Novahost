@@ -336,7 +336,7 @@ export function DinoGame() {
               {phase === "ready" ? (
                 <>
                   <p className="dino__title display">DU HAST ES GEFUNDEN.</p>
-                  <p className="pixel muted">LEERTASTE ODER TIPPEN ZUM STARTEN</p>
+                  <p className="pixel muted">TIPPEN ODER LEERTASTE ZUM STARTEN</p>
                 </>
               ) : (
                 <>

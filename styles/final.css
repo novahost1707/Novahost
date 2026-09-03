@@ -95,6 +95,7 @@
 
 /* Der Einstieg ins versteckte Spiel - sichtbar nur als Pixel */
 .footer__egg {
+  position: relative;
   width: 8px; height: 8px;
   margin-left: var(--s-2);
   padding: 0;
@@ -102,5 +103,12 @@
   border: 0;
   cursor: pointer;
   transition: background var(--dur-2) var(--ease-out);
+}
+/* Sichtbar bleiben 8 px, tippbar sind 44 px - sonst ist der Einstieg
+   auf dem Smartphone praktisch nicht zu treffen. */
+.footer__egg::after {
+  content: "";
+  position: absolute;
+  inset: -18px;
 }
 .footer__egg:hover { background: var(--moss-500); }

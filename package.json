@@ -6,12 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "test": "vitest run"
   },
   "dependencies": {
-    "next": "15.5.25",
+    "next": "16.3.4",
     "react": "19.1.1",
     "react-dom": "19.1.1"
   },
