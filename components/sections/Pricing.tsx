@@ -25,6 +25,7 @@ export default function Pricing() {
     <Section id="pricing" className="panel-backdrop" grid>
       <Container>
         <SectionHead
+          index="04"
           centered
           eyebrow={pricing.eyebrow}
           title={pricing.title}

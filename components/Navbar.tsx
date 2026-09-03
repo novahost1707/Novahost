@@ -117,7 +117,7 @@ export default function Navbar() {
           <LogoLink uid="header" />
 
           {/* Die Abschnittslinks — ab 980px sichtbar. */}
-          <div className="flex gap-7 text-[13.5px] max-[980px]:hidden">
+          <div className="flex gap-6 max-[980px]:hidden">
             {navLinks.map((link) => {
               const isActive = isHome && activeHash === link.hash;
 
@@ -138,7 +138,7 @@ export default function Navbar() {
           <div className="flex items-center gap-3">
             <Link
               href={hrefFor("#contact")}
-              className="text-[13.5px] font-medium text-nh-body transition-colors duration-[var(--dur-hover)] hover:text-nh-ink max-[560px]:hidden"
+              className="font-mono text-[12.5px] text-nh-body transition-colors duration-[var(--dur-hover)] hover:text-nh-ink max-[560px]:hidden"
             >
               Erstgespräch
             </Link>
@@ -196,7 +196,7 @@ export default function Navbar() {
                 href={hrefFor(link.hash)}
                 onClick={() => setIsMenuOpen(false)}
                 tabIndex={isMenuOpen ? undefined : -1}
-                className="rounded-card px-4 py-3 text-[15px] font-medium text-nh-body transition-colors duration-[var(--dur-hover)] hover:bg-nh-surface/70 hover:text-nh-blue"
+                className="rounded-card px-4 py-3 font-mono text-[14px] text-nh-body transition-colors duration-[var(--dur-hover)] hover:bg-nh-panel hover:text-nh-blue"
               >
                 {link.label}
               </Link>

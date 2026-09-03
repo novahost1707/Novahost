@@ -17,6 +17,7 @@ export default function Services() {
     <Section id="services" className="panel-backdrop" grid>
       <Container>
         <SectionHead
+          index="01"
           eyebrow={sectionHeads.services.eyebrow}
           title={sectionHeads.services.title}
           accent={sectionHeads.services.accent}

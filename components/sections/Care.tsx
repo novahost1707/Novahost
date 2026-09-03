@@ -18,6 +18,7 @@ export default function Care() {
     <Section id="care" className="panel-backdrop" grid>
       <Container>
         <SectionHead
+          index="06"
           centered
           eyebrow={sectionHeads.care.eyebrow}
           title={sectionHeads.care.title}

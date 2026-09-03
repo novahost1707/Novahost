@@ -837,11 +837,15 @@
     opacity: 1;
   }
 
-  /* --- Navigationslinks --- */
+  /* --- Navigationslinks ---
+     In Monospace: die Navigation ist das erste, was man sieht, und sagt damit
+     sofort, mit welcher Art Betrieb man es zu tun hat. */
   .nav-link {
     position: relative;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    letter-spacing: -0.01em;
     color: var(--color-nh-body);
-    font-weight: 500;
     transition: color var(--dur-hover) ease;
   }
 
@@ -852,8 +856,7 @@
     right: 0;
     bottom: -7px;
     height: 1.5px;
-    border-radius: 2px;
-    background: var(--gradient-accent);
+    background: var(--color-nh-blue);
     transform: scaleX(0);
     transform-origin: left;
     transition: transform var(--dur-hover) var(--ease-nh);
@@ -1189,9 +1192,10 @@
 
   /** Grosse Nummer im Kartenhintergrund — traegt die Hierarchie. */
   .card-index {
-    font-family: var(--font-display);
-    font-weight: 800;
-    font-size: 78px;
+    /* Monospace statt Display-Schrift: eine Zeilennummer, kein Deko-Element. */
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 62px;
     line-height: 1;
     color: rgba(11, 39, 96, 0.05);
     transition: color var(--dur-slow) ease;

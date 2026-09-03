@@ -16,6 +16,7 @@ export default function Performance() {
     <Section id="performance" grid>
       <Container>
         <SectionHead
+          index="03"
           centered
           eyebrow={sectionHeads.performance.eyebrow}
           title={sectionHeads.performance.title}

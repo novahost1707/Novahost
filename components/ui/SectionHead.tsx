@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import Eyebrow from "@/components/ui/Eyebrow";
+import SectionMarker from "@/components/ui/SectionMarker";
 
 interface SectionHeadProps {
   eyebrow: string;
@@ -10,6 +11,9 @@ interface SectionHeadProps {
   className?: string;
   /** Zentriert Kopf und Text — fuer Abschnitte ueber die volle Breite. */
   centered?: boolean;
+  /** Laufende Nummer des Abschnitts, z. B. "02". */
+  index?: string;
+
 }
 
 /**
@@ -26,20 +30,27 @@ export default function SectionHead({
   text,
   className,
   centered,
+  index,
 }: SectionHeadProps) {
   const at = accent ? title.indexOf(accent) : -1;
 
   return (
     <div
       className={cn(
-        "reveal mb-[60px] max-w-[680px] max-[760px]:mb-11",
-        centered && "mx-auto text-center",
+        "reveal mb-[60px] max-[760px]:mb-11",
+        centered ? "mx-auto max-w-[760px] text-center" : "max-w-[680px]",
         className,
       )}
     >
-      <Eyebrow>{eyebrow}</Eyebrow>
+      {/* Die Marke traegt die Benennung; ein zusaetzliches Eyebrow wuerde
+          direkt darunter dasselbe Wort wiederholen. */}
+      {index ? (
+        <SectionMarker index={index} label={eyebrow} className="text-left" />
+      ) : (
+        <Eyebrow>{eyebrow}</Eyebrow>
+      )}
 
-      <h2 className="mt-[18px] text-[clamp(30px,4.4vw,52px)]">
+      <h2 className="mt-3.5 text-[clamp(30px,4.4vw,52px)]">
         {at === -1 || !accent ? (
           title
         ) : (

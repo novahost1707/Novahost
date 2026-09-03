@@ -20,6 +20,7 @@ export default function Process() {
     <Section id="process" className="accent-backdrop">
       <Container>
         <SectionHead
+          index="02"
           eyebrow={sectionHeads.process.eyebrow}
           title={sectionHeads.process.title}
           accent={sectionHeads.process.accent}

@@ -1,6 +1,6 @@
 import Container from "@/components/ui/Container";
 import Section from "@/components/ui/Section";
-import Eyebrow from "@/components/ui/Eyebrow";
+import SectionMarker from "@/components/ui/SectionMarker";
 import StatusDot from "@/components/ui/StatusDot";
 import ContactForm from "@/components/ContactForm";
 import { contact, siteMeta } from "@/lib/content";
@@ -16,9 +16,9 @@ export default function Contact() {
       <Container>
         <div className="grid grid-cols-[minmax(0,0.85fr)_minmax(0,1fr)] items-start gap-14 max-[900px]:grid-cols-1 max-[900px]:gap-10">
           <div className="reveal">
-            <Eyebrow>{contact.eyebrow}</Eyebrow>
+            <SectionMarker index="08" label={contact.eyebrow} />
 
-            <h2 className="mt-[18px] text-[clamp(28px,3.8vw,46px)]">
+            <h2 className="mt-3.5 text-[clamp(28px,3.8vw,46px)]">
               {contact.title}
             </h2>
 

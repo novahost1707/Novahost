@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Container from "@/components/ui/Container";
 import Section from "@/components/ui/Section";
-import Eyebrow from "@/components/ui/Eyebrow";
+import SectionMarker from "@/components/ui/SectionMarker";
 import Icon from "@/components/ui/Icon";
 import Terminal from "@/components/Terminal";
 import { buildTerminal, craftFeatures } from "@/lib/content";
@@ -20,9 +20,9 @@ export default function Craft() {
         <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] items-center gap-14 max-[1000px]:grid-cols-1 max-[1000px]:gap-10">
           {/* Textspalte */}
           <div className="reveal">
-            <Eyebrow>Handarbeit</Eyebrow>
+            <SectionMarker index="05" label="Handarbeit" />
 
-            <h2 className="mt-[18px] text-[clamp(30px,4.4vw,52px)]">
+            <h2 className="mt-3.5 text-[clamp(30px,4.4vw,52px)]">
               Gebaut, nicht{" "}
               <span className="text-accent">zusammengeklickt.</span>
             </h2>

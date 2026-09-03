@@ -57,7 +57,8 @@ app/
 
 components/
   ui/                   Primitive: Container, Section, Eyebrow, SectionHead,
-                        LogoMark, LogoLink, Icon, StatusDot, MonoTag
+                        LogoMark, LogoLink, Icon, StatusDot, MonoTag,
+                        SectionMarker
   sections/             Hero, Services, Process, Performance, Pricing,
                         Craft, Care, About, Contact
   Navbar · Footer · ScrollReveal · HeroBackdrop · HeroDashboard
@@ -130,12 +131,18 @@ Consumer-App:
   Marketing-Seite.
 - **Fadenkreuz-Raster** im Hintergrund, angelehnt an eine
   Konstruktionszeichnung.
-- **Zeilennummern** im Code-Fenster, `data-caret` setzt einen blinkenden
-  Blockcursor hinter eine Headline.
+- **Zeilennummern** im Code-Fenster, Dateireiter als Kopfzeile (`.panel-head`),
+  `data-caret` setzt einen blinkenden Blockcursor hinter eine Headline.
+- **Abschnittsmarken** wie in einer Spezifikation: `02  Ablauf ──── 02 / 08`.
+  `SectionMarker` ersetzt das frühere Eyebrow — beide hätten direkt
+  untereinander dasselbe Wort gesagt.
+- **Navigation in Monospace**: das Erste, was man sieht, sagt sofort, mit
+  welcher Art Betrieb man es zu tun hat.
 
 Wiederverwendbare Klassen: `.panel`, `.panel-head`, `.glass`, `.glass-edge`,
 `.glow-hover`, `.pointer-glow`, `.sheen`, `.tilt`, `.terminal`, `.meter`,
-`.process-line`, `.tech-grid`, `.eyebrow`, `.btn` / `.btn-ghost`.
+`.process-line`, `.tech-grid`, `.eyebrow`, `.card-index`,
+`.btn` / `.btn-ghost`.
 
 > **Cascade Layers:** Die Komponenten-Klassen stehen bewusst in
 > `@layer components`. Ungeschichtetes CSS würde jede Tailwind-Utility am selben

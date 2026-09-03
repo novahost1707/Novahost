@@ -1,6 +1,6 @@
 import Container from "@/components/ui/Container";
 import Section from "@/components/ui/Section";
-import Eyebrow from "@/components/ui/Eyebrow";
+import SectionMarker from "@/components/ui/SectionMarker";
 import Counter from "@/components/Counter";
 import { about } from "@/lib/content";
 
@@ -16,9 +16,9 @@ export default function About() {
       <Container>
         <div className="grid grid-cols-[minmax(0,0.95fr)_minmax(0,1fr)] gap-14 max-[900px]:grid-cols-1 max-[900px]:gap-10">
           <div className="reveal">
-            <Eyebrow>{about.eyebrow}</Eyebrow>
+            <SectionMarker index="07" label={about.eyebrow} />
 
-            <h2 className="mt-[18px] text-[clamp(28px,3.8vw,44px)]">
+            <h2 className="mt-3.5 text-[clamp(28px,3.8vw,44px)]">
               {about.title}
             </h2>
 
