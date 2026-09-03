@@ -1,0 +1,171 @@
+/* ============================================================
+   PREISE — grosse horizontale Zeilen, kein SaaS-Karten-Raster
+   ============================================================ */
+
+.pricing__head { display: grid; gap: var(--s-5); margin-block: var(--s-6) var(--s-8); }
+.pricing__head h2 { text-transform: uppercase; }
+
+@media (min-width: 900px) {
+  .pricing__head { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); align-items: end; gap: var(--s-8); }
+}
+
+.price__group { display: grid; gap: var(--s-4); }
+
+.price {
+  position: relative;
+  border: var(--border);
+  border-left: 3px solid var(--ink-400);
+  background: var(--ink-100);
+  transition: border-color var(--dur-2) var(--ease-out), background var(--dur-2) var(--ease-out);
+}
+.price:hover { border-color: var(--line-strong); border-left-color: var(--fog-600); }
+
+/* Empfehlung: ruhig markiert, nicht als Werbebanner */
+.price[data-featured="true"] {
+  border-color: var(--line-accent);
+  border-left-color: var(--moss-500);
+  background:
+    linear-gradient(120deg, var(--moss-900) 0%, transparent 42%),
+    var(--ink-200);
+}
+
+.price__head {
+  display: grid;
+  gap: var(--s-4);
+  padding: var(--s-5);
+}
+
+.price__badge {
+  display: inline-block;
+  align-self: start;
+  justify-self: start;
+  padding: var(--s-1) var(--s-2);
+  margin-bottom: var(--s-2);
+  color: var(--ink-050);
+  background: var(--moss-400);
+}
+
+.price__name {
+  font-size: clamp(1.7rem, 3.4vw, 2.6rem);
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  color: var(--paper);
+  line-height: 1;
+}
+.price__audience { color: var(--fog-500); margin-top: var(--s-2); }
+
+.price__amount { display: flex; align-items: baseline; gap: var(--s-2); }
+.price__value {
+  font-size: clamp(1.8rem, 3.8vw, 3rem);
+  font-weight: 700;
+  white-space: nowrap;
+  letter-spacing: var(--ls-tight);
+  color: var(--paper);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.price[data-featured="true"] .price__value { color: var(--moss-300); }
+.price__note { color: var(--fog-500); }
+
+.price__aside { display: grid; gap: var(--s-4); align-content: start; }
+.price__positioning { font-size: var(--t-sm); color: var(--fog-300); max-width: 34ch; }
+.price__cta { justify-self: start; }
+
+.price__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding: var(--s-2) 0;
+  justify-self: start;
+  background: none;
+  border: 0;
+  color: var(--fog-500);
+  cursor: pointer;
+  transition: color var(--dur-1) var(--ease-out);
+}
+.price__toggle:hover { color: var(--paper); }
+.price__toggle-glyph {
+  width: 8px; height: 8px;
+  border-right: 1px solid currentColor;
+  border-bottom: 1px solid currentColor;
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform var(--dur-2) var(--ease-out);
+}
+.price[data-open="true"] .price__toggle-glyph { transform: translateY(1px) rotate(225deg); }
+
+/* Aufklappen ueber grid-template-rows: weich, ohne feste Hoehen */
+.price__features {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--dur-3) var(--ease-out);
+}
+.price[data-open="true"] .price__features { grid-template-rows: 1fr; }
+.price__features-inner { overflow: hidden; min-height: 0; }
+
+.price__features-list {
+  display: grid;
+  gap: var(--s-2);
+  padding: var(--s-5);
+  border-top: var(--border);
+}
+.price__feature {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-3);
+  font-size: var(--t-sm);
+  color: var(--fog-300);
+}
+.price__feature-mark {
+  flex: none;
+  width: var(--pixel-unit);
+  height: var(--pixel-unit);
+  background: var(--moss-500);
+  transform: translateY(-2px);
+}
+
+@media (min-width: 900px) {
+  .price__head {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.8fr) minmax(0, 1.1fr);
+    align-items: start;
+    gap: var(--s-6);
+    padding: var(--s-6);
+  }
+  .price__toggle { grid-column: 1 / -1; }
+  .price__features-list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-2) var(--s-6); padding: var(--s-6); }
+  /* Ab dieser Breite sind die Leistungen immer sichtbar - Preisvergleich
+     soll nicht von einem Klick abhaengen. */
+  .price__features { grid-template-rows: 1fr; }
+  .price__toggle { display: none; }
+}
+
+.pricing__vat {
+  margin-top: var(--s-5);
+  color: var(--text-faint);
+  max-width: 70ch;
+}
+
+/* --- BETREUUNG / REGELN ----------------------------------------------- */
+.care { margin-top: var(--s-11); }
+
+.rules {
+  margin-top: var(--s-7);
+  padding-top: var(--s-6);
+  border-top: var(--border);
+  display: grid;
+  gap: var(--s-5);
+}
+.rules__intro { max-width: 68ch; }
+.rules__list { display: grid; gap: var(--s-3); }
+.rules__row {
+  display: grid;
+  gap: var(--s-1);
+  padding-bottom: var(--s-3);
+  border-bottom: var(--border);
+}
+.rules__row dt { color: var(--accent); }
+.rules__row dd { font-size: var(--t-sm); color: var(--fog-400); }
+
+@media (min-width: 760px) {
+  .rules { grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: var(--s-8); }
+  .rules__row { grid-template-columns: 220px minmax(0, 1fr); gap: var(--s-5); align-items: baseline; }
+}

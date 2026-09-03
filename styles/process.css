@@ -1,0 +1,75 @@
+/* ============================================================
+   PROZESS — Timeline mit scrollgebundener Fortschrittslinie
+   ============================================================ */
+
+.process__head { display: grid; gap: var(--s-5); margin-block: var(--s-6) var(--s-8); }
+.process__head h2 { text-transform: uppercase; }
+
+@media (min-width: 900px) {
+  .process__head { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: end; gap: var(--s-8); }
+}
+
+.process__list { position: relative; padding-left: var(--s-6); }
+
+.process__track {
+  position: absolute;
+  top: 6px; bottom: 6px; left: 3px;
+  width: 1px;
+  background: var(--line);
+}
+.process__track-fill {
+  display: block;
+  width: 100%;
+  height: calc(var(--progress, 0) * 100%);
+  background: linear-gradient(var(--moss-500), var(--moss-700));
+  transition: height var(--dur-2) linear;
+}
+
+.process__step {
+  position: relative;
+  display: grid;
+  gap: var(--s-2);
+  padding-bottom: var(--s-7);
+  opacity: 0.45;
+  transition: opacity var(--dur-3) var(--ease-out);
+}
+.process__step[data-reached="true"] { opacity: 1; }
+.process__step:last-child { padding-bottom: 0; }
+
+.process__marker {
+  position: absolute;
+  left: calc(var(--s-6) * -1);
+  top: 8px;
+  width: 7px; height: 7px;
+  background: var(--ink-400);
+  transition: background var(--dur-2) var(--ease-out), transform var(--dur-3) var(--ease-out);
+}
+.process__step[data-reached="true"] .process__marker {
+  background: var(--accent);
+  transform: scale(1.15);
+}
+
+.process__num { color: var(--accent); }
+.process__title {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 2.6vw, 2rem);
+  letter-spacing: var(--ls-tight);
+  color: var(--paper);
+}
+.process__text { font-size: var(--t-sm); }
+
+@media (min-width: 900px) {
+  .process__list { padding-left: 0; }
+  .process__track { left: 50%; transform: translateX(-50%); }
+  .process__step {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: baseline;
+    column-gap: var(--s-8);
+    padding-bottom: var(--s-8);
+  }
+  .process__marker { left: 50%; transform: translateX(-50%); top: 10px; }
+  .process__step[data-reached="true"] .process__marker { transform: translateX(-50%) scale(1.15); }
+  .process__num { grid-column: 1; text-align: right; }
+  .process__title { grid-column: 1; grid-row: 2; text-align: right; padding-right: var(--s-6); }
+  .process__text { grid-column: 2; grid-row: 1 / span 2; padding-left: var(--s-6); }
+}

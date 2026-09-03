@@ -1,0 +1,78 @@
+/* ============================================================
+   EASTER EGG — Runner
+   ============================================================ */
+
+.dino {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-overlay);
+  display: grid;
+  place-items: center;
+  padding: var(--gutter);
+  background: color-mix(in srgb, var(--ink-000) 92%, transparent);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  animation: dinoIn var(--dur-2) var(--ease-out);
+}
+@keyframes dinoIn { from { opacity: 0; } to { opacity: 1; } }
+
+.dino__frame {
+  width: min(960px, 100%);
+  border: var(--border-strong);
+  background: var(--ink-050);
+  box-shadow: var(--shadow-2);
+}
+
+.dino__bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+  padding: var(--s-3) var(--s-4);
+  border-bottom: var(--border);
+  color: var(--fog-400);
+}
+.dino__bar > p { display: flex; align-items: center; gap: var(--s-2); }
+.dino__scores { display: flex; gap: var(--s-4); font-variant-numeric: tabular-nums; }
+.dino__close {
+  background: none;
+  border: 0;
+  color: var(--fog-500);
+  cursor: pointer;
+  padding: var(--s-2);
+  transition: color var(--dur-1) var(--ease-out);
+}
+.dino__close:hover { color: var(--paper); }
+
+.dino__stage { position: relative; }
+.dino__canvas {
+  width: 100%;
+  height: clamp(200px, 34vh, 300px);
+  display: block;
+  touch-action: manipulation;
+}
+
+.dino__overlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: var(--s-3);
+  text-align: center;
+  background: color-mix(in srgb, var(--ink-050) 74%, transparent);
+}
+.dino__title {
+  font-size: clamp(1.4rem, 4vw, 2.2rem);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-tight);
+  color: var(--paper);
+}
+
+.dino__foot {
+  padding: var(--s-3) var(--s-4);
+  border-top: var(--border);
+  color: var(--text-faint);
+}
+.dino__foot button { background: none; border: 0; color: var(--fog-300); cursor: pointer; font: inherit; }
