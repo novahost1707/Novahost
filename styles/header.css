@@ -21,8 +21,10 @@
 .header[data-condensed="true"] .header__inner { height: 64px; }
 .header[data-condensed="true"] {
   background: color-mix(in srgb, var(--ink-000) 78%, transparent);
-  backdrop-filter: blur(14px) saturate(120%);
-  -webkit-backdrop-filter: blur(14px) saturate(120%);
+  /* Vendor-Prefix bewusst nicht von Hand: der Build ergaenzt ihn nach
+     Browser-Zielen. Handgeschrieben verwarf der Minifier die unprefixte
+     Zeile und behielt die von Chrome nicht unterstuetzte Prefix-Variante. */
+  backdrop-filter: var(--glass);
 }
 
 .header__rule {

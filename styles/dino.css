@@ -11,7 +11,6 @@
   padding: var(--gutter);
   background: color-mix(in srgb, var(--ink-000) 92%, transparent);
   backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
   animation: dinoIn var(--dur-2) var(--ease-out);
 }
 @keyframes dinoIn { from { opacity: 0; } to { opacity: 1; } }
@@ -45,7 +44,11 @@
 }
 .dino__close:hover { color: var(--paper); }
 
-.dino__stage { position: relative; }
+.dino__stage {
+  position: relative;
+  /* verhindert Doppeltipp-Zoom waehrend des Spiels */
+  touch-action: manipulation;
+}
 .dino__canvas {
   width: 100%;
   height: clamp(200px, 34vh, 300px);
@@ -53,9 +56,13 @@
   touch-action: manipulation;
 }
 
+/* Das Overlay liegt ueber der Canvas. Ohne pointer-events: none fangen die
+   Start- und Game-over-Schilder jeden Tap ab - am Desktop faellt das wegen der
+   Leertaste nicht auf, mobil laesst sich das Spiel dann gar nicht starten. */
 .dino__overlay {
   position: absolute;
   inset: 0;
+  pointer-events: none;
   display: grid;
   place-content: center;
   justify-items: center;
@@ -69,6 +76,8 @@
   letter-spacing: var(--ls-tight);
   color: var(--paper);
 }
+
+.dino__overlay .btn { pointer-events: auto; }
 
 .dino__foot {
   padding: var(--s-3) var(--s-4);

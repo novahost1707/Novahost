@@ -103,6 +103,12 @@
   --pixel-unit: 4px;
 
   /* --- ELEVATION (sparsam, kein Glow) --- */
+  /* Der Wert steht bewusst in einer Variablen: der CSS-Minifier von Next 16
+     zieht mehrteilige Filterwerte direkt in der Deklaration zusammen
+     ("blur(14px)saturate(120%)"), was ungueltig ist und den Effekt still
+     verschluckt. In einer Custom Property bleiben die Leerzeichen erhalten. */
+  --glass: blur(14px) saturate(120%);
+
   --shadow-1: 0 1px 0 0 rgba(255, 255, 255, 0.03) inset;
   --shadow-2: 0 24px 64px -32px rgba(0, 0, 0, 0.9);
 
