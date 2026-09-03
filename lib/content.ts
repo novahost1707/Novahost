@@ -152,6 +152,7 @@ export const sectionHeads = {
 export const services: ServiceItem[] = [
   {
     num: "01",
+    file: "webdesign.tsx",
     icon: "design",
     title: "Webdesign",
     text: "Entwurf in Figma, zugeschnitten auf eure Marke und eure Kundschaft. Ihr seht das Design, bevor eine Zeile Code entsteht.",
@@ -160,6 +161,7 @@ export const services: ServiceItem[] = [
   },
   {
     num: "02",
+    file: "umsetzung.tsx",
     icon: "code",
     title: "Umsetzung",
     text: "Handgeschriebener Code statt Baukasten. Schnell, sauber strukturiert und auf jedem Gerät gleich gut zu bedienen.",
@@ -168,6 +170,7 @@ export const services: ServiceItem[] = [
   },
   {
     num: "03",
+    file: "relaunch.tsx",
     icon: "relaunch",
     title: "Relaunch",
     text: "Bestehende Seite neu aufgebaut — Inhalte übernommen, Struktur aufgeräumt, Ladezeit und Auffindbarkeit deutlich verbessert.",
@@ -176,6 +179,7 @@ export const services: ServiceItem[] = [
   },
   {
     num: "04",
+    file: "betreuung.ts",
     icon: "care",
     title: "Betreuung",
     text: "Nach dem Launch übernehmen wir: Änderungen, Updates, Backups und ein fester Ansprechpartner. Das ist das monatliche Abo.",
@@ -184,6 +188,7 @@ export const services: ServiceItem[] = [
   },
   {
     num: "05",
+    file: "seo.ts",
     icon: "seo",
     title: "SEO & Tempo",
     text: "Damit Menschen euch finden und nicht vorher abspringen: saubere Struktur, sinnvolle Texte, kurze Ladezeiten.",
@@ -192,6 +197,7 @@ export const services: ServiceItem[] = [
   },
   {
     num: "06",
+    file: "inhalte.md",
     icon: "content",
     title: "Inhalte",
     text: "Texte, Bilder und Struktur. Wir sortieren, was ihr habt, und formulieren um, wo es hakt — ihr müsst nicht texten können.",

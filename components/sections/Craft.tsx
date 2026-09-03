@@ -9,13 +9,14 @@ import { buildTerminal, craftFeatures } from "@/lib/content";
 /**
  * Wie die Websites entstehen.
  *
- * Der Abschnitt bricht bewusst mit dem hellen Rest: das Terminal ist die
- * einzige dunkle Flaeche der Seite. Genau dieser Kontrast macht den Punkt —
- * hier wird nicht in einem Baukasten geklickt, hier wird gebaut.
+ * Der Abschnitt laeuft als dunkles Band ueber die volle Breite — das Terminal
+ * gibt hier den Ton fuer die ganze Flaeche an, statt als einzelne dunkle Insel
+ * im Hellen zu stehen. Genau dieser Kontrast macht den Punkt: hier wird nicht
+ * in einem Baukasten geklickt, hier wird gebaut.
  */
 export default function Craft() {
   return (
-    <Section id="craft" className="accent-backdrop">
+    <Section id="craft" className="band-dark">
       <Container>
         <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] items-center gap-14 max-[1000px]:grid-cols-1 max-[1000px]:gap-10">
           {/* Textspalte */}

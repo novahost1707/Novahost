@@ -771,6 +771,87 @@
       var(--color-nh-bg);
   }
 
+  /**
+   * Dunkles Band — der Bruch im Rhythmus.
+   *
+   * Die Seite war durchgehend hell und dadurch gleichfoermig: jeder Abschnitt
+   * sah aus wie der vorige. Zwei Abschnitte laufen deshalb als dunkles Band,
+   * wie ein Terminalfenster ueber die volle Breite.
+   *
+   * Umgesetzt, indem die Farbtokens lokal auf ihre dunklen Werte gesetzt
+   * werden — alle Kinder (Panels, Chips, Text) folgen automatisch, ohne dass
+   * eine einzige Komponente davon wissen muss.
+   *
+   * Im dunklen Modus ist der Grund noch etwas tiefer als die Seite, damit das
+   * Band auch dort als eigener Block lesbar bleibt.
+   */
+  .band-dark {
+    --color-nh-bg: #04070e;
+    --color-nh-canvas: #080d18;
+    --color-nh-panel: #0e1626;
+    --color-nh-surface: #111c30;
+
+    --color-nh-ink: #f1f5ff;
+    --color-nh-body: #b3c1dc;
+    --color-nh-mute: #8493b2;
+    --color-nh-mute-2: #64738f;
+
+    --color-nh-blue: #5b8cff;
+    --color-nh-blue-2: #85aaff;
+    --color-nh-blue-deep: #2f6bff;
+    --color-nh-cyan: #2fd8f0;
+    --color-nh-ok: #34d399;
+    --color-nh-warn: #fbbf4c;
+    --color-nh-error: #fb7185;
+
+    --color-nh-line: rgba(170, 200, 255, 0.14);
+    --color-nh-line-2: rgba(170, 200, 255, 0.06);
+    --color-code-string: #4ade9b;
+
+    --glass-bg: linear-gradient(
+      160deg,
+      rgba(30, 44, 72, 0.7),
+      rgba(14, 22, 38, 0.5)
+    );
+    --glass-border: rgba(170, 200, 255, 0.16);
+    --glass-shadow:
+      0 24px 60px -30px rgba(0, 0, 0, 0.9),
+      inset 0 1px 0 rgba(255, 255, 255, 0.06);
+
+    color-scheme: dark;
+    background: var(--color-nh-bg);
+    color: var(--color-nh-body);
+    border-top: 1px solid rgba(170, 200, 255, 0.1);
+    border-bottom: 1px solid rgba(170, 200, 255, 0.1);
+  }
+
+  /**
+   * Zeile in einer Ausgabe: Bezeichnung links, Wert rechts, dazwischen eine
+   * gepunktete Fuehrung — wie sie Testlaeufe und Benchmarks ausgeben.
+   */
+  .out-row {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    font-family: var(--font-mono);
+  }
+
+  .out-row > .out-fill {
+    flex: 1;
+    height: 1em;
+    min-width: 20px;
+    border-bottom: 1px dotted var(--color-nh-line);
+    transform: translateY(-0.28em);
+  }
+
+  /* --- Editor-Statusleiste am unteren Rand --- */
+  .statusbar {
+    font-family: var(--font-mono);
+    background: var(--color-nh-ink);
+    color: var(--color-nh-bg);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
   /** Trennlinie zwischen zwei Abschnitten: in der Mitte hell, aussen weg. */
   .section-rule {
     height: 1px;

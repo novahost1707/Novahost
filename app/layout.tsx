@@ -5,6 +5,7 @@ import CookieConsent from "@/components/CookieConsent";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import ScrollReveal from "@/components/ScrollReveal";
+import StatusBar from "@/components/StatusBar";
 import { siteMeta } from "@/lib/content";
 import { THEME_INIT_SCRIPT } from "@/lib/theme";
 import "./globals.css";
@@ -103,6 +104,7 @@ export default function RootLayout({
         <main id="main">{children}</main>
         <Footer />
         <ScrollReveal />
+        <StatusBar />
         <CookieConsent />
       </body>
     </html>

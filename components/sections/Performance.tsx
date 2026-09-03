@@ -1,59 +1,87 @@
 import Container from "@/components/ui/Container";
 import Section from "@/components/ui/Section";
-import SectionHead from "@/components/ui/SectionHead";
 import Counter from "@/components/Counter";
+import SectionMarker from "@/components/ui/SectionMarker";
 import { metrics, sectionHeads } from "@/lib/content";
 
 /**
- * Die vier grossen Kennzahlen.
+ * Die Kennzahlen — als Ausgabe eines Messlaufs, nicht als Kachelreihe.
  *
- * Bewusst der ruhigste Abschnitt der Seite: keine Icons, keine Karten mit
- * Rahmen, nur sehr grosse Zahlen auf viel Weissraum. Die Zahlen zaehlen beim
- * Erscheinen hoch (siehe components/Counter.tsx).
+ * Vorher standen hier vier gleich grosse Zahlen nebeneinander, wie in jedem
+ * zweiten SaaS-Baukasten. Jetzt liest sich der Abschnitt wie das, was beim
+ * Messen tatsaechlich herauskommt: eine Befehlszeile, darunter je eine Zeile
+ * pro Wert mit gepunkteter Fuehrung.
+ *
+ * Der Abschnitt laeuft als dunkles Band ueber die volle Breite und bricht
+ * damit die Gleichfoermigkeit der hellen Seite. Die Zahlen zaehlen weiter
+ * hoch (components/Counter.tsx).
  */
 export default function Performance() {
   return (
-    <Section id="performance" grid>
+    <Section id="performance" className="band-dark">
       <Container>
-        <SectionHead
-          index="03"
-          centered
-          eyebrow={sectionHeads.performance.eyebrow}
-          title={sectionHeads.performance.title}
-          accent={sectionHeads.performance.accent}
-          text={sectionHeads.performance.text}
-        />
+        <div className="reveal">
+          <SectionMarker index="03" label={sectionHeads.performance.eyebrow} />
 
-        <div className="stagger grid grid-cols-4 gap-6 max-[900px]:grid-cols-2 max-[480px]:grid-cols-1">
-          {metrics.map((metric) => (
-            <div key={metric.label} className="group relative text-center">
-              {/* Der Schein erscheint erst beim Hover — sonst leuchtet die
-                  ganze Reihe dauerhaft und nichts hebt sich mehr ab. */}
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute inset-0 rounded-panel bg-[radial-gradient(circle_at_50%_30%,color-mix(in_oklab,var(--color-nh-blue)_12%,transparent),transparent_68%)] opacity-0 transition-opacity duration-[var(--dur-slow)] group-hover:opacity-100"
-              />
+          <h2 className="mt-3.5 max-w-[680px] text-[clamp(30px,4.4vw,52px)]">
+            Woran ihr uns{" "}
+            <span className="text-accent" data-caret>
+              messen könnt.
+            </span>
+          </h2>
 
-              <div className="relative px-2 py-6">
-                <div className="font-display text-[clamp(38px,5.4vw,60px)] leading-none font-extrabold tracking-[-0.04em] text-nh-ink">
-                  <Counter
-                    value={metric.value}
-                    decimals={metric.decimals}
-                    prefix={metric.prefix}
-                  />
-                  <span className="text-accent">{metric.suffix}</span>
-                </div>
+          <p className="mt-5 max-w-[620px] text-[16.5px] leading-[1.7] text-nh-body">
+            {sectionHeads.performance.text}
+          </p>
+        </div>
 
-                <div className="mt-4 font-mono text-[11.5px] tracking-[0.16em] text-nh-blue uppercase">
-                  {metric.label}
-                </div>
+        {/* Die Messung als Terminalausgabe. */}
+        <div className="reveal panel mt-12 overflow-hidden rounded-panel">
+          <div className="panel-head">
+            <span className="h-2 w-2 rounded-[2px] bg-nh-blue/60" />
+            <span>nova bench — kundenprojekte</span>
+          </div>
 
-                <p className="mx-auto mt-2.5 max-w-[220px] text-[13.5px] leading-[1.6] text-nh-mute">
-                  {metric.hint}
-                </p>
+          <div className="overflow-x-auto px-6 py-6 max-[560px]:px-4">
+            <div className="min-w-[420px]">
+              <div className="flex gap-2 font-mono text-[13px]">
+                <span className="text-nh-cyan select-none">$</span>
+                <span className="text-nh-ink">nova bench --alle --seit 12m</span>
+              </div>
+
+              <dl className="mt-5 flex flex-col gap-3.5">
+                {metrics.map((metric) => (
+                  <div key={metric.label} className="out-row text-[13.5px]">
+                    <dt className="whitespace-nowrap text-nh-body">
+                      {metric.label.toLowerCase()}
+                    </dt>
+
+                    <span aria-hidden="true" className="out-fill" />
+
+                    <dd className="flex items-baseline gap-3 whitespace-nowrap">
+                      <span className="hidden text-[12px] text-nh-mute-2 min-[760px]:inline">
+                        {metric.hint}
+                      </span>
+
+                      <span className="w-[92px] text-right text-[15px] font-semibold text-nh-ink">
+                        <Counter
+                          value={metric.value}
+                          decimals={metric.decimals}
+                          prefix={metric.prefix}
+                        />
+                        <span className="text-accent">{metric.suffix}</span>
+                      </span>
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+
+              <div className="mt-6 border-t border-nh-line pt-4 font-mono text-[12.5px] text-nh-mute">
+                <span className="text-nh-ok">✓</span> 4 Messwerte · erhoben beim
+                Launch und im laufenden Betrieb
               </div>
             </div>
-          ))}
+          </div>
         </div>
       </Container>
     </Section>

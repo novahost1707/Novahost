@@ -27,6 +27,8 @@ export type ServiceIconName =
 export interface ServiceItem {
   /** Zweistellige Nummer, z. B. "01" — erscheint als Mono-Label. */
   num: string;
+  /** Dateiname im Kartenreiter, z. B. "webdesign.tsx". */
+  file: string;
   icon: ServiceIconName;
   title: string;
   text: string;

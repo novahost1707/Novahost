@@ -1,61 +1,94 @@
 import Container from "@/components/ui/Container";
 import Section from "@/components/ui/Section";
-import SectionHead from "@/components/ui/SectionHead";
 import Icon from "@/components/ui/Icon";
-import StatusDot from "@/components/ui/StatusDot";
+import SectionMarker from "@/components/ui/SectionMarker";
 import { careItems, sectionHeads } from "@/lib/content";
 
 /**
- * Was im monatlichen Abo steckt.
+ * Was im Abo steckt — als Ausgabe eines Testlaufs.
  *
- * Flachere Karten als bei den Leistungen — hier geht es um Vollstaendigkeit,
- * nicht um Auswahl. Jede Karte traegt eine Statuszeile in Monospace, die den
- * jeweiligen Punkt konkret macht: "monatlich", "30 tage", "5 min". Ohne diese
- * Zahlen waere der Abschnitt eine Liste unverbindlicher Versprechen.
+ * Vorher ein Raster aus sechs gleichen Karten, wie in den beiden Abschnitten
+ * davor. Jetzt eine durchlaufende Liste mit Haken, gepunkteter Fuehrung und
+ * Statuswert rechts — die Form, in der ein Testlauf sein Ergebnis ausgibt.
+ *
+ * Das passt inhaltlich: Es sind Zusagen, die entweder erfuellt sind oder
+ * nicht. Und es unterscheidet den Abschnitt deutlich von den Kartenrastern.
  */
 export default function Care() {
   return (
     <Section id="care" className="panel-backdrop" grid>
       <Container>
-        <SectionHead
-          index="06"
-          centered
-          eyebrow={sectionHeads.care.eyebrow}
-          title={sectionHeads.care.title}
-          accent={sectionHeads.care.accent}
-          text={sectionHeads.care.text}
-        />
+        <div className="reveal max-w-[680px]">
+          <SectionMarker index="06" label={sectionHeads.care.eyebrow} />
 
-        <div className="stagger grid grid-cols-3 gap-4 max-[900px]:grid-cols-2 max-[560px]:grid-cols-1">
-          {careItems.map((item) => (
-            <div
-              key={item.title}
-              className="panel glow-hover group relative overflow-hidden rounded-panel p-6 hover:-translate-y-1"
-            >
-              <div className="flex items-start gap-4">
-                <span className="flex h-11 w-11 flex-none items-center justify-center rounded-card border border-nh-line bg-nh-surface/70 text-nh-blue transition-all duration-[var(--dur-hover)] group-hover:border-transparent group-hover:bg-[linear-gradient(140deg,var(--color-nh-blue),var(--color-nh-cyan))] group-hover:text-white">
-                  <Icon name={item.icon} className="h-[21px] w-[21px]" />
+          <h2 className="mt-3.5 text-[clamp(30px,4.4vw,52px)]">
+            Was wir übernehmen,{" "}
+            <span className="text-accent">damit ihr es nicht müsst.</span>
+          </h2>
+
+          <p className="mt-5 text-[16.5px] leading-[1.7] text-nh-body">
+            {sectionHeads.care.text}
+          </p>
+        </div>
+
+        <div className="reveal panel mt-12 overflow-hidden rounded-panel">
+          <div className="panel-head justify-between">
+            <span className="flex items-center gap-2.5">
+              <span className="rounded-[3px] bg-nh-ok px-1.5 py-0.5 text-[10px] font-bold text-white">
+                PASS
+              </span>
+              betreuung.spec.ts
+            </span>
+
+            <span className="text-nh-mute-2">
+              {careItems.length} / {careItems.length}
+            </span>
+          </div>
+
+          <ul className="divide-y divide-nh-line">
+            {careItems.map((item) => (
+              <li
+                key={item.title}
+                className="group flex items-start gap-4 px-6 py-5 transition-colors duration-[var(--dur-hover)] hover:bg-nh-panel max-[560px]:px-4"
+              >
+                <span className="mt-0.5 flex-none font-mono text-[13px] text-nh-ok select-none">
+                  ✓
                 </span>
 
-                <div className="min-w-0">
-                  <h3 className="font-display text-[17px] leading-tight font-extrabold text-nh-ink">
-                    {item.title}
-                  </h3>
+                <span className="mt-px flex-none text-nh-blue">
+                  <Icon name={item.icon} className="h-[18px] w-[18px]" />
+                </span>
 
-                  <p className="mt-2 text-[14px] leading-[1.65] text-nh-body">
+                <div className="min-w-0 flex-1">
+                  <div className="out-row">
+                    <h3 className="font-display text-[16px] leading-tight font-extrabold text-nh-ink">
+                      {item.title}
+                    </h3>
+
+                    <span aria-hidden="true" className="out-fill" />
+
+                    <span className="hidden text-[12px] whitespace-nowrap text-nh-mute min-[640px]:inline">
+                      {item.status}
+                    </span>
+                  </div>
+
+                  <p className="mt-2 max-w-[68ch] text-[14px] leading-[1.65] text-nh-body">
                     {item.text}
                   </p>
-                </div>
-              </div>
 
-              <div className="mt-5 flex items-center gap-2 border-t border-nh-line pt-3.5">
-                <StatusDot />
-                <span className="font-mono text-[11px] text-nh-mute">
-                  {item.status}
-                </span>
-              </div>
-            </div>
-          ))}
+                  {/* Auf schmalen Geraeten steht der Status unter dem Text. */}
+                  <div className="mt-2 font-mono text-[11.5px] text-nh-mute min-[640px]:hidden">
+                    {item.status}
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ul>
+
+          <div className="border-t border-nh-line px-6 py-4 font-mono text-[12px] text-nh-mute max-[560px]:px-4">
+            <span className="text-nh-ok">✓</span> alle Zusagen gelten ab dem
+            kleinsten Tarif — nichts davon ist Aufpreis
+          </div>
         </div>
       </Container>
     </Section>

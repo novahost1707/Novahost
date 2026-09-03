@@ -177,7 +177,7 @@ export default function CookieConsent() {
         tabIndex={-1}
         role="region"
         aria-label={texts.title}
-        className="consent-banner glass glass-edge fixed right-4 bottom-4 left-4 z-[120] mx-auto max-w-[860px] rounded-panel p-6 max-[560px]:p-5"
+        className="consent-banner glass glass-edge fixed right-4 bottom-4 left-4 min-[900px]:bottom-9 z-[120] mx-auto max-w-[860px] rounded-panel p-6 max-[560px]:p-5"
       >
         <div className="flex items-start gap-5 max-[760px]:flex-col max-[760px]:gap-4">
           <div className="min-w-0 flex-1">
