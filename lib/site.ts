@@ -4,16 +4,45 @@
  * ausgeblendet, solange nichts hinterlegt ist - es werden keine Daten erfunden.
  */
 
-export const siteUrl = (
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://novahost.de"
-).replace(/\/$/, "");
+/**
+ * Basis-URL der Seite. Sie steckt in Canonicals, Open Graph, robots.txt und
+ * sitemap.xml - eine falsche Adresse dort schadet der Auffindbarkeit spuerbar.
+ *
+ * Reihenfolge:
+ * 1. NEXT_PUBLIC_SITE_URL, sobald die echte Domain hinterlegt ist
+ * 2. die Produktionsdomain des Hosters, damit die Angaben auch ohne gesetzte
+ *    Variable auf die tatsaechlich ausgelieferte Adresse zeigen
+ * 3. erst danach der Platzhalter
+ *
+ * Wird nur serverseitig ausgewertet (Metadaten, robots, sitemap).
+ */
+function resolveSiteUrl(): string {
+  const configured = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  if (configured) return withProtocol(configured);
+
+  const hosted = process.env.VERCEL_PROJECT_PRODUCTION_URL?.trim();
+  if (hosted) return withProtocol(hosted);
+
+  return "https://novahost.de";
+}
+
+function withProtocol(value: string): string {
+  const url = /^https?:\/\//i.test(value) ? value : `https://${value}`;
+  return url.replace(/\/+$/, "");
+}
+
+export const siteUrl = resolveSiteUrl();
 
 export const site = {
   name: "Novahost",
   wordmark: "NOVAHOST",
   tagline: "Websites, die aus Besuchern Kunden machen.",
+  /**
+   * Bewusst unter 160 Zeichen: laengere Beschreibungen schneidet Google im
+   * Suchergebnis ab, der abgeschnittene Teil wirkt dann unfertig.
+   */
   description:
-    "Novahost entwickelt professionelle Websites für Handwerksbetriebe, lokale Dienstleister und KMU - mit Strategie, Design, Entwicklung und laufender Betreuung. Transparente Preise ab 1.490 EUR.",
+    "Professionelle Websites für Handwerk, lokale Dienstleister und KMU: Strategie, Design, Entwicklung, laufende Betreuung. Transparente Preise ab 1.490 EUR.",
   locale: "de_DE",
   email: process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "",
   phone: process.env.NEXT_PUBLIC_CONTACT_PHONE ?? "",

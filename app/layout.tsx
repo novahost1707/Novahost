@@ -5,6 +5,8 @@ import { DinoGame } from "@/components/easteregg/DinoGame";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { site, siteUrl } from "@/lib/site";
+import { faq, services } from "@/lib/content";
+import { projectTiers } from "@/lib/pricing";
 import "./globals.css";
 
 /* Zwei typografische Ebenen: ca. 80 % moderne Sans, ca. 20 % Pixel. */
@@ -60,7 +62,19 @@ export const metadata: Metadata = {
     title: `${site.name} - Websites, die aus Besuchern Kunden machen`,
     description: site.description,
   },
-  robots: { index: true, follow: true },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      // Erlaubt grosse Bildvorschauen und ungekuerzte Textausschnitte im
+      // Suchergebnis. Ohne diese Angabe entscheidet Google konservativer.
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
   formatDetection: { telephone: false },
 };
 
@@ -93,20 +107,62 @@ const jsonLd = {
       url: siteUrl,
       description: site.description,
       slogan: site.tagline,
+      logo: `${siteUrl}/icon.svg`,
       ...(site.email ? { email: site.email } : {}),
       ...(site.phone ? { telephone: site.phone } : {}),
     },
     {
+      "@type": "WebPage",
+      "@id": `${siteUrl}/#webpage`,
+      url: `${siteUrl}/`,
+      name: `${site.name} - ${site.tagline}`,
+      description: site.description,
+      inLanguage: "de-DE",
+      isPartOf: { "@id": `${siteUrl}/#website` },
+      about: { "@id": `${siteUrl}/#organization` },
+      primaryImageOfPage: `${siteUrl}/opengraph-image`,
+    },
+    {
       "@type": "Service",
+      "@id": `${siteUrl}/#service`,
       name: "Webdesign und Webentwicklung für Unternehmen",
       provider: { "@id": `${siteUrl}/#organization` },
       areaServed: "DE",
       serviceType: "Webdesign, Webentwicklung, Conversion-Optimierung",
-      offers: [
-        { "@type": "Offer", name: "Launch", price: "1490", priceCurrency: "EUR" },
-        { "@type": "Offer", name: "Business", price: "2490", priceCurrency: "EUR" },
-        { "@type": "Offer", name: "Custom", price: "4900", priceCurrency: "EUR" },
-      ],
+      // Der Katalog listet genau die Leistungen, die auch auf der Seite
+      // stehen - er wird aus derselben Quelle erzeugt und kann deshalb nicht
+      // auseinanderlaufen.
+      hasOfferCatalog: {
+        "@type": "OfferCatalog",
+        name: "Leistungen",
+        itemListElement: services.items.map((item) => ({
+          "@type": "Offer",
+          itemOffered: { "@type": "Service", name: item.title, description: item.body },
+        })),
+      },
+      offers: projectTiers.map((tier) => ({
+        "@type": "Offer",
+        name: tier.name,
+        description: tier.positioning,
+        price: tier.price.replace(/[^0-9]/g, ""),
+        priceCurrency: "EUR",
+        // Die Preise sind Nettopreise fuer Unternehmen, siehe Hinweis auf der Seite
+        valueAddedTaxIncluded: false,
+        category: tier.audience,
+      })),
+    },
+    {
+      // Die Fragen und Antworten stehen so auch sichtbar auf der Seite -
+      // strukturierte Daten duerfen nichts behaupten, was ein Besucher dort
+      // nicht findet.
+      "@type": "FAQPage",
+      "@id": `${siteUrl}/#faq`,
+      isPartOf: { "@id": `${siteUrl}/#webpage` },
+      mainEntity: faq.items.map((item) => ({
+        "@type": "Question",
+        name: item.q,
+        acceptedAnswer: { "@type": "Answer", text: item.a },
+      })),
     },
   ],
 };
