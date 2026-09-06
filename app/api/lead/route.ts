@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { clientKey, rateLimit } from "@/lib/rate-limit";
 import { clean, hasErrors, normalizeUrl, validateLead, type LeadPayload } from "@/lib/validation";
+import { CONFIRMATION_COOKIE, CONFIRMATION_MAX_AGE } from "@/lib/confirmation";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -69,7 +70,19 @@ export async function POST(request: Request) {
     );
   }
 
-  return NextResponse.json({ ok: true });
+  // Nachweis fuer die Bestaetigungsseite. Ohne dieses Kennzeichen leitet
+  // /anfrage-gesendet zurueck zur Startseite - die Seite ist damit nur nach
+  // einer tatsaechlich abgeschickten Anfrage erreichbar, obwohl ihre Adresse
+  // immer gleich bleibt.
+  const response = NextResponse.json({ ok: true });
+  response.cookies.set(CONFIRMATION_COOKIE, lead.type, {
+    maxAge: CONFIRMATION_MAX_AGE,
+    httpOnly: true,
+    sameSite: "lax",
+    path: "/",
+    secure: process.env.NODE_ENV === "production",
+  });
+  return response;
 }
 
 type Lead = {

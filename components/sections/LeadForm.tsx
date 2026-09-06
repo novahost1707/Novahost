@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Reveal } from "@/components/fx/Reveal";
+import { CONFIRMATION_PATH } from "@/lib/confirmation";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import {
   budgetOptions,
@@ -50,6 +52,7 @@ const stepFields: Array<Array<keyof LeadPayload>> = [
  * bekommen, qualifizieren die Anfrage bereits vor dem Gespräch.
  */
 export function LeadForm() {
+  const router = useRouter();
   const [step, setStep] = useState(0);
   const [values, setValues] = useState<LeadPayload>(empty);
   const [errors, setErrors] = useState<FieldErrors>({});
@@ -112,7 +115,10 @@ export function LeadForm() {
         setState("error");
         return;
       }
+      // Weiter zur Bestaetigungsseite. Der Erfolgszustand bleibt gesetzt,
+      // damit das Formular waehrend des Seitenwechsels nicht zurueckspringt.
       setState("done");
+      router.push(CONFIRMATION_PATH);
     } catch {
       setMessage("Verbindung fehlgeschlagen. Bitte versuchen Sie es erneut.");
       setState("error");

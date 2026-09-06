@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Reveal } from "@/components/fx/Reveal";
+import { CONFIRMATION_PATH } from "@/lib/confirmation";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { analysis } from "@/lib/content";
 import { validateLead, type FieldErrors } from "@/lib/validation";
@@ -11,6 +13,7 @@ import { validateLead, type FieldErrors } from "@/lib/validation";
  * Abschlüsse - alles Weitere klären wir im Gespräch.
  */
 export function Analysis() {
+  const router = useRouter();
   const [values, setValues] = useState({ website: "", name: "", email: "", consent: false, fax: "" });
   const [errors, setErrors] = useState<FieldErrors>({});
   const [state, setState] = useState<"idle" | "sending" | "done" | "error">("idle");
@@ -38,6 +41,7 @@ export function Analysis() {
         return;
       }
       setState("done");
+      router.push(CONFIRMATION_PATH);
     } catch {
       setMessage("Verbindung fehlgeschlagen. Bitte versuchen Sie es erneut.");
       setState("error");
