@@ -4,6 +4,7 @@ import Link from "next/link";
 import { footer } from "@/lib/content";
 import { legalNav, site } from "@/lib/site";
 import { PixelMark } from "@/components/ui/Wordmark";
+import { ConsentWiderrufLink } from "@/components/consent/ConsentBanner";
 
 /**
  * Footer mit der großen Wortmarke als Abbinder. Der Pixel-Würfel rechts in
@@ -72,6 +73,9 @@ export function Footer() {
                 <Link href={item.href} className="tlink mono">{item.label}</Link>
               </li>
             ))}
+            <li>
+              <ConsentWiderrufLink className="tlink mono footer__consent" />
+            </li>
           </ul>
           <p className="pixel footer__status">
             <span className="chip__dot" aria-hidden="true" />

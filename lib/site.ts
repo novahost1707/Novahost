@@ -62,6 +62,7 @@ export const nav: NavItem[] = [
 export const legalNav: NavItem[] = [
   { label: "Impressum", href: "/impressum" },
   { label: "Datenschutz", href: "/datenschutz" },
+  { label: "Widerruf", href: "/widerruf" },
 ];
 
 /** Landingpages, die später ergänzt werden können (Architektur steht). */

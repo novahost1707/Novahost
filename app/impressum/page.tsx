@@ -24,14 +24,16 @@ export default function ImpressumPage() {
         <p className="legal__note">
           <strong>Hinweis für den Betreiber:</strong> Alle mit{" "}
           <span className="placeholder">[ ... ]</span> markierten Felder müssen vor der
-          Veröffentlichung durch die echten Angaben ersetzt werden. Diese Vorlage ersetzt keine
+          Veröffentlichung durch die echten Angaben ersetzt werden. Ohne Handelsregistereintrag
+          ist der volle Vor- und Nachname anzugeben; Registerangaben und Umsatzsteuer-Identnummer
+          entfallen dann. Die Steuernummer gehört nicht ins Impressum. Diese Vorlage ersetzt keine
           Rechtsberatung.
         </p>
 
         <section>
           <h2>Angaben gemäß § 5 DDG</h2>
           <p>
-            <span className="placeholder">[Firmenname / Inhaber]</span>
+            <span className="placeholder">[Vor- und Nachname, ggf. mit Geschäftsbezeichnung]</span>
             <br />
             <span className="placeholder">[Straße und Hausnummer]</span>
             <br />
@@ -42,8 +44,11 @@ export default function ImpressumPage() {
         </section>
 
         <section>
-          <h2>Vertreten durch</h2>
-          <p><span className="placeholder">[Name der vertretungsberechtigten Person]</span></p>
+          <h2>Kleinunternehmer</h2>
+          <p>
+            Gemäß § 19 Umsatzsteuergesetz wird keine Umsatzsteuer berechnet und in Rechnungen
+            nicht ausgewiesen.
+          </p>
         </section>
 
         <section>
@@ -52,28 +57,6 @@ export default function ImpressumPage() {
             Telefon: <span className="placeholder">[Telefonnummer]</span>
             <br />
             E-Mail: <span className="placeholder">[E-Mail-Adresse]</span>
-          </p>
-        </section>
-
-        <section>
-          <h2>Registereintrag</h2>
-          <p>
-            Registergericht: <span className="placeholder">[Registergericht]</span>
-            <br />
-            Registernummer: <span className="placeholder">[Registernummer]</span>
-            <br />
-            <span className="muted">
-              Entfällt, sofern kein Eintrag ins Handels-, Vereins- oder Genossenschaftsregister
-              besteht.
-            </span>
-          </p>
-        </section>
-
-        <section>
-          <h2>Umsatzsteuer-Identifikationsnummer</h2>
-          <p>
-            Gemäß § 27 a Umsatzsteuergesetz:{" "}
-            <span className="placeholder">[USt-IdNr.]</span>
           </p>
         </section>
 

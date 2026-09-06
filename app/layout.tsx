@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Inter_Tight, Silkscreen } from "next/font/google";
+import { ConsentBanner } from "@/components/consent/ConsentBanner";
 import { Cursor } from "@/components/fx/Cursor";
 import { DinoGame } from "@/components/easteregg/DinoGame";
 import { Header } from "@/components/layout/Header";
@@ -182,6 +183,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main id="main">{children}</main>
         <Footer />
         <DinoGame />
+        <ConsentBanner />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
