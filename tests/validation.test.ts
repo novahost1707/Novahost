@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   clean,
+  cleanMultiline,
   hasErrors,
   normalizeUrl,
   validateLead,
@@ -95,5 +96,21 @@ describe("clean", () => {
     expect(clean("Zeile1\nZeile2")).toBe("Zeile1 Zeile2");
     expect(clean("abcdef", 3)).toBe("abc");
     expect(clean(42)).toBe("");
+  });
+});
+
+describe("cleanMultiline", () => {
+  it("behält Absätze, entfernt aber alle anderen Steuerzeichen", () => {
+    const eingabe = "Zeile A" + String.fromCharCode(13, 10) + "Zeile B" + String.fromCharCode(9) + "C" + String.fromCharCode(0);
+    expect(cleanMultiline(eingabe)).toBe("Zeile A" + String.fromCharCode(10) + "Zeile B C");
+  });
+
+  it("fasst lange Leerzeilenketten zusammen", () => {
+    const nl = String.fromCharCode(10);
+    expect(cleanMultiline("A" + nl.repeat(6) + "B")).toBe("A" + nl + nl + "B");
+  });
+
+  it("begrenzt die Länge", () => {
+    expect(cleanMultiline("x".repeat(50), 10)).toHaveLength(10);
   });
 });

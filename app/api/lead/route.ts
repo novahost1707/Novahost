@@ -1,16 +1,23 @@
 import { NextResponse } from "next/server";
 import { clientKey, rateLimit } from "@/lib/rate-limit";
-import { clean, hasErrors, normalizeUrl, validateLead, type LeadPayload } from "@/lib/validation";
+import { clean, hasErrors, validateLead, type LeadPayload } from "@/lib/validation";
 import { CONFIRMATION_COOKIE, CONFIRMATION_MAX_AGE } from "@/lib/confirmation";
+import { buildLead, type Lead } from "@/lib/lead";
+import { confirmationFor, internalNotification } from "@/lib/email/templates";
+import { mailConfig, sendMail } from "@/lib/email/send";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 /**
  * Nimmt Projekt- und Analyse-Anfragen entgegen.
- * Die Zustellung ist optional konfigurierbar (Webhook und/oder Resend). Ohne
- * Konfiguration wird die Anfrage serverseitig protokolliert, damit die Seite
- * auch vor dem Anbinden eines Postfachs funktioniert.
+ *
+ * Zwei Nachrichten je Anfrage: die Benachrichtigung an uns und die
+ * Bestätigung an den Absender. Beide Formulare nutzen dafür eigene
+ * Resend-Schlüssel - siehe lib/email/send.ts.
+ *
+ * Ohne Konfiguration wird die Anfrage serverseitig protokolliert, damit die
+ * Seite auch vor dem Anbinden eines Postfachs funktioniert.
  */
 export async function POST(request: Request) {
   const limit = rateLimit(`lead:${clientKey(request.headers)}`, 5, 60 * 60 * 1000);
@@ -39,23 +46,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const lead: Lead = {
-    type: body.type === "analyse" ? "analyse" : "projekt",
-    company: clean(body.company, 160),
-    website: body.website ? (normalizeUrl(body.website) ?? "") : "",
-    branch: clean(body.branch, 160),
-    goal: clean(body.goal, 2000),
-    services: Array.isArray(body.services)
-      ? body.services.slice(0, 12).map((service) => clean(service, 80))
-      : [],
-    budget: clean(body.budget, 80),
-    timeframe: clean(body.timeframe, 80),
-    name: clean(body.name, 120),
-    email: clean(body.email, 200),
-    phone: clean(body.phone, 40),
-    message: clean(body.message, 4000),
-    receivedAt: new Date().toISOString(),
-  };
+  const lead = buildLead(body);
 
   try {
     await deliver(lead);
@@ -85,27 +76,9 @@ export async function POST(request: Request) {
   return response;
 }
 
-type Lead = {
-  type: string;
-  company: string;
-  website: string;
-  branch: string;
-  goal: string;
-  services: string[];
-  budget: string;
-  timeframe: string;
-  name: string;
-  email: string;
-  phone: string;
-  message: string;
-  receivedAt: string;
-};
-
 async function deliver(lead: Lead): Promise<void> {
-  const webhook = process.env.LEAD_WEBHOOK_URL;
-  const resendKey = process.env.RESEND_API_KEY;
-  const to = process.env.LEAD_MAIL_TO;
-  const from = process.env.LEAD_MAIL_FROM;
+  const webhook = process.env.LEAD_WEBHOOK_URL?.trim();
+  const config = mailConfig(lead.type);
   let delivered = false;
 
   if (webhook) {
@@ -118,30 +91,34 @@ async function deliver(lead: Lead): Promise<void> {
     delivered = true;
   }
 
-  if (resendKey && to && from) {
-    const response = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: { Authorization: `Bearer ${resendKey}`, "Content-Type": "application/json" },
-      body: JSON.stringify({
-        from,
-        to: [to],
-        reply_to: lead.email,
-        subject: `Neue ${lead.type === "analyse" ? "Website-Analyse" : "Projektanfrage"} - ${lead.name}`,
-        text: formatLead(lead),
-      }),
+  if (config) {
+    // Die Benachrichtigung an uns ist die eigentliche Zustellung. Schlaegt sie
+    // fehl, ist die Anfrage verloren - also nach oben durchreichen, damit der
+    // Absender es erneut versuchen kann.
+    await sendMail({
+      config,
+      to: config.to,
+      mail: internalNotification(lead),
+      replyTo: lead.email,
     });
-    if (!response.ok) throw new Error(`Resend antwortete mit ${response.status}`);
     delivered = true;
+
+    // Die Bestaetigung ist Beiwerk. Sie darf eine bereits angekommene Anfrage
+    // nicht zu einem Fehler machen - sonst schickt derselbe Mensch sie ein
+    // zweites Mal ab und wir haben sie doppelt.
+    try {
+      await sendMail({
+        config,
+        to: lead.email,
+        mail: confirmationFor(lead),
+        replyTo: config.to,
+      });
+    } catch (error) {
+      console.error("[lead] Bestätigung an den Absender fehlgeschlagen", error);
+    }
   }
 
   if (!delivered) {
     console.info("[lead] Kein Zustellkanal konfiguriert - Anfrage nur protokolliert:", lead);
   }
-}
-
-function formatLead(lead: Lead): string {
-  return Object.entries(lead)
-    .filter(([, value]) => (Array.isArray(value) ? value.length > 0 : value !== ""))
-    .map(([key, value]) => `${key}: ${Array.isArray(value) ? value.join(", ") : value}`)
-    .join("\n");
 }
