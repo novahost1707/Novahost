@@ -112,3 +112,13 @@
   inset: -18px;
 }
 .footer__egg:hover { background: var(--moss-500); }
+
+/* Widerruf der Einwilligung: sieht aus wie die Rechtslinks daneben */
+.footer__consent {
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}

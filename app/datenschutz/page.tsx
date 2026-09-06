@@ -55,17 +55,67 @@ export default function DatenschutzPage() {
         </section>
 
         <section>
-          <h2>3. Cookies und Tracking</h2>
+          <h2>3. Speicherung auf Ihrem Gerät und Einwilligung</h2>
           <p>
-            Diese Website setzt keine Cookies zu Analyse- oder Marketingzwecken und bindet kein
-            Tracking ein. Es findet keine Profilbildung statt. Sollten künftig
-            einwilligungspflichtige Dienste eingesetzt werden, wird zuvor eine Einwilligung
-            eingeholt.
+            Wir speichern nur das Nötigste auf Ihrem Gerät. Technisch notwendig sind zwei Dinge:
+          </p>
+          <ul>
+            <li>
+              ein kurzlebiges Cookie nach dem Absenden eines Formulars, damit Ihnen die
+              Bestätigungsseite angezeigt werden kann (Laufzeit 30 Minuten)
+            </li>
+            <li>
+              Ihre Entscheidung aus der Einwilligungsabfrage, damit wir sie nicht bei jedem Besuch
+              erneut stellen müssen; sie liegt im lokalen Speicher Ihres Browsers und wird nicht an
+              uns übertragen
+            </li>
+          </ul>
+          <p>
+            Rechtsgrundlage hierfür ist § 25 Absatz 2 TDDDG, da beides für den von Ihnen
+            gewünschten Dienst unbedingt erforderlich ist.
+          </p>
+          <p>
+            Alles Weitere setzen wir nur mit Ihrer Einwilligung nach § 25 Absatz 1 TDDDG und
+            Artikel 6 Absatz 1 Buchstabe a DSGVO. Sie treffen diese Entscheidung beim ersten Besuch
+            und können sie jederzeit über den Link{" "}
+            <strong>Cookie-Einstellungen</strong> in der Fußzeile ändern oder widerrufen. Der
+            Widerruf wirkt für die Zukunft; die Rechtmäßigkeit der bis dahin erfolgten
+            Verarbeitung bleibt unberührt.
           </p>
         </section>
 
         <section>
-          <h2>4. Schriftarten</h2>
+          <h2>4. Reichweitenmessung und Werbung</h2>
+          <p>
+            Diese Dienste laufen ausschließlich nach Ihrer Einwilligung. Erteilen Sie sie nicht,
+            wird nichts davon geladen und es entstehen keine entsprechenden Daten.
+          </p>
+          <ul>
+            <li>
+              <strong>Statistik:</strong> anonyme Auswertung, welche Seiten aufgerufen werden,
+              damit wir erkennen, welche Inhalte gesucht werden.
+            </li>
+            <li>
+              <strong>Marketing:</strong> Messung, ob der Besuch über eine Anzeige zustande kam und
+              zu einer Anfrage geführt hat. Eingesetzt wird dafür{" "}
+              <span className="placeholder">[Name des Werbedienstes, z. B. Google Ads]</span>{" "}
+              des Anbieters{" "}
+              <span className="placeholder">[Anbieter und Anschrift]</span>. Dabei können Daten in
+              die USA übermittelt werden.
+            </li>
+          </ul>
+          <p className="legal__note">
+            <strong>Hinweis für den Betreiber:</strong> Dieser Abschnitt beschreibt Dienste, die
+            erst mit dem Start einer Werbekampagne tatsächlich eingebunden werden. Solange nichts
+            davon aktiv ist, lässt sich die Einwilligungsabfrage über den Schalter{" "}
+            <code>EINWILLIGUNG_NOETIG</code> in <code>lib/consent.ts</code> ausblenden. Sobald ein
+            Dienst live geht, sind hier Name, Anbieter, Zweck, Speicherdauer und Rechtsgrundlage
+            konkret zu benennen.
+          </p>
+        </section>
+
+        <section>
+          <h2>5. Schriftarten</h2>
           <p>
             Die verwendeten Schriftarten werden beim Erstellen der Seite mit ausgeliefert und vom
             Server dieser Website geladen. Beim Besuch der Seite wird deshalb keine Verbindung zu
@@ -74,7 +124,7 @@ export default function DatenschutzPage() {
         </section>
 
         <section>
-          <h2>5. Kontakt- und Analyseformular</h2>
+          <h2>6. Kontakt- und Analyseformular</h2>
           <p>
             Wenn Sie uns über ein Formular kontaktieren, verarbeiten wir die von Ihnen gemachten
             Angaben, um Ihre Anfrage zu bearbeiten. Pflichtangaben sind auf das Nötigste begrenzt;
@@ -102,17 +152,28 @@ export default function DatenschutzPage() {
         </section>
 
         <section>
-          <h2>6. Hosting</h2>
+          <h2>7. Hosting</h2>
           <p>
             Diese Website wird bei{" "}
             <span className="placeholder">[Name und Anschrift des Hosting-Anbieters]</span>{" "}
             betrieben. Mit dem Anbieter besteht ein Vertrag zur Auftragsverarbeitung nach Artikel 28
             DSGVO.
           </p>
+          <p>
+            Sitzt der Anbieter ausserhalb der EU oder verarbeitet er dort Daten, stützt sich die
+            Übermittlung auf{" "}
+            <span className="placeholder">[Angemessenheitsbeschluss oder Standardvertragsklauseln]</span>.
+            Eine Kopie der Garantien erhalten Sie auf Anfrage bei uns.
+          </p>
+          <p className="legal__note">
+            <strong>Hinweis für den Betreiber:</strong> Den Auftragsverarbeitungsvertrag müssen Sie
+            im Konto des Hosters aktiv abschliessen - er entsteht nicht automatisch. Dasselbe gilt
+            für einen später angebundenen E-Mail- oder CRM-Dienst.
+          </p>
         </section>
 
         <section>
-          <h2>7. Ihre Rechte</h2>
+          <h2>8. Ihre Rechte</h2>
           <p>
             Sie haben das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der
             Verarbeitung, Datenübertragbarkeit sowie Widerspruch gegen die Verarbeitung. Eine
@@ -126,7 +187,7 @@ export default function DatenschutzPage() {
         </section>
 
         <section>
-          <h2>8. Änderungen</h2>
+          <h2>9. Änderungen</h2>
           <p>
             Wir passen diese Erklärung an, sobald sich die Funktionen der Website oder die
             rechtlichen Vorgaben ändern.

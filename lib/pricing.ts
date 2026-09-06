@@ -152,4 +152,9 @@ export const priceRules = [
   { k: "LAUFZEIT", v: "Empfohlene Mindestlaufzeit 6 Monate, danach monatlich kündbar." },
 ];
 
-export const vatNote = "Alle Preise verstehen sich netto, zzgl. gesetzlicher MwSt. Angebot richtet sich an Unternehmen, Selbstständige und Gewerbetreibende.";
+/**
+ * Als Kleinunternehmer nach § 19 UStG wird keine Umsatzsteuer ausgewiesen.
+ * Die genannten Preise sind damit zugleich die Endpreise - das erfüllt auch
+ * die Preisangabenverordnung, falls eine Privatperson anfragt.
+ */
+export const vatNote = "Alle genannten Preise sind Endpreise. Als Kleinunternehmer im Sinne von § 19 UStG weisen wir keine Umsatzsteuer aus und berechnen sie nicht.";
