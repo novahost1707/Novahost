@@ -342,7 +342,7 @@ export function LeadForm() {
                       />
                     </div>
 
-                    <label className="consent">
+                    <label className="form-consent">
                       <input
                         type="checkbox"
                         checked={values.consent}

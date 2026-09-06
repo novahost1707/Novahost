@@ -143,7 +143,7 @@ export function Analysis() {
                   {errors.email && <p className="error" id="an-email-error">{errors.email}</p>}
                 </div>
 
-                <label className="consent">
+                <label className="form-consent">
                   <input
                     type="checkbox"
                     checked={values.consent}
