@@ -23,7 +23,7 @@ function resolveSiteUrl(): string {
   const hosted = process.env.VERCEL_PROJECT_PRODUCTION_URL?.trim();
   if (hosted) return withProtocol(hosted);
 
-  return "https://novahost.de";
+  return "https://nova-host.org";
 }
 
 function withProtocol(value: string): string {

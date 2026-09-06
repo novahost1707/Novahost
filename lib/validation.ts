@@ -53,6 +53,8 @@ export const serviceOptions = [
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i;
 const CONTROL_RE = /[\u0000-\u001F\u007F]/g;
+/** Wie CONTROL_RE, laesst aber den Zeilenumbruch (\u000A) stehen. */
+const CONTROL_KEEP_NL_RE = /[\u0000-\u0009\u000B-\u001F\u007F]/g;
 
 /** Lässt "example.de", "www.example.de" und volle URLs zu. */
 export function normalizeUrl(raw: string): string | null {
@@ -118,6 +120,23 @@ export function validateLead(input: Partial<LeadPayload>): FieldErrors {
 export function clean(value: unknown, max = 500): string {
   if (typeof value !== "string") return "";
   return value.replace(CONTROL_RE, " ").trim().slice(0, max);
+}
+
+/**
+ * Wie clean(), behält aber Absätze.
+ *
+ * Nur für Freitextfelder gedacht. Ein Zeilenumbruch in einer Betreffzeile oder
+ * einem anderen Kopffeld wäre eine Einladung zur Header-Injection - dort
+ * bleibt es bei clean().
+ */
+export function cleanMultiline(value: unknown, max = 4000): string {
+  if (typeof value !== "string") return "";
+  return value
+    .replace(/\r\n?/g, "\u000A")
+    .replace(CONTROL_KEEP_NL_RE, " ")
+    .replace(/\u000A{3,}/g, "\u000A\u000A")
+    .trim()
+    .slice(0, max);
 }
 
 export function hasErrors(errors: FieldErrors): boolean {

@@ -92,7 +92,12 @@
   border-top: var(--border);
 }
 
-.consent {
+/* Zustimmung unter dem Formular.
+   Der Name traegt bewusst das Praefix form-: .consent gehoert der
+   Einwilligungsabfrage in styles/consent.css, die spaeter geladen wird und
+   position:fixed sowie pointer-events:none setzt. Unter dem gleichen Namen
+   liesse sich dieses Kaestchen nicht mehr anklicken. */
+.form-consent {
   display: flex;
   align-items: flex-start;
   gap: var(--s-3);
@@ -101,7 +106,7 @@
   line-height: 1.55;
   cursor: pointer;
 }
-.consent input {
+.form-consent input {
   flex: none;
   width: 18px; height: 18px;
   margin-top: 2px;
