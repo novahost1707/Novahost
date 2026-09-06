@@ -66,3 +66,67 @@
   color: transparent;
   -webkit-text-stroke: 1px var(--ink-500);
 }
+
+/* ============================================================
+   BESTAETIGUNGSSEITE nach dem Absenden eines Formulars
+   ============================================================ */
+
+.confirm {
+  padding-block: calc(var(--s-10) + 60px) var(--s-9);
+  display: grid;
+  gap: var(--s-5);
+}
+
+.confirm__label {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  color: var(--fog-500);
+}
+
+.confirm__title {
+  font-size: var(--t-display);
+  line-height: 0.98;
+  letter-spacing: var(--ls-mega);
+  text-transform: uppercase;
+  font-weight: 800;
+  color: var(--paper);
+  margin-left: -0.04em;
+}
+
+.confirm__lead { margin-top: var(--s-2); }
+
+.confirm__steps {
+  display: grid;
+  gap: var(--s-5);
+  margin-top: var(--s-7);
+  padding-top: var(--s-6);
+  border-top: var(--border);
+}
+.confirm__step {
+  display: grid;
+  gap: var(--s-2);
+  padding-left: var(--s-5);
+  border-left: 2px solid var(--moss-700);
+}
+.confirm__num { color: var(--accent); }
+.confirm__step-title { color: var(--paper); }
+.confirm__step-body { font-size: var(--t-sm); color: var(--text-muted); max-width: 56ch; }
+
+.confirm__foot {
+  display: grid;
+  gap: var(--s-5);
+  margin-top: var(--s-8);
+  padding-top: var(--s-6);
+  border-top: var(--border);
+}
+.confirm__foot .btn-row { justify-self: start; }
+
+@media (min-width: 900px) {
+  .confirm__steps { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-6); }
+  .confirm__foot {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--s-8);
+  }
+}
