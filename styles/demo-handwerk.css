@@ -1,0 +1,283 @@
+/* ============================================================
+   DEMO 3 — ZIMMEREI LINDHORST
+   Haltung: massiv und geradeaus. Dunkles Holz und Stahl,
+   schmale Versalien, Signalorange fuer alles, was zum Kontakt
+   fuehrt. Kein Weissraum-Spiel - hier zaehlt, dass die Nummer
+   immer erreichbar ist.
+   ============================================================ */
+
+.hw {
+  --nacht: #12181d;
+  --stahl: #1b242c;
+  --stahl-hell: #26323c;
+  --holz: #b07d4a;
+  --signal: #e0721f;
+  --hell: #eef1f3;
+  --grau: #9aa6b0;
+  --linie: rgba(238, 241, 243, 0.13);
+
+  background: var(--nacht);
+  color: var(--hell);
+  font-family: var(--font-inter), system-ui, sans-serif;
+  line-height: 1.6;
+}
+html > body:has(.hw) { background: #12181d; }
+
+.hw__display {
+  font-family: var(--font-barlow), var(--font-inter), sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  line-height: 0.94;
+  letter-spacing: 0.005em;
+}
+.hw__mini {
+  font-family: var(--font-barlow), var(--font-inter), sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--signal);
+}
+
+/* --- Notdienstzeile ----------------------------------------- */
+.hw__notdienst {
+  background: var(--signal);
+  color: #14100c;
+  font-weight: 600;
+  font-size: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 16px;
+  text-align: center;
+}
+.hw__notdienst b { font-variant-numeric: tabular-nums; }
+
+/* --- Kopf --------------------------------------------------- */
+.hw__nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--linie);
+}
+.hw__marke { display: flex; align-items: center; gap: 12px; }
+.hw__zeichen {
+  width: 34px; height: 34px;
+  flex: none;
+  background: var(--holz);
+  position: relative;
+  clip-path: polygon(50% 0, 100% 34%, 100% 100%, 0 100%, 0 34%);
+}
+.hw__zeichen::after {
+  content: "";
+  position: absolute;
+  inset: 42% 26% 16% 26%;
+  background: var(--nacht);
+}
+.hw__marke-text { display: grid; }
+.hw__marke-text strong {
+  font-family: var(--font-barlow), sans-serif;
+  font-size: 21px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1.05;
+}
+.hw__marke-text span { font-size: 11.5px; letter-spacing: 0.13em; text-transform: uppercase; color: var(--grau); }
+.hw__navlinks { display: flex; gap: clamp(14px, 2.4vw, 30px); font-size: 14.5px; }
+.hw__navlinks a:hover { color: var(--signal); }
+@media (max-width: 900px) { .hw__navlinks { display: none; } }
+
+.hw__tel {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 11px 20px;
+  background: var(--signal);
+  color: #14100c;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  transition: filter 150ms ease;
+}
+.hw__tel:hover { filter: brightness(1.12); }
+
+/* --- Hero --------------------------------------------------- */
+.hw__hero { padding: clamp(44px, 7vw, 96px) 0 clamp(36px, 5vw, 72px); position: relative; overflow: hidden; }
+/* Dachsparren als Hintergrund - Andeutung des Gewerks, kein Foto. */
+.hw__hero::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 58%;
+  width: 60%;
+  background: repeating-linear-gradient(
+    72deg,
+    rgba(176, 125, 74, 0.2) 0 10px,
+    transparent 10px 46px
+  );
+  mask-image: linear-gradient(90deg, transparent, #000 40%);
+  pointer-events: none;
+}
+/* Die Begrenzung gehoert an die Ueberschrift, nicht an die Spalte:
+   sonst bricht auch der Fliesstext nach zwanzig Zeichen um. */
+.hw__hero-inhalt { position: relative; max-width: 54ch; }
+.hw__titel { font-size: clamp(2.6rem, 7.6vw, 5.6rem); margin: 16px 0 20px; max-width: 12ch; }
+.hw__titel span { color: var(--signal); }
+.hw__hero p { color: var(--grau); max-width: 48ch; font-size: clamp(1rem, 1.4vw, 1.12rem); }
+.hw__aktionen { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+
+.hw__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 28px;
+  font-family: var(--font-barlow), sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: 2px solid var(--signal);
+  transition: background 160ms ease, color 160ms ease;
+}
+.hw__btn--voll { background: var(--signal); color: #14100c; }
+.hw__btn--voll:hover { background: transparent; color: var(--signal); }
+.hw__btn--leer { color: var(--hell); border-color: var(--linie); }
+.hw__btn--leer:hover { border-color: var(--hell); }
+
+/* --- Zahlenband --------------------------------------------- */
+.hw__zahlen {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--linie);
+  border-block: 1px solid var(--linie);
+}
+@media (max-width: 780px) { .hw__zahlen { grid-template-columns: repeat(2, 1fr); } }
+.hw__zahl { background: var(--nacht); padding: 24px clamp(14px, 2.4vw, 28px); }
+.hw__zahl b {
+  display: block;
+  font-family: var(--font-barlow), sans-serif;
+  font-size: clamp(2rem, 3.6vw, 2.9rem);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--holz);
+  font-variant-numeric: tabular-nums;
+}
+.hw__zahl span { font-size: 13.5px; color: var(--grau); }
+
+/* --- Abschnitte --------------------------------------------- */
+.hw__section { padding: clamp(52px, 8vw, 108px) 0; }
+.hw__section--stahl { background: var(--stahl); }
+.hw__kopf { max-width: 56ch; margin-bottom: clamp(28px, 4vw, 52px); }
+.hw__h2 { font-size: clamp(1.9rem, 4.2vw, 3rem); margin: 10px 0 14px; }
+.hw__kopf p { color: var(--grau); }
+
+/* Leistungen */
+.hw__leistungen { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(16px, 2.4vw, 28px); }
+@media (max-width: 900px) { .hw__leistungen { grid-template-columns: 1fr; } }
+.hw__leistung {
+  background: var(--stahl);
+  border-left: 3px solid var(--holz);
+  padding: clamp(22px, 3vw, 32px);
+  display: grid;
+  gap: 10px;
+  align-content: start;
+  transition: border-color 160ms ease, transform 160ms ease;
+}
+.hw__leistung:hover { border-left-color: var(--signal); transform: translateY(-3px); }
+.hw__section--stahl .hw__leistung { background: var(--stahl-hell); }
+.hw__leistung h3 {
+  font-family: var(--font-barlow), sans-serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+.hw__leistung p { color: var(--grau); font-size: 15px; }
+.hw__leistung ul { display: grid; gap: 5px; margin-top: 4px; }
+.hw__leistung li { font-size: 14px; padding-left: 18px; position: relative; color: var(--grau); }
+.hw__leistung li::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0.62em;
+  width: 8px; height: 2px;
+  background: var(--signal);
+}
+
+/* Referenzen */
+.hw__referenzen { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(16px, 2.4vw, 26px); }
+@media (max-width: 900px) { .hw__referenzen { grid-template-columns: 1fr; max-width: 460px; } }
+.hw__referenz { border: 1px solid var(--linie); }
+.hw__ref-bild {
+  aspect-ratio: 4 / 3;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, #223039 0%, #172027 100%);
+}
+/* Dachstuhl-Skizze: Sparren und Balken, geometrisch angedeutet. */
+.hw__ref-bild::before {
+  content: "";
+  position: absolute;
+  inset: 24% 12% 18% 12%;
+  background:
+    linear-gradient(to right, var(--holz) 0 4px, transparent 4px) 0 0 / 100% 100% no-repeat,
+    linear-gradient(to right, var(--holz) 0 4px, transparent 4px) 100% 0 / 4px 100% no-repeat;
+  border-top: 4px solid var(--holz);
+  opacity: 0.55;
+}
+.hw__ref-bild::after {
+  content: "";
+  position: absolute;
+  left: 6%; right: 6%; top: 8%;
+  height: 34%;
+  background: var(--holz);
+  opacity: 0.75;
+  clip-path: polygon(50% 0, 100% 100%, 94% 100%, 50% 11%, 6% 100%, 0 100%);
+}
+.hw__ref-text { padding: 18px clamp(16px, 2vw, 22px) 22px; display: grid; gap: 5px; }
+.hw__ref-text h3 { font-size: 1.05rem; font-weight: 600; }
+.hw__ref-text p { font-size: 13.5px; color: var(--grau); }
+.hw__ref-ort { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--holz); }
+
+/* Anfrage */
+.hw__anfrage { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px, 5vw, 72px); align-items: start; }
+@media (max-width: 860px) { .hw__anfrage { grid-template-columns: 1fr; } }
+.hw__formular { display: grid; gap: 14px; background: var(--stahl); padding: clamp(22px, 3vw, 34px); border-top: 3px solid var(--signal); }
+.hw__feld { display: grid; gap: 6px; }
+.hw__feld label { font-size: 12.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--grau); }
+.hw__feld input, .hw__feld textarea, .hw__feld select {
+  background: var(--nacht);
+  border: 1px solid var(--linie);
+  color: var(--hell);
+  padding: 12px 14px;
+  font-size: 15px;
+  width: 100%;
+}
+.hw__feld input:focus-visible, .hw__feld textarea:focus-visible, .hw__feld select:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 1px;
+}
+.hw__feld textarea { min-height: 96px; resize: vertical; }
+.hw__kontaktliste { display: grid; gap: 18px; }
+.hw__kontaktzeile { display: grid; gap: 3px; padding-bottom: 16px; border-bottom: 1px solid var(--linie); }
+.hw__kontaktzeile dt { font-size: 12.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--signal); }
+.hw__kontaktzeile dd { font-size: clamp(1.05rem, 1.8vw, 1.3rem); font-weight: 600; font-variant-numeric: tabular-nums; }
+
+/* --- Fuss --------------------------------------------------- */
+.hw__fuss { background: #0d1216; padding: clamp(40px, 5vw, 68px) 0 26px; }
+.hw__fuss-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: clamp(22px, 4vw, 52px); }
+@media (max-width: 780px) { .hw__fuss-grid { grid-template-columns: 1fr; } }
+.hw__fuss h4 { font-size: 12.5px; letter-spacing: 0.13em; text-transform: uppercase; color: var(--signal); margin-bottom: 12px; }
+.hw__fuss li { padding: 4px 0; font-size: 14.5px; color: var(--grau); }
+.hw__fuss a:hover { color: var(--hell); }
+.hw__fuss-schluss {
+  margin-top: clamp(28px, 4vw, 48px);
+  padding-top: 18px;
+  border-top: 1px solid var(--linie);
+  display: flex; flex-wrap: wrap; gap: 8px 20px; justify-content: space-between;
+  font-size: 12.5px; color: var(--grau);
+}

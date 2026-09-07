@@ -1,0 +1,92 @@
+/* ============================================================
+   DEMO-PROJEKTE — gemeinsames Geruest
+   Gilt nur unter /demo. Die vier Auftritte selbst bringen ihre
+   eigenen Farben und Schriften mit; hier steht nur, was alle
+   teilen: der Hinweisbalken und ein paar Grundlagen, die das
+   dunkle Novahost-Grundgeruest neutralisieren.
+   ============================================================ */
+
+/* Der Balken ist der einzige Novahost-Teil auf diesen Seiten.
+   Er bleibt sichtbar, damit niemand die Demo fuer ein echtes
+   Unternehmen haelt. */
+.demobar {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 18px;
+  padding: 9px clamp(14px, 4vw, 32px);
+  background: #0a0b0a;
+  color: #cfd2c8;
+  font-family: var(--font-inter), system-ui, sans-serif;
+  font-size: 12.5px;
+  line-height: 1.4;
+  letter-spacing: -0.005em;
+  border-bottom: 1px solid rgba(226, 228, 221, 0.14);
+}
+.demobar__tag {
+  font-family: var(--font-silkscreen), ui-monospace, monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.16em;
+  color: #0a0b0a;
+  background: #97a390;
+  padding: 4px 8px;
+  flex: none;
+}
+.demobar__text { flex: 1 1 260px; min-width: 0; }
+/* Auf schmalen Schirmen kuerzt der Balken sich selbst: drei Zeilen
+   Hinweis vor der eigentlichen Seite sind zu viel des Guten. */
+.demobar__lang { display: inline; }
+@media (max-width: 620px) {
+  .demobar { font-size: 12px; gap: 8px 12px; }
+  .demobar__lang { display: none; }
+  .demobar__back { padding: 4px 10px; font-size: 12px; }
+}
+.demobar__back {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 12px;
+  border: 1px solid rgba(226, 228, 221, 0.28);
+  color: #eef0ea;
+  font-weight: 600;
+  transition: background 140ms ease, border-color 140ms ease;
+}
+.demobar__back:hover { background: rgba(226, 228, 221, 0.1); border-color: rgba(226, 228, 221, 0.5); }
+.demobar__back:focus-visible { outline: 2px solid #b4bdae; outline-offset: 2px; }
+
+/* Grundlagen, die jede Demo braucht. Die dunklen Werte aus
+   styles/base.css gelten sonst weiter. */
+.demo {
+  --demo-maxw: 1240px;
+  font-synthesis-weight: none;
+}
+.demo :where(h1, h2, h3, h4) { text-wrap: balance; }
+.demo :where(p) { text-wrap: pretty; }
+.demo__shell {
+  width: min(100% - clamp(28px, 8vw, 96px), var(--demo-maxw));
+  margin-inline: auto;
+}
+.demo :where(img, svg) { display: block; max-width: 100%; }
+
+/* Die Demos sind Schaustuecke: Formulare und Warenkoerbe fuehren
+   absichtlich nirgendwohin. Damit das niemanden aergert, sind sie
+   sichtbar als Attrappe gekennzeichnet statt still zu scheitern. */
+.demo__fake {
+  cursor: not-allowed;
+}
+.demo__note {
+  font-size: 12px;
+  opacity: 0.72;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .demo *, .demo *::before, .demo *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
