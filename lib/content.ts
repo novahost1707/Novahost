@@ -130,43 +130,10 @@ export const work = {
   label: "05 / PROJEKTE",
   headline: "SELECTED WORK.",
   intro:
-    "Wir zeigen hier eigene Demo-Projekte - gestaltete Konzepte, keine Kundenreferenzen. Sobald Kundenprojekte live sind, stehen sie an dieser Stelle.",
+    "Vier vollständige Demo-Seiten aus vier Branchen - anklickbar, nicht nur abgebildet. Es sind eigene Konzepte, keine Kundenreferenzen. Sobald Kundenprojekte live sind, stehen sie an dieser Stelle.",
   disclaimer:
-    "Alle gezeigten Arbeiten sind als DEMO PROJECT gekennzeichnete Eigenkonzepte. Keine echten Kundennamen, keine erfundenen Ergebniszahlen.",
-  items: [
-    {
-      num: "01",
-      title: "Elektrotechnik Konzept",
-      branch: "Elektrobetrieb",
-      scope: "One-Pager, Leistungsseiten, Anfragestrecke",
-      year: "2026",
-      hue: 96,
-    },
-    {
-      num: "02",
-      title: "Dachdecker Konzept",
-      branch: "Dachdeckerei",
-      scope: "Website, Projektgalerie, Kontaktsystem",
-      year: "2026",
-      hue: 78,
-    },
-    {
-      num: "03",
-      title: "SHK Konzept",
-      branch: "Sanitär / Heizung / Klima",
-      scope: "Website, Notdienst-Führung, Terminanfrage",
-      year: "2026",
-      hue: 108,
-    },
-    {
-      num: "04",
-      title: "Beratung Konzept",
-      branch: "Beratungsunternehmen",
-      scope: "Markenauftritt, Leistungsstruktur, Leadstrecke",
-      year: "2026",
-      hue: 64,
-    },
-  ],
+    "Alle vier Seiten sind als DEMO PROJECT gekennzeichnete Eigenkonzepte mit erfundenen Unternehmen, Adressen und Preisen. Keine echten Kundennamen, keine erfundenen Ergebniszahlen.",
+  cta: "Demo ansehen",
 };
 
 export const process = {
