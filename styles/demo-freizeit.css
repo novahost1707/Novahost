@@ -221,13 +221,17 @@ html > body:has(.fz) { background: #fbf6ec; }
   border-radius: 24px;
   overflow: hidden;
 }
-.fz__attraktion:nth-child(even) { direction: rtl; }
-.fz__attraktion:nth-child(even) > * { direction: ltr; }
+/* Jede zweite Karte spiegelt Bild und Text. Ueber die Reihenfolge, nicht
+   ueber die Schreibrichtung: direction:rtl dreht zwar die Spalten, das
+   padding-Kuerzel bleibt aber physisch - der Text stand dann ohne Abstand
+   am Kartenrand. */
+.fz__attraktion:nth-child(even) > *:first-child { order: 2; }
 @media (max-width: 900px) {
-  .fz__attraktion, .fz__attraktion:nth-child(even) { grid-template-columns: 1fr; direction: ltr; }
+  .fz__attraktion { grid-template-columns: 1fr; }
+  .fz__attraktion:nth-child(even) > *:first-child { order: 0; }
 }
 .fz__attraktion .bildplatz { aspect-ratio: 4 / 3; }
-.fz__attraktion-text { padding: clamp(24px, 3vw, 44px) clamp(20px, 3vw, 44px) clamp(24px, 3vw, 44px) 0; }
+.fz__attraktion-text { padding: clamp(24px, 3vw, 44px) clamp(22px, 3vw, 44px); }
 @media (max-width: 900px) { .fz__attraktion-text { padding: clamp(20px, 3vw, 34px); } }
 .fz__attraktion h3 { font-size: clamp(1.5rem, 2.6vw, 2.1rem); margin: 10px 0 12px; }
 .fz__attraktion > .fz__attraktion-text > p { color: var(--grau); max-width: 44ch; }

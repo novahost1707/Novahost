@@ -49,7 +49,7 @@ export const demos: Demo[] = [
     branche: "Tischlerei & Innenausbau",
     umfang: "Leistungen, Referenzen, Ablauf, Team, Anfragestrecke",
     haltung: "Präzise und bodenständig. Haarlinien statt Werbekacheln.",
-    vorschau: { grund: "#f3f0ea", flaeche: "#fbfaf7", text: "#1e211e", akzent: "#a9762f" },
+    vorschau: { grund: "#eaedeb", flaeche: "#f7f9f8", text: "#191d1d", akzent: "#1c5a6b" },
   },
   {
     slug: "freizeitpark",

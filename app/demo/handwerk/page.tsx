@@ -147,68 +147,72 @@ const STIMMEN = [
 export default function HandwerkDemo() {
   return (
     <div className={`demo hw ${archivo.variable}`}>
-      <div className="hw__topbar">
-        <div className="demo__shell hw__topbar-inner">
-          <span>Meisterbetrieb seit 1954 · Mitglied der Tischler-Innung</span>
-          <span>Aufmaß und Kostenvoranschlag <b>kostenlos</b></span>
+      {/* Kopfbereich auf Graphit: hebt die Tischlerei vom hellen Papier des
+          Cafs ab und setzt die Werkstatt gleich in den ersten Blick. */}
+      <div className="hw__oben">
+        <div className="hw__topbar">
+          <div className="demo__shell hw__topbar-inner">
+            <span>Meisterbetrieb seit 1954 · Mitglied der Tischler-Innung</span>
+            <span>Aufmaß und Kostenvoranschlag <b>kostenlos</b></span>
+          </div>
         </div>
-      </div>
 
-      <div className="demo__shell">
-        <nav className="hw__nav">
-          <a href="#" className="hw__marke">
-            <span className="hw__zeichen" aria-hidden="true" />
-            <span className="hw__marke-text">
-              <strong>Brandhorst</strong>
-              <span>Tischlerei &amp; Innenausbau</span>
-            </span>
-          </a>
-          <div className="hw__navlinks">
-            <a href="#leistungen">Leistungen</a>
-            <a href="#projekte">Projekte</a>
-            <a href="#ablauf">Ablauf</a>
-            <a href="#team">Team</a>
-            <a href="#anfrage">Anfrage</a>
-          </div>
-          <a href="#anfrage" className="hw__tel">
-            <span aria-hidden="true">&#9742;</span> 0 12345 67890
-          </a>
-        </nav>
-
-        <header className="hw__hero">
-          <div>
-            <p className="hw__marke-nr">Tischlerei seit 1954</p>
-            <h1 className="hw__titel hw__display">
-              Möbel, die in <span>krumme</span> Wände passen.
-            </h1>
-            <p>
-              Wir bauen Einbaumöbel, Küchen und Ladeneinrichtungen nach Maß - im eigenen Haus,
-              mit eigenen Leuten. Seit drei Generationen an derselben Adresse.
-            </p>
-            <div className="hw__aktionen">
-              <a href="#anfrage" className="hw__btn">
-                Aufmaß vereinbaren <span aria-hidden="true">&#8594;</span>
-              </a>
-              <a href="#projekte" className="hw__btn hw__btn--leer">Projekte ansehen</a>
+        <div className="demo__shell">
+          <nav className="hw__nav">
+            <a href="#" className="hw__marke">
+              <span className="hw__zeichen" aria-hidden="true" />
+              <span className="hw__marke-text">
+                <strong>Brandhorst</strong>
+                <span>Tischlerei &amp; Innenausbau</span>
+              </span>
+            </a>
+            <div className="hw__navlinks">
+              <a href="#leistungen">Leistungen</a>
+              <a href="#projekte">Projekte</a>
+              <a href="#ablauf">Ablauf</a>
+              <a href="#team">Team</a>
+              <a href="#anfrage">Anfrage</a>
             </div>
-          </div>
-          <div className="hw__hero-bild">
-            <Bild platz={BILD_HERO} sizes="(max-width: 940px) 100vw, 50vw" priority />
-            <p className="hw__masse hw__mono"><span>Werkstatt Sägewerkstraße 3 · 640 m²</span></p>
-          </div>
-        </header>
+            <a href="#anfrage" className="hw__tel">
+              <span aria-hidden="true">&#9742;</span> 0 12345 67890
+            </a>
+          </nav>
 
-        <dl className="hw__belege">
-          {BELEGE.map((b) => (
-            <div className="hw__beleg" key={b.wert}>
-              <dt className="vh">{b.text}</dt>
-              <dd>
-                <b>{b.wert}</b>
-                <span>{b.text}</span>
-              </dd>
+          <header className="hw__hero">
+            <div>
+              <p className="hw__marke-nr">Tischlerei seit 1954</p>
+              <h1 className="hw__titel hw__display">
+                Möbel, die in <span>krumme</span> Wände passen.
+              </h1>
+              <p>
+                Wir bauen Einbaumöbel, Küchen und Ladeneinrichtungen nach Maß - im eigenen Haus,
+                mit eigenen Leuten. Seit drei Generationen an derselben Adresse.
+              </p>
+              <div className="hw__aktionen">
+                <a href="#anfrage" className="hw__btn">
+                  Aufmaß vereinbaren <span aria-hidden="true">&#8594;</span>
+                </a>
+                <a href="#projekte" className="hw__btn hw__btn--leer">Projekte ansehen</a>
+              </div>
             </div>
-          ))}
-        </dl>
+            <div className="hw__hero-bild">
+              <Bild platz={BILD_HERO} sizes="(max-width: 940px) 100vw, 50vw" priority />
+              <p className="hw__masse hw__mono"><span>Werkstatt Sägewerkstraße 3 · 640 m²</span></p>
+            </div>
+          </header>
+
+          <dl className="hw__belege">
+            {BELEGE.map((b) => (
+              <div className="hw__beleg" key={b.wert}>
+                <dt className="vh">{b.text}</dt>
+                <dd>
+                  <b>{b.wert}</b>
+                  <span>{b.text}</span>
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </div>
       </div>
 
       <section className="hw__section" id="leistungen">
