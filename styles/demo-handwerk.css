@@ -10,17 +10,21 @@
    ============================================================ */
 
 .hw {
-  --grund: #f3f0ea;
-  --grund-tief: #e8e3d9;
-  --weiss: #fbfaf7;
-  --graphit: #1e211e;
-  --graphit-weich: #3c4039;
-  --grau: #6d7168;
-  --grau-hell: #a9ada2;
-  --eiche: #a9762f;
-  --eiche-hell: #c9974f;
-  --linie: rgba(30, 33, 30, 0.16);
-  --linie-fein: rgba(30, 33, 30, 0.09);
+  /* Kuehler Werkstattgrund statt Creme: das Caf steht schon auf warmem
+     Papier mit Terrakotta. Hier traegt die Oberflaeche Graphit und Petrol,
+     das Holz kommt allein aus den Bildern - so wie in einer Tischlerei, in
+     der die Werkbank grau ist und das Material warm. */
+  --grund: #eaedeb;
+  --grund-tief: #dbe1de;
+  --weiss: #f7f9f8;
+  --graphit: #191d1d;
+  --graphit-weich: #343a3a;
+  --grau: #5f6a68;
+  --grau-hell: #9aa3a1;
+  --stahl: #1c5a6b;
+  --stahl-hell: #5aa8bf;
+  --linie: rgba(25, 29, 29, 0.17);
+  --linie-fein: rgba(25, 29, 29, 0.1);
 
   --m-1: #ded7c8;
   --m-2: #b39a72;
@@ -57,7 +61,7 @@ html > body:has(.hw) { background: #f3f0ea; }
 .hw__marke-nr::before {
   content: "";
   width: 30px; height: 1px;
-  background: var(--eiche);
+  background: var(--stahl);
   flex: none;
 }
 .hw__mono {
@@ -74,7 +78,7 @@ html > body:has(.hw) { background: #f3f0ea; }
   font-size: 12.5px;
 }
 .hw__topbar-inner { display: flex; flex-wrap: wrap; gap: 6px 26px; justify-content: space-between; padding: 9px 0; }
-.hw__topbar b { color: var(--eiche-hell); font-weight: 600; }
+.hw__topbar b { color: var(--stahl-hell); font-weight: 600; }
 
 .hw__nav {
   display: flex;
@@ -102,7 +106,7 @@ html > body:has(.hw) { background: #f3f0ea; }
   background: var(--graphit);
 }
 .hw__zeichen::before { transform: translateY(-6px); clip-path: polygon(0 0, 100% 0, 100% 100%, 66% 100%, 66% 40%, 33% 40%, 33% 100%, 0 100%); }
-.hw__zeichen::after { transform: translateY(6px); background: var(--eiche); clip-path: polygon(0 0, 33% 0, 33% 60%, 66% 60%, 66% 0, 100% 0, 100% 100%, 0 100%); }
+.hw__zeichen::after { transform: translateY(6px); background: var(--stahl); clip-path: polygon(0 0, 33% 0, 33% 60%, 66% 60%, 66% 0, 100% 0, 100% 100%, 0 100%); }
 .hw__marke-text strong {
   display: block;
   font-family: var(--font-archivo), sans-serif;
@@ -114,7 +118,7 @@ html > body:has(.hw) { background: #f3f0ea; }
 .hw__marke-text span { font-size: 11px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--grau); }
 .hw__navlinks { display: flex; gap: clamp(16px, 2.2vw, 30px); font-size: 15px; }
 .hw__navlinks a { padding: 4px 0; border-bottom: 2px solid transparent; transition: border-color 200ms ease; }
-.hw__navlinks a:hover { border-bottom-color: var(--eiche); }
+.hw__navlinks a:hover { border-bottom-color: var(--stahl); }
 @media (max-width: 940px) { .hw__navlinks { display: none; } }
 
 .hw__tel {
@@ -149,8 +153,8 @@ html > body:has(.hw) { background: #f3f0ea; }
 .hw__btn:hover { background: transparent; color: var(--graphit); transform: translateY(-1px); }
 .hw__btn--leer { background: transparent; color: var(--graphit); }
 .hw__btn--leer:hover { background: var(--graphit); color: var(--grund); }
-.hw__btn--hell { background: var(--eiche); border-color: var(--eiche); color: #17140f; }
-.hw__btn--hell:hover { background: transparent; color: var(--eiche); }
+.hw__btn--hell { background: var(--stahl); border-color: var(--stahl); color: var(--weiss); }
+.hw__btn--hell:hover { background: transparent; color: var(--stahl); }
 .hw__btn[disabled] { cursor: not-allowed; }
 .hw__btn[disabled]:hover { background: var(--graphit); color: var(--grund); transform: none; }
 
@@ -164,7 +168,7 @@ html > body:has(.hw) { background: #f3f0ea; }
 }
 @media (max-width: 940px) { .hw__hero { grid-template-columns: 1fr; } }
 .hw__titel { font-size: clamp(2.5rem, 5.6vw, 4.4rem); margin: 20px 0 22px; max-width: 15ch; }
-.hw__titel span { color: var(--eiche); }
+.hw__titel span { color: var(--stahl); }
 .hw__hero p { color: var(--grau); font-size: clamp(1.02rem, 1.3vw, 1.14rem); max-width: 46ch; }
 .hw__aktionen { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
 .hw__hero-bild { position: relative; }
@@ -204,6 +208,37 @@ html > body:has(.hw) { background: #f3f0ea; }
 }
 .hw__beleg span { display: block; margin-top: 7px; font-size: 14px; color: var(--grau); }
 
+/* --- Dunkler Kopfbereich ------------------------------------
+   Leiste, Navigation, Hero und Belege stehen auf Graphit. Das
+   unterscheidet die Tischlerei auf den ersten Blick vom hellen
+   Papier des Cafs - und passt zur Werkstatt, in der die Flaechen
+   grau sind und nur das Material warm ist.
+   ------------------------------------------------------------ */
+.hw__oben { background: var(--graphit); color: var(--grund); }
+.hw__oben .hw__nav { border-bottom-color: rgba(243, 240, 234, 0.16); }
+.hw__oben .hw__zeichen { border-color: rgba(234, 237, 235, 0.55); }
+.hw__oben .hw__zeichen::before { background: var(--grund); }
+.hw__oben .hw__marke-text span { color: var(--grau-hell); }
+.hw__oben .hw__navlinks a:hover { border-bottom-color: var(--stahl-hell); }
+.hw__oben .hw__tel { border-color: var(--stahl-hell); color: var(--stahl-hell); }
+.hw__oben .hw__tel:hover { background: var(--stahl-hell); color: var(--graphit); }
+.hw__oben .hw__marke-nr { color: var(--grau-hell); }
+.hw__oben .hw__marke-nr::before { background: var(--stahl-hell); }
+.hw__oben .hw__titel span { color: var(--stahl-hell); }
+.hw__oben .hw__hero p { color: rgba(234, 237, 235, 0.74); }
+.hw__oben .hw__masse { color: var(--grau-hell); }
+.hw__oben .hw__masse::before, .hw__oben .hw__masse::after { background: rgba(234, 237, 235, 0.2); }
+.hw__oben .hw__btn { background: var(--stahl-hell); border-color: var(--stahl-hell); color: var(--graphit); }
+.hw__oben .hw__btn:hover { background: transparent; color: var(--stahl-hell); }
+.hw__oben .hw__btn--leer { background: transparent; color: var(--grund); border-color: rgba(234, 237, 235, 0.4); }
+.hw__oben .hw__btn--leer:hover { background: var(--grund); color: var(--graphit); border-color: var(--grund); }
+.hw__oben .hw__belege { border-block-color: rgba(234, 237, 235, 0.16); background: rgba(234, 237, 235, 0.16); }
+.hw__oben .hw__beleg { background: var(--graphit); }
+.hw__oben .hw__beleg b { color: var(--stahl-hell); }
+.hw__oben .hw__beleg span { color: rgba(234, 237, 235, 0.68); }
+.hw__oben .hw__belege { margin-top: 0; }
+.hw__oben .hw__hero { padding-bottom: clamp(40px, 5vw, 72px); }
+
 /* --- Abschnitte --------------------------------------------- */
 .hw__section { padding: clamp(56px, 8vw, 116px) 0; }
 .hw__section--weiss { background: var(--weiss); }
@@ -238,7 +273,7 @@ html > body:has(.hw) { background: #f3f0ea; }
   position: absolute;
   left: 0; top: 0.6em;
   width: 9px; height: 2px;
-  background: var(--eiche);
+  background: var(--stahl);
 }
 
 /* --- Projekte ----------------------------------------------- */
@@ -264,7 +299,7 @@ html > body:has(.hw) { background: #f3f0ea; }
   font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.16em;
-  color: var(--eiche-hell);
+  color: var(--stahl-hell);
 }
 .hw__schritt h3 { font-family: var(--font-archivo), sans-serif; font-size: 1.12rem; font-weight: 700; }
 .hw__schritt p { font-size: 14.5px; }
@@ -280,11 +315,11 @@ html > body:has(.hw) { background: #f3f0ea; }
 /* --- Stimmen ------------------------------------------------ */
 .hw__stimmen { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(18px, 2.4vw, 30px); }
 @media (max-width: 940px) { .hw__stimmen { grid-template-columns: 1fr; max-width: 620px; } }
-.hw__stimme { border-top: 3px solid var(--eiche); padding-top: 22px; display: grid; gap: 14px; align-content: start; }
+.hw__stimme { border-top: 3px solid var(--stahl); padding-top: 22px; display: grid; gap: 14px; align-content: start; }
 .hw__stimme blockquote { font-size: 17px; line-height: 1.6; }
 .hw__stimme figcaption { font-size: 14px; color: var(--grau); }
 .hw__stimme figcaption b { display: block; color: var(--graphit); font-weight: 600; }
-.hw__sterne { display: flex; gap: 3px; color: var(--eiche); font-size: 14px; letter-spacing: 0.1em; }
+.hw__sterne { display: flex; gap: 3px; color: var(--stahl); font-size: 14px; letter-spacing: 0.1em; }
 
 /* --- Anfrage ------------------------------------------------ */
 .hw__anfrage { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: clamp(28px, 4.4vw, 76px); align-items: start; }
@@ -310,7 +345,7 @@ html > body:has(.hw) { background: #f3f0ea; }
   width: 100%;
 }
 .hw__feld input:focus-visible, .hw__feld textarea:focus-visible, .hw__feld select:focus-visible {
-  outline: 2px solid var(--eiche);
+  outline: 2px solid var(--stahl);
   outline-offset: 1px;
 }
 .hw__feld textarea { min-height: 104px; resize: vertical; }
@@ -320,7 +355,7 @@ html > body:has(.hw) { background: #f3f0ea; }
 .hw__fuss-grid { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: clamp(24px, 4vw, 52px); }
 @media (max-width: 880px) { .hw__fuss-grid { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 520px) { .hw__fuss-grid { grid-template-columns: 1fr; } }
-.hw__fuss h4 { font-family: var(--font-archivo), sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--eiche-hell); margin-bottom: 14px; }
+.hw__fuss h4 { font-family: var(--font-archivo), sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--stahl-hell); margin-bottom: 14px; }
 .hw__fuss li { padding: 4px 0; font-size: 14.5px; }
 .hw__fuss a:hover { color: var(--grund); }
 .hw__fuss .hw__marke-text strong { color: var(--grund); }
