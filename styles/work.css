@@ -125,7 +125,8 @@
 /* Freizeit: runde Ecken, buntes Band, vier Kacheln */
 .work__mini[data-niche="freizeit"] .work__mini-buehne {
   border-radius: 10px;
-  background: linear-gradient(150deg, var(--v-text), #0d7fa6);
+  /* Nimmt die Farben der jeweiligen Seite auf, statt eine feste zu setzen. */
+  background: linear-gradient(150deg, var(--v-text), color-mix(in oklab, var(--v-text) 62%, var(--v-akzent)));
   opacity: 1;
 }
 .work__mini[data-niche="freizeit"] .work__mini-band { border-radius: 999px; }

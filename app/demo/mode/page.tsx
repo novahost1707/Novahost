@@ -1,116 +1,131 @@
-import type { Metadata, Viewport } from "next";
-import { Jost } from "next/font/google";
-import "@/styles/demo-mode.css";
+import Link from "next/link";
+import { Bild } from "@/components/demo/Bild";
+import type { Bildplatz } from "@/lib/demo-bilder";
+import { kategorien, produkte } from "@/lib/demo-mode";
 
 /**
- * Demo 2 - Atelier Nordlicht (erfundener Onlineshop).
+ * Startseite des Demo-Shops NORDLICHT.
  *
- * Gestalterische Haltung: das Gegenteil des Cafés. Kühl, streng, fast
- * monochrom, geometrische Grotesk in Versalien. Die Seite nimmt sich zurück,
- * damit die Ware wirkt - so arbeiten Modeshops tatsächlich.
- *
- * Die Produktbilder sind CSS-Silhouetten. Ein echter Shop hätte hier
- * Aufnahmen; eine Attrappe soll aber keine Fotos vortäuschen.
+ * Aufbau wie bei einem echten Label: ein grosses Kampagnenbild, darunter die
+ * Kategorien, dann die aktuelle Serie, ein redaktioneller Teil zum Material,
+ * die Versandbedingungen und der Brief. Kein Karussell, keine Rabattbanner -
+ * die Ruhe ist hier Teil des Versprechens.
  */
-const jost = Jost({ subsets: ["latin"], variable: "--font-jost", display: "swap", weight: ["300", "400", "500"] });
 
-export const metadata: Metadata = {
-  title: "Atelier Nordlicht - Demo-Projekt",
-  description: "Demo-Projekt von Novahost: Onlineshop für ein Modelabel mit Kleinserien.",
+const BILD_HERO: Bildplatz = {
+  src: "/demo/mode/hero.jpg",
+  alt: "Zwei Personen in Mänteln der Serie 04 vor einer Hafenkulisse",
+  ratio: "16 / 8",
+  motiv: "mode-strasse",
+  variante: 0,
 };
 
-export const viewport: Viewport = { themeColor: "#f7f6f4", colorScheme: "light" };
-
-const ARTIKEL = [
-  { name: "Hemdbluse Vika", stoff: "Leinen, gewaschen", preis: "149", form: "oberteil", ton: "#8c8579", marker: "Neu", farben: ["#e8e4dc", "#8a7c6a", "#2b2723"] },
-  { name: "Weite Hose Ola", stoff: "Baumwoll-Twill", preis: "179", form: "hose", ton: "#4c4740", marker: "", farben: ["#4c4740", "#1c1a17"] },
-  { name: "Mantel Fjord", stoff: "Wollmischung, ungefüttert", preis: "389", form: "mantel", ton: "#6b6459", marker: "Kleinserie", farben: ["#6b6459", "#22201d"] },
-  { name: "Tasche Skagen", stoff: "Pflanzlich gegerbtes Leder", preis: "229", form: "tasche", ton: "#7d6a55", marker: "", farben: ["#7d6a55", "#2e2822"] },
-];
-
-const GROESSEN = [
-  { g: "XS", brust: "82 - 86", taille: "62 - 66", hueft: "88 - 92" },
-  { g: "S", brust: "86 - 90", taille: "66 - 70", hueft: "92 - 96" },
-  { g: "M", brust: "90 - 96", taille: "70 - 76", hueft: "96 - 102" },
-  { g: "L", brust: "96 - 102", taille: "76 - 82", hueft: "102 - 108" },
-  { g: "XL", brust: "102 - 110", taille: "82 - 90", hueft: "108 - 116" },
-];
+const BILD_EDITORIAL: Bildplatz = {
+  src: "/demo/mode/editorial.jpg",
+  alt: "Stoffbahnen in der Weberei, Detailaufnahme",
+  ratio: "4 / 5",
+  motiv: "mode-stoff",
+  variante: 0,
+};
 
 const VERSPRECHEN = [
-  { titel: "Versand ab 80 €", text: "Innerhalb Deutschlands kostenfrei, Lieferung in zwei bis vier Werktagen." },
-  { titel: "30 Tage Rückgabe", text: "Ungetragen und mit Etikett zurück - das Rücksendeetikett liegt bei." },
-  { titel: "Kleine Auflagen", text: "Jede Serie umfasst 40 bis 120 Stück. Was weg ist, kommt nicht wieder." },
+  { titel: "Versandkostenfrei ab 80 €", text: "Innerhalb Deutschlands. Lieferung in zwei bis vier Werktagen, klimaneutral mit DHL GoGreen." },
+  { titel: "30 Tage Rückgabe", text: "Ungetragen und mit Etikett zurück. Das Rücksendeetikett liegt jeder Bestellung bei." },
+  { titel: "Reparatur statt Ersatz", text: "Naht auf, Reißverschluss defekt? Wir reparieren im ersten Jahr kostenlos, danach zum Selbstkostenpreis." },
 ];
 
-export default function ModeDemo() {
+export default function ModeStartseite() {
+  const serie = produkte.slice(0, 8);
+
   return (
-    <div className={`demo mode ${jost.variable}`}>
-      <p className="mode__band mode__mini">Kostenfreier Versand ab 80 € &middot; Neue Serie: Winter 26</p>
-
-      <div className="demo__shell">
-        <nav className="mode__nav">
-          <div className="mode__navlinks mode__mini">
-            <a href="#neu">Neuheiten</a>
-            <a href="#groessen">Größen</a>
-            <a href="#service">Service</a>
-          </div>
-          <span className="mode__marke">Atelier Nordlicht</span>
-          <div className="mode__navrechts mode__mini">
-            <a href="#service">Suche</a>
-            <a href="#neu" className="mode__korb">
-              Warenkorb <b>2</b>
-            </a>
-          </div>
-        </nav>
-      </div>
-
+    <>
       <header className="mode__hero">
+        <Bild platz={BILD_HERO} sizes="100vw" priority />
+        <div className="mode__hero-schleier" aria-hidden="true" />
         <div className="mode__hero-inhalt">
-          <p className="mode__mini">Serie 04 &middot; Winter 26</p>
-          <h1 className="mode__display">Weniger Teile, länger getragen.</h1>
-          <p>
-            Vier Stoffe, elf Schnitte, gefertigt in einer Manufaktur in Portugal. Wir legen keine
-            Kollektion nach - was ausverkauft ist, bleibt es.
-          </p>
-          <a href="#neu" className="mode__btn">
-            Serie ansehen <span aria-hidden="true">&#8594;</span>
-          </a>
+          <div className="demo__shell mode__hero-zeile">
+            <div>
+              <p className="mode__mini">Serie 04 &middot; Winter 26</p>
+              <h1 className="mode__display">Weniger Teile, länger getragen.</h1>
+            </div>
+            <div>
+              <p>
+                Vier Stoffe, elf Schnitte, gefertigt in einer Manufaktur bei Porto. Wir legen keine
+                Serie nach - was ausverkauft ist, bleibt es.
+              </p>
+              <Link href="/demo/mode#serie" className="mode__btn mode__btn--hell" style={{ marginTop: "22px" }}>
+                Serie ansehen
+              </Link>
+            </div>
+          </div>
         </div>
       </header>
 
-      <section className="mode__section" id="neu">
+      <section className="mode__section" id="kategorien">
         <div className="demo__shell">
-          <div className="mode__kopf">
+          <div className="mode__kopf auf">
+            <div>
+              <p className="mode__mini" style={{ color: "var(--grau)" }}>Sortiment</p>
+              <h2 className="mode__display">Vier Kategorien, elf Teile.</h2>
+            </div>
+            <p>
+              Wir führen bewusst wenig. Jedes Teil muss sich mit jedem anderen kombinieren lassen -
+              sonst nehmen wir es nicht ins Sortiment.
+            </p>
+          </div>
+
+          <div className="mode__kategorien">
+            {kategorien.map((k) => (
+              <Link href="/demo/mode#serie" className="mode__kategorie zoom auf" key={k.id}>
+                <Bild platz={k.bild} sizes="(max-width: 900px) 50vw, 25vw" />
+                <span className="mode__kategorie-text">
+                  <h3>{k.name}</h3>
+                  <p>{k.text}</p>
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="mode__section mode__section--weiss" id="serie">
+        <div className="demo__shell">
+          <div className="mode__kopf auf">
             <div>
               <p className="mode__mini" style={{ color: "var(--grau)" }}>Serie 04</p>
               <h2 className="mode__display">Neu im Atelier</h2>
             </div>
-            <a href="#neu" className="mode__mini">Alle 11 Teile &#8594;</a>
+            <p>
+              Alle Teile der aktuellen Serie. Auflage zwischen 40 und 120 Stück, danach ist Schluss.
+            </p>
           </div>
 
           <div className="mode__raster">
-            {ARTIKEL.map((a) => (
-              <article className="mode__artikel" key={a.name}>
-                <div className="mode__bild">
-                  {a.marker && <span className="mode__marker">{a.marker}</span>}
-                  <span
-                    className="mode__stueck"
-                    data-form={a.form}
-                    style={{ color: a.ton }}
-                    aria-hidden="true"
-                  />
-                </div>
-                <div>
-                  <h3>{a.name}</h3>
-                  <p>{a.stoff}</p>
-                </div>
-                <div className="mode__artikel-fuss">
-                  <span className="mode__farben" aria-label={`${a.farben.length} Farben`}>
-                    {a.farben.map((f) => (
-                      <span key={f} style={{ background: f }} />
+            {serie.map((p) => (
+              <article className="mode__karte auf" key={p.slug}>
+                <Link href={`/demo/mode/produkt/${p.slug}`} className="mode__karte-bild zoom">
+                  {p.marker && <span className="mode__marker">{p.marker}</span>}
+                  <Bild platz={p.bilder[0]!} sizes="(max-width: 760px) 50vw, (max-width: 1100px) 33vw, 25vw" />
+                  <span className="mode__schnellwahl" aria-hidden="true">
+                    {p.groessen.map((g) => (
+                      <span key={g} data-weg={p.ausverkauft?.includes(g) ? "true" : undefined}>{g}</span>
                     ))}
                   </span>
-                  <span className="mode__preis">{a.preis},00 &euro;</span>
+                </Link>
+                <div className="mode__karte-text">
+                  <div className="mode__karte-zeile">
+                    <h3>
+                      <Link href={`/demo/mode/produkt/${p.slug}`}>{p.name}</Link>
+                    </h3>
+                    <span className="mode__preis">
+                      {p.vorher && <span className="mode__vorher">{p.vorher},00 &euro;</span>}
+                      {p.preis},00 &euro;
+                    </span>
+                  </div>
+                  <p className="mode__karte-stoff">{p.stoff}</p>
+                  <span className="mode__farbpunkte" aria-label={`${p.farben.length} Farben`}>
+                    {p.farben.map((f) => <i key={f.name} style={{ background: f.wert }} />)}
+                  </span>
                 </div>
               </article>
             ))}
@@ -118,50 +133,33 @@ export default function ModeDemo() {
         </div>
       </section>
 
-      <section className="mode__section mode__groessen" id="groessen">
-        <div className="demo__shell">
-          <div className="mode__groessen-inhalt">
-            <div>
-              <p className="mode__mini" style={{ color: "var(--grau)" }}>Größenberatung</p>
-              <h2 className="mode__display" style={{ fontSize: "clamp(1.7rem,3.4vw,2.6rem)", margin: "12px 0 16px" }}>
-                Im Zweifel die kleinere.
-              </h2>
-              <p style={{ color: "var(--grau)", maxWidth: "42ch" }}>
-                Unsere Schnitte fallen weit aus. Wenn Sie zwischen zwei Größen liegen, nehmen Sie
-                die kleinere - außer beim Mantel Fjord, der wird bewusst über der Jacke getragen.
-              </p>
-              <a href="#service" className="mode__btn mode__btn--dunkel">Beratung anfragen</a>
-            </div>
-            <table className="mode__tabelle">
-              <caption className="mode__mini" style={{ textAlign: "left", paddingBottom: "12px", color: "var(--grau)" }}>
-                Angaben in Zentimetern
-              </caption>
-              <thead>
-                <tr>
-                  <th scope="col">Größe</th>
-                  <th scope="col">Brust</th>
-                  <th scope="col">Taille</th>
-                  <th scope="col">Hüfte</th>
-                </tr>
-              </thead>
-              <tbody>
-                {GROESSEN.map((g) => (
-                  <tr key={g.g}>
-                    <th scope="row">{g.g}</th>
-                    <td>{g.brust}</td>
-                    <td>{g.taille}</td>
-                    <td>{g.hueft}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+      <section className="mode__section mode__section--tinte" id="material">
+        <div className="demo__shell mode__editorial">
+          <div className="auf">
+            <Bild platz={BILD_EDITORIAL} sizes="(max-width: 900px) 100vw, 46vw" />
+          </div>
+          <div className="auf">
+            <p className="mode__mini" style={{ color: "var(--sand)" }}>Material</p>
+            <h2 className="mode__display">Wir kaufen den Stoff, bevor wir den Schnitt zeichnen.</h2>
+            <p>
+              Die meisten Marken entwerfen erst und suchen dann einen Stoff, der billig genug ist.
+              Wir machen es umgekehrt: Wir kaufen jährlich bei vier Webereien ein und entwerfen
+              danach, was sich daraus nähen lässt.
+            </p>
+            <dl className="mode__editorial-liste">
+              <div><dt>Baumwolle</dt><dd>GOTS-zertifiziert, gestrickt in Vila Nova de Gaia</dd></div>
+              <div><dt>Wolle</dt><dd>Mulesing-frei, gewebt in Biella und Bergamo</dd></div>
+              <div><dt>Leinen</dt><dd>Angebaut und gewebt in Belgien</dd></div>
+              <div><dt>Leder</dt><dd>Pflanzlich gegerbt, verarbeitet in Ubrique</dd></div>
+            </dl>
+            <Link href="/demo/mode#serie" className="mode__btn mode__btn--hell">Zur Serie</Link>
           </div>
         </div>
       </section>
 
-      <div className="mode__versprechen" id="service">
+      <div className="mode__versprechen">
         {VERSPRECHEN.map((v) => (
-          <div key={v.titel}>
+          <div key={v.titel} className="auf">
             <p className="mode__mini" style={{ color: "var(--sand)" }}>Service</p>
             <h3>{v.titel}</h3>
             <p>{v.text}</p>
@@ -169,49 +167,27 @@ export default function ModeDemo() {
         ))}
       </div>
 
-      <footer className="mode__fuss">
-        <div className="demo__shell">
-          <div className="mode__fuss-grid">
-            <div>
-              <p className="mode__marke" style={{ textAlign: "left", color: "var(--weiss)" }}>Atelier Nordlicht</p>
-              <p style={{ marginTop: "14px", maxWidth: "32ch", fontSize: "14px" }}>
-                Kleine Serien aus wenigen Stoffen. Entworfen in Hamburg, genäht in Porto.
-              </p>
-            </div>
-            <div>
-              <h4 className="mode__mini">Shop</h4>
-              <ul>
-                <li><a href="#neu">Neuheiten</a></li>
-                <li><a href="#neu">Oberteile</a></li>
-                <li><a href="#neu">Hosen</a></li>
-                <li><a href="#neu">Accessoires</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="mode__mini">Service</h4>
-              <ul>
-                <li><a href="#groessen">Größenberatung</a></li>
-                <li><a href="#service">Versand</a></li>
-                <li><a href="#service">Rückgabe</a></li>
-                <li><a href="#service">Kontakt</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="mode__mini">Rechtliches</h4>
-              <ul>
-                <li>Impressum</li>
-                <li>Datenschutz</li>
-                <li>AGB</li>
-                <li>Widerruf</li>
-              </ul>
-            </div>
+      <section className="mode__section mode__section--tinte">
+        <div className="demo__shell mode__brief">
+          <div>
+            <p className="mode__mini" style={{ color: "var(--sand)" }}>Brief</p>
+            <h2 className="mode__display">Sechs Mails im Jahr, nicht mehr.</h2>
+            <p style={{ color: "rgba(246,245,242,0.7)", maxWidth: "44ch" }}>
+              Wir schreiben, wenn eine Serie fertig ist. Keine Rabattaktionen, keine
+              Countdown-Mails. Abmelden mit einem Klick.
+            </p>
           </div>
-          <div className="mode__fuss-schluss">
-            <span>Demo-Projekt. Erfundenes Label, erfundene Preise - hier lässt sich nichts bestellen.</span>
-            <span>Gestaltet von Novahost</span>
-          </div>
+          <form className="mode__brief-form" aria-label="Newsletter (Attrappe)">
+            <input type="email" placeholder="Ihre E-Mail-Adresse" disabled aria-label="E-Mail-Adresse" />
+            <button type="button" className="mode__btn mode__btn--hell demo__fake" disabled>
+              Eintragen
+            </button>
+            <p className="demo__note" style={{ flexBasis: "100%", color: "rgba(246,245,242,0.55)" }}>
+              Attrappe: Auf dieser Demo-Seite wird nichts versendet und nichts gespeichert.
+            </p>
+          </form>
         </div>
-      </footer>
-    </div>
+      </section>
+    </>
   );
 }
