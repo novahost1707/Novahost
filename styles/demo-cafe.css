@@ -6,31 +6,34 @@
    ============================================================ */
 
 .cafe {
-  --creme: #f5efe6;
-  --creme-tief: #ece2d4;
-  --papier: #fffdf9;
+  /* Umgedreht: der Grund ist jetzt braun, die Schrift creme. Das Braun
+     liegt bewusst ueber dem alten Espressoton - dunkel genug fuer Waerme,
+     hell genug, dass die Seite nicht zur Hoehle wird. */
+  --grund: #433024;
+  --grund-tief: #372620;
+  --grund-hell: #50392b;
+  --creme: #f4ead9;
   --espresso: #241812;
-  --kaffee: #5d4231;
-  --kaffee-hell: #8a6a50;
-  --terra: #9e4e2a;
-  --terra-hell: #c47a52;
-  --linie: rgba(36, 24, 18, 0.14);
-  --linie-fein: rgba(36, 24, 18, 0.08);
+  --kaffee-hell: #c3ab90;
+  --terra: #e08a55;
+  --terra-tief: #b45f33;
+  --linie: rgba(244, 234, 217, 0.18);
+  --linie-fein: rgba(244, 234, 217, 0.1);
 
-  /* Farben der Ersatzmotive */
-  --m-1: #e6d9c6;
-  --m-2: #8a6a50;
-  --m-3: #5d4231;
-  --m-4: #9e4e2a;
+  /* Farben der Ersatzmotive - heller als der Grund, sonst verschwinden sie */
+  --m-1: #6a4e3a;
+  --m-2: #97724f;
+  --m-3: #c3a077;
+  --m-4: #e08a55;
 
-  background: var(--creme);
-  color: var(--espresso);
+  background: var(--grund);
+  color: var(--creme);
   font-family: var(--font-inter), system-ui, sans-serif;
   font-size: 16px;
   line-height: 1.68;
   letter-spacing: -0.006em;
 }
-html > body:has(.cafe) { background: #f5efe6; }
+html > body:has(.cafe) { background: #433024; }
 
 .cafe__display {
   font-family: var(--font-fraunces), Georgia, "Times New Roman", serif;
@@ -56,7 +59,7 @@ html > body:has(.cafe) { background: #f5efe6; }
 
 /* --- Ankündigungszeile -------------------------------------- */
 .cafe__topbar {
-  background: var(--espresso);
+  background: #2c1e17;
   color: var(--creme);
   font-size: 12.5px;
   letter-spacing: 0.02em;
@@ -72,7 +75,7 @@ html > body:has(.cafe) { background: #f5efe6; }
 .cafe__topbar span { display: inline-flex; align-items: center; gap: 8px; }
 .cafe__topbar i {
   width: 5px; height: 5px; border-radius: 50%;
-  background: var(--terra-hell);
+  background: var(--terra);
   flex: none;
 }
 
@@ -108,7 +111,7 @@ html > body:has(.cafe) { background: #f5efe6; }
 .cafe__bohne {
   width: 26px; height: 26px;
   border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-  background: linear-gradient(140deg, var(--kaffee), var(--espresso));
+  background: linear-gradient(140deg, var(--kaffee-hell), var(--espresso));
   position: relative;
   transform: rotate(-18deg);
   flex: none;
@@ -117,9 +120,9 @@ html > body:has(.cafe) { background: #f5efe6; }
   content: "";
   position: absolute;
   inset: 4px 45% 4px 45%;
-  background: var(--creme);
+  background: var(--grund);
   border-radius: 50%;
-  opacity: 0.6;
+  opacity: 0.7;
 }
 .cafe__navlinks { display: flex; gap: clamp(18px, 2.8vw, 36px); font-size: 15px; }
 .cafe__navlinks a { position: relative; padding: 4px 0; }
@@ -146,16 +149,16 @@ html > body:has(.cafe) { background: #f5efe6; }
   font-size: 15px;
   font-weight: 600;
   letter-spacing: -0.005em;
-  border: 1px solid var(--espresso);
+  border: 1px solid var(--creme);
   white-space: nowrap;
   transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1), background 200ms ease, color 200ms ease, border-color 200ms ease;
 }
 .cafe__btn span { transition: transform 260ms cubic-bezier(0.16, 1, 0.3, 1); }
 .cafe__btn:hover { transform: translateY(-2px); }
 .cafe__btn:hover span { transform: translateX(3px); }
-.cafe__btn--voll { background: var(--espresso); color: var(--creme); }
-.cafe__btn--voll:hover { background: var(--terra); border-color: var(--terra); }
-.cafe__btn--leer:hover { background: rgba(36, 24, 18, 0.05); }
+.cafe__btn--voll { background: var(--creme); color: var(--grund-tief); border-color: var(--creme); }
+.cafe__btn--voll:hover { background: var(--terra); border-color: var(--terra); color: #2a1a10; }
+.cafe__btn--leer:hover { background: rgba(244, 234, 217, 0.12); }
 .cafe__btn--klein { padding: 11px 20px; font-size: 14px; }
 
 /* --- Hero --------------------------------------------------- */
@@ -176,7 +179,7 @@ html > body:has(.cafe) { background: #f5efe6; }
 .cafe__lead {
   font-size: clamp(1.05rem, 1.35vw, 1.2rem);
   max-width: 44ch;
-  color: var(--kaffee);
+  color: var(--kaffee-hell);
 }
 .cafe__hero-aktionen { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
 .cafe__hero-fuss {
@@ -189,26 +192,26 @@ html > body:has(.cafe) { background: #f5efe6; }
   font-size: 13.5px;
   color: var(--kaffee-hell);
 }
-.cafe__hero-fuss b { color: var(--espresso); font-weight: 600; }
+.cafe__hero-fuss b { color: var(--creme); font-weight: 600; }
 
 .cafe__hero-bild { position: relative; }
 .cafe__hero-bild .bildplatz { border-radius: 260px 260px 14px 14px; }
 .cafe__bildnote {
   position: absolute;
   left: -14px; bottom: 26px;
-  background: var(--papier);
-  border: 1px solid var(--linie-fein);
+  background: var(--grund-tief);
+  border: 1px solid var(--linie);
   border-radius: 999px;
   padding: 9px 18px;
   font-size: 12.5px;
-  box-shadow: 0 18px 34px -26px rgba(36, 24, 18, 0.6);
+  box-shadow: 0 18px 34px -26px rgba(0, 0, 0, 0.5);
 }
 @media (max-width: 900px) { .cafe__bildnote { left: 12px; } }
 
 /* --- Laufband ----------------------------------------------- */
 .cafe__laufband {
   border-block: 1px solid var(--linie);
-  background: var(--creme-tief);
+  background: var(--grund-tief);
   overflow: hidden;
   padding: 15px 0;
 }
@@ -223,7 +226,7 @@ html > body:has(.cafe) { background: #f5efe6; }
   font-size: 15px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--kaffee);
+  color: var(--kaffee-hell);
   display: inline-flex;
   align-items: center;
   gap: 46px;
@@ -241,11 +244,11 @@ html > body:has(.cafe) { background: #f5efe6; }
 
 /* --- Abschnitte --------------------------------------------- */
 .cafe__section { padding: clamp(60px, 9vw, 130px) 0; }
-.cafe__section--papier { background: var(--papier); }
-.cafe__section--tief { background: var(--espresso); color: var(--creme); }
+.cafe__section--papier { background: var(--grund-hell); }
+.cafe__section--tief { background: var(--grund-tief); color: var(--creme); }
 .cafe__kopf { max-width: 60ch; margin-bottom: clamp(34px, 4.4vw, 62px); }
 .cafe__h2 { font-size: clamp(2.1rem, 4.6vw, 3.5rem); margin: 12px 0 16px; }
-.cafe__kopf p { color: var(--kaffee); font-size: 17px; }
+.cafe__kopf p { color: var(--kaffee-hell); font-size: 17px; }
 .cafe__kopf--reihe {
   max-width: none;
   display: flex;
@@ -309,18 +312,18 @@ html > body:has(.cafe) { background: #f5efe6; }
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
 }
-.cafe__roestung p { color: var(--kaffee); font-size: 15px; }
+.cafe__roestung p { color: var(--kaffee-hell); font-size: 15px; }
 .cafe__noten { display: flex; flex-wrap: wrap; gap: 7px; }
 .cafe__note {
   border: 1px solid var(--linie);
   border-radius: 999px;
   padding: 4px 12px;
   font-size: 12.5px;
-  color: var(--kaffee);
+  color: var(--kaffee-hell);
 }
 .cafe__balken { display: grid; gap: 7px; margin-top: 2px; }
 .cafe__balken-zeile { display: grid; grid-template-columns: 62px 1fr; align-items: center; gap: 12px; font-size: 12px; color: var(--kaffee-hell); }
-.cafe__balken-spur { height: 4px; background: var(--linie); border-radius: 999px; overflow: hidden; }
+.cafe__balken-spur { height: 4px; background: rgba(244, 234, 217, 0.16); border-radius: 999px; overflow: hidden; }
 .cafe__balken-spur i { display: block; height: 100%; background: var(--terra); border-radius: 999px; }
 
 /* --- Ablauf (redaktioneller Zweispalter) -------------------- */
@@ -333,19 +336,19 @@ html > body:has(.cafe) { background: #f5efe6; }
   grid-template-columns: 52px 1fr;
   gap: 20px;
   padding: 26px 0;
-  border-bottom: 1px solid rgba(245, 239, 230, 0.16);
+  border-bottom: 1px solid rgba(244, 234, 217, 0.16);
 }
-.cafe__schritt:first-child { border-top: 1px solid rgba(245, 239, 230, 0.16); }
+.cafe__schritt:first-child { border-top: 1px solid rgba(244, 234, 217, 0.16); }
 .cafe__schritt-num {
   font-family: var(--font-fraunces), Georgia, serif;
   font-size: 1.3rem;
-  color: var(--terra-hell);
+  color: var(--terra);
 }
 .cafe__schritt h3 { font-family: var(--font-fraunces), Georgia, serif; font-size: 1.25rem; font-weight: 600; margin-bottom: 5px; }
-.cafe__schritt p { color: rgba(245, 239, 230, 0.72); font-size: 15px; }
-.cafe__section--tief .cafe__kopf p { color: rgba(245, 239, 230, 0.72); }
-.cafe__section--tief .cafe__kicker { color: var(--terra-hell); }
-.cafe__section--tief .cafe__label { color: rgba(245, 239, 230, 0.6); }
+.cafe__schritt p { color: var(--kaffee-hell); font-size: 15px; }
+.cafe__section--tief .cafe__kopf p { color: var(--kaffee-hell); }
+.cafe__section--tief .cafe__kicker { color: var(--terra); }
+.cafe__section--tief .cafe__label { color: var(--kaffee-hell); }
 
 /* --- Karte -------------------------------------------------- */
 .cafe__karte { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(30px, 5vw, 80px); }
@@ -370,7 +373,7 @@ html > body:has(.cafe) { background: #f5efe6; }
   flex: 1;
   min-width: 24px;
   height: 1em;
-  background-image: radial-gradient(circle, rgba(36, 24, 18, 0.34) 1px, transparent 1px);
+  background-image: radial-gradient(circle, rgba(244, 234, 217, 0.34) 1px, transparent 1px);
   background-size: 5px 5px;
   background-position: 0 100%;
   background-repeat: repeat-x;
@@ -379,13 +382,13 @@ html > body:has(.cafe) { background: #f5efe6; }
 .cafe__posten small { display: block; font-size: 13.5px; color: var(--kaffee-hell); margin-top: 2px; }
 .cafe__karte-hinweis {
   margin-top: 26px;
-  background: var(--creme-tief);
+  background: var(--grund-tief);
   border-left: 3px solid var(--terra);
   padding: 18px 22px;
   font-size: 14.5px;
-  color: var(--kaffee);
+  color: var(--kaffee-hell);
 }
-.cafe__karte-hinweis b { color: var(--espresso); }
+.cafe__karte-hinweis b { color: var(--creme); }
 
 /* --- Galerie ------------------------------------------------ */
 .cafe__galerie {
@@ -438,16 +441,16 @@ html > body:has(.cafe) { background: #f5efe6; }
   position: relative;
   overflow: hidden;
   background:
-    linear-gradient(var(--creme-tief) 1px, transparent 1px) 0 0 / 100% 38px,
-    linear-gradient(90deg, var(--creme-tief) 1px, transparent 1px) 0 0 / 38px 100%,
-    var(--papier);
+    linear-gradient(rgba(244, 234, 217, 0.12) 1px, transparent 1px) 0 0 / 100% 38px,
+    linear-gradient(90deg, rgba(244, 234, 217, 0.12) 1px, transparent 1px) 0 0 / 38px 100%,
+    var(--grund-tief);
 }
 .cafe__plan::before {
   content: "";
   position: absolute;
   inset: 38% -12% auto -12%;
   height: 66px;
-  background: var(--creme-tief);
+  background: rgba(244, 234, 217, 0.13);
   transform: rotate(-9deg);
 }
 .cafe__plan::after {
@@ -455,7 +458,7 @@ html > body:has(.cafe) { background: #f5efe6; }
   position: absolute;
   left: -10%; right: 52%; top: -20%;
   height: 42px;
-  background: var(--creme-tief);
+  background: rgba(244, 234, 217, 0.13);
   transform: rotate(64deg);
 }
 .cafe__nadel {
@@ -465,40 +468,41 @@ html > body:has(.cafe) { background: #f5efe6; }
   border-radius: 50% 50% 50% 0;
   background: var(--terra);
   transform: rotate(-45deg);
-  box-shadow: 0 10px 20px -8px rgba(36, 24, 18, 0.75);
+  box-shadow: 0 10px 20px -8px rgba(0, 0, 0, 0.6);
 }
 .cafe__nadel::after {
   content: "";
   position: absolute;
   inset: 6px;
   border-radius: 50%;
-  background: var(--papier);
+  background: var(--grund-tief);
 }
 .cafe__plan figcaption {
   position: absolute;
   left: 14px; right: 14px; bottom: 14px;
   padding: 12px 16px;
-  background: rgba(255, 253, 249, 0.95);
-  border: 1px solid var(--linie-fein);
+  background: rgba(44, 30, 23, 0.94);
+  border: 1px solid var(--linie);
   border-radius: 8px;
   font-size: 13.5px;
+  color: var(--creme);
   backdrop-filter: blur(4px);
 }
 
 /* --- Fuß ---------------------------------------------------- */
-.cafe__fuss { background: var(--espresso); color: rgba(245, 239, 230, 0.78); padding: clamp(50px, 7vw, 92px) 0 30px; }
-.cafe__fuss a:hover { color: var(--terra-hell); }
+.cafe__fuss { background: #2c1e17; color: rgba(244, 234, 217, 0.78); padding: clamp(50px, 7vw, 92px) 0 30px; }
+.cafe__fuss a:hover { color: var(--terra); }
 .cafe__fuss-grid { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1.2fr; gap: clamp(26px, 4vw, 56px); }
 @media (max-width: 900px) { .cafe__fuss-grid { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 560px) { .cafe__fuss-grid { grid-template-columns: 1fr; } }
-.cafe__fuss h4 { font-size: 11.5px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--terra-hell); margin-bottom: 14px; }
+.cafe__fuss h4 { font-size: 11.5px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--terra); margin-bottom: 14px; }
 .cafe__fuss li { padding: 4px 0; font-size: 15px; }
-.cafe__fuss .cafe__marke { color: var(--papier); }
+.cafe__fuss .cafe__marke { color: var(--creme); }
 .cafe__fuss-text { margin-top: 14px; max-width: 32ch; font-size: 15px; }
 .cafe__fuss-schluss {
   margin-top: clamp(34px, 4vw, 58px);
   padding-top: 22px;
-  border-top: 1px solid rgba(245, 239, 230, 0.16);
+  border-top: 1px solid rgba(244, 234, 217, 0.16);
   font-size: 13px;
   opacity: 0.78;
   display: flex;
@@ -514,3 +518,155 @@ html > body:has(.cafe) { background: #f5efe6; }
   .cafe__topbar-inner { justify-content: center; font-size: 12px; }
   .cafe__topbar-inner > span:last-child { display: none; }
 }
+
+/* ============================================================
+   ERGÄNZUNGEN — Conversion
+   Öffnungszeiten früh sichtbar, Tagesangebot weit oben,
+   Kennzahlen als eigenständige Elemente statt als Tabelle.
+   ============================================================ */
+
+/* --- Statuszeile: "sind die gerade offen?" ------------------ */
+.cafe__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 18px 9px 14px;
+  border: 1px solid var(--linie);
+  border-radius: 999px;
+  background: rgba(244, 234, 217, 0.06);
+  font-size: 14px;
+}
+.cafe__status i {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #7bd39a;
+  box-shadow: 0 0 0 4px rgba(123, 211, 154, 0.18);
+  flex: none;
+}
+.cafe__status b { font-weight: 600; }
+.cafe__status span { color: var(--kaffee-hell); }
+
+/* --- Tagesangebot ------------------------------------------- */
+.cafe__heute { background: var(--grund-tief); }
+.cafe__heute-kopf {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 26px;
+  flex-wrap: wrap;
+  margin-bottom: clamp(26px, 3.4vw, 46px);
+}
+.cafe__heute-datum {
+  font-family: var(--font-fraunces), Georgia, serif;
+  font-style: italic;
+  color: var(--terra);
+  font-size: 15px;
+}
+.cafe__tafel {
+  display: grid;
+  /* Zwei Spalten: das Hauptangebot links ueber beide Zeilen, die beiden
+     kleineren rechts uebereinander. Bei drei Spalten bliebe die zweite
+     Zeile leer. */
+  grid-template-columns: 1.25fr 1fr;
+  gap: clamp(16px, 2.2vw, 30px);
+  align-items: stretch;
+}
+@media (max-width: 900px) { .cafe__tafel { grid-template-columns: 1fr; max-width: 520px; } }
+
+.cafe__tafel-haupt {
+  grid-row: span 2;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  border: 1px solid var(--linie);
+  overflow: hidden;
+}
+.cafe__tafel-haupt .bildplatz { aspect-ratio: 16 / 11; }
+.cafe__tafel-text { padding: clamp(20px, 2.6vw, 30px); display: grid; gap: 10px; align-content: start; }
+.cafe__tafel-text h3 { font-family: var(--font-fraunces), Georgia, serif; font-size: 1.5rem; font-weight: 600; }
+.cafe__tafel-text p { color: var(--kaffee-hell); font-size: 15px; }
+.cafe__tafel-preis {
+  font-family: var(--font-fraunces), Georgia, serif;
+  font-size: 1.35rem;
+  color: var(--terra);
+  font-variant-numeric: tabular-nums;
+}
+.cafe__tafel-marke {
+  justify-self: start;
+  border: 1px solid var(--terra);
+  color: var(--terra);
+  border-radius: 999px;
+  padding: 4px 13px;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+}
+
+.cafe__tafel-klein {
+  border: 1px solid var(--linie);
+  padding: clamp(18px, 2.2vw, 26px);
+  display: grid;
+  gap: 8px;
+  /* Die beiden Karten stehen neben der hohen Hauptkarte und werden auf deren
+     Hoehe gezogen. Mittig gesetzt wird der Ueberschuss zu Luft ringsum statt
+     zu einem Loch unter dem Text. */
+  align-content: center;
+  transition: border-color 240ms ease, background 240ms ease;
+}
+.cafe__tafel-klein:hover { border-color: var(--terra); background: rgba(244, 234, 217, 0.04); }
+.cafe__tafel-klein h4 { font-family: var(--font-fraunces), Georgia, serif; font-size: 1.2rem; font-weight: 600; display: flex; justify-content: space-between; gap: 14px; align-items: baseline; }
+.cafe__tafel-klein h4 span { font-size: 1rem; color: var(--terra); white-space: nowrap; }
+.cafe__tafel-klein p { color: var(--kaffee-hell); font-size: 14.5px; }
+.cafe__tafel-zusatz {
+  margin-top: 6px;
+  padding-top: 12px;
+  border-top: 1px solid var(--linie-fein);
+  font-size: 13px;
+}
+.cafe__tafel-rest { font-size: 12.5px; color: var(--terra); letter-spacing: 0.04em; }
+
+.cafe__heute-fuss {
+  margin-top: clamp(24px, 3vw, 38px);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 28px;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 22px;
+  border-top: 1px solid var(--linie-fein);
+}
+.cafe__heute-fuss p { color: var(--kaffee-hell); font-size: 14.5px; max-width: 52ch; }
+
+/* --- Kennzahlen als Widgets --------------------------------- */
+.cafe__kennzahlen { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(14px, 2vw, 26px); }
+@media (max-width: 900px) { .cafe__kennzahlen { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 520px) { .cafe__kennzahlen { grid-template-columns: 1fr; max-width: 380px; } }
+
+.cafe__kennzahl {
+  position: relative;
+  display: grid;
+  gap: 6px;
+  align-content: start;
+  padding: clamp(22px, 2.6vw, 32px) clamp(18px, 2.2vw, 26px);
+  border: 1px solid var(--linie);
+  border-radius: 3px;
+  overflow: hidden;
+}
+/* Zarter Lichtschein oben rechts - nimmt der Kachel das Tabellenhafte. */
+.cafe__kennzahl::after {
+  content: "";
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 150px; height: 150px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(224, 138, 85, 0.16), transparent 70%);
+  pointer-events: none;
+}
+.cafe__kennzahl-zeichen { width: 30px; height: 30px; stroke: var(--terra); stroke-width: 1.4; fill: none; margin-bottom: 8px; }
+.cafe__kennzahl b {
+  font-family: var(--font-fraunces), Georgia, serif;
+  font-size: clamp(2rem, 3.4vw, 2.7rem);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.cafe__kennzahl span { font-size: 14.5px; color: var(--kaffee-hell); }
+.cafe__kennzahl small { font-size: 12.5px; color: var(--terra); letter-spacing: 0.04em; }

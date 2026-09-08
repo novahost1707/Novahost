@@ -39,20 +39,58 @@ Entscheidend sind **Ordner und Dateiname**.
 | `cafe/raum-hof.jpg` | 4/5 | Der begrünte Innenhof mit Sitzplätzen |
 | `cafe/raum-tisch.jpg` | 4/5 | Gedeckter Tisch mit Frühstücksbrett und Cappuccino |
 | `cafe/raum-fenster.jpg` | 16/11 | Fensterplatz mit Blick auf die Lindenstraße |
+| `cafe/heute.jpg` | 16/10 | Der Kuchen des Tages auf der Theke, angeschnitten |
 
-## NORDLICHT (`/demo/mode`)
+## ARVO (`/demo/mode`)
+
+Der Shop hat zwei Sorten Bilder: die Flächen der Seite selbst und je drei
+Aufnahmen pro Artikel.
+
+### Seitenbilder
 
 | Datei | Seitenverhältnis | Motiv |
 |---|---|---|
 | `mode/hero.jpg` | 16/8 | Zwei Personen in Mänteln der Serie 04 vor einer Hafenkulisse |
+| `mode/einstieg-damen.jpg` | 3/2 | Model in weiter Hose und Ripp-Shirt, Ganzkörperaufnahme |
+| `mode/einstieg-herren.jpg` | 3/2 | Model in Bomberjacke und Cargohose, Ganzkörperaufnahme |
 | `mode/editorial.jpg` | 4/5 | Stoffbahnen in der Weberei, Detailaufnahme |
-| `mode/kategorie-oberteile.jpg` | 3/4 | Model trägt einen weiten Hoodie vor einer Betonwand |
-| `mode/kategorie-hosen.jpg` | 3/4 | Detailaufnahme einer weiten Cargohose im Gehen |
-| `mode/kategorie-outerwear.jpg` | 3/4 | Wollmantel, offen getragen, Halbtotale |
-| `mode/kategorie-accessoires.jpg` | 3/4 | Ledertasche und Cap auf einer Betonstufe |
-| `mode/<produkt>-1.jpg` | 3/4 | … Vorderansicht |
-| `mode/<produkt>-2.jpg` | 3/4 | … Rückansicht |
-| `mode/<produkt>-3.jpg` | 3/4 | … Stoffdetail |
+| `mode/kategorie-shirts.jpg` | 4/5 | Model trägt ein weites Shirt vor einer Betonwand |
+| `mode/kategorie-sweats.jpg` | 4/5 | Detailaufnahme eines schweren Hoodies |
+| `mode/kategorie-hosen.jpg` | 4/5 | Weite Cargohose im Gehen |
+| `mode/kategorie-jacken.jpg` | 4/5 | Wollmantel, offen getragen |
+| `mode/kategorie-accessoires.jpg` | 4/5 | Ledertasche und Cap auf einer Betonstufe |
+
+### Artikelbilder
+
+Jeder Artikel hat drei Plätze, alle im Seitenverhältnis **4/5**:
+
+- `mode/<artikel>-1.jpg` - Vorderansicht, getragen
+- `mode/<artikel>-2.jpg` - Rückansicht, getragen
+- `mode/<artikel>-3.jpg` - Stoffdetail aus der Nähe
+
+Das erste Bild ist zugleich das Bild in Raster, Warenkorb und Favoriten - es
+sollte für sich allein funktionieren.
+
+| Artikel | Dateiname |
+|---|---|
+| T-Shirt Kern | `mode/tee-kern-1.jpg`, `-2`, `-3` |
+| Longsleeve Nord | `mode/longsleeve-nord-1.jpg`, `-2`, `-3` |
+| Leinenhemd Vika | `mode/hemd-vika-1.jpg`, `-2`, `-3` |
+| Ripp-Shirt Linie | `mode/shirt-linie-1.jpg`, `-2`, `-3` |
+| Hoodie Werft | `mode/hoodie-werft-1.jpg`, `-2`, `-3` |
+| Zip-Hoodie Kai | `mode/hoodie-kai-1.jpg`, `-2`, `-3` |
+| Sweater Kante | `mode/sweater-kante-1.jpg`, `-2`, `-3` |
+| Strickpullover Dock | `mode/strick-dock-1.jpg`, `-2`, `-3` |
+| Cargohose Kai | `mode/hose-kai-1.jpg`, `-2`, `-3` |
+| Weite Hose Ebbe | `mode/hose-ebbe-1.jpg`, `-2`, `-3` |
+| Jogger Deich | `mode/jogger-deich-1.jpg`, `-2`, `-3` |
+| Wollmantel Fjord | `mode/mantel-fjord-1.jpg`, `-2`, `-3` |
+| Bomber Halde | `mode/jacke-halde-1.jpg`, `-2`, `-3` |
+| Steppjacke Möwe | `mode/jacke-moewe-1.jpg`, `-2`, `-3` |
+| Tasche Skagen | `mode/tasche-skagen-1.jpg`, `-2`, `-3` |
+| Cap Signal | `mode/cap-signal-1.jpg`, `-2`, `-3` |
+| Mütze Ripp | `mode/muetze-ripp-1.jpg`, `-2`, `-3` |
+| Gürtel Kante | `mode/guertel-kante-1.jpg`, `-2`, `-3` |
 
 ## Tischlerei Brandhorst (`/demo/handwerk`)
 
@@ -71,26 +109,29 @@ Entscheidend sind **Ordner und Dateiname**.
 | `handwerk/team-voss.jpg` | 4/5 | Porträt von Geselle Milan Voß |
 | `handwerk/team-kaminski.jpg` | 4/5 | Porträt von Auszubildender Lea Kaminski |
 
-## Freizeitpark Wolkenhain (`/demo/freizeitpark`)
+## Restaurant Amsel (`/demo/restaurant`)
+
+Die Seite steht auf fast schwarzem Grund. Fotos wirken dort am besten, wenn sie
+warm und eher dunkel belichtet sind - harte, kalte Aufnahmen brechen die Ruhe.
 
 | Datei | Seitenverhältnis | Motiv |
 |---|---|---|
-| `park/hero.jpg` | 16/8 | Blick über den Park: Holzachterbahn zwischen Baumwipfeln im Abendlicht |
-| `park/welt-talstation.jpg` | 3/4 | Alpine Themenwelt Talstation mit Holzhäusern |
-| `park/welt-hafen.jpg` | 3/4 | Hafenviertel mit Booten und Kais |
-| `park/welt-forst.jpg` | 3/4 | Wilder Forst: Wege zwischen hohen Bäumen |
-| `park/welt-wolke.jpg` | 3/4 | Kleine Wolke: Karussell im Kleinkindbereich |
-| `park/attraktion-donnerhall.jpg` | 4/3 | Holzachterbahn Donnerhall in der ersten Abfahrt |
-| `park/attraktion-nebelschlucht.jpg` | 4/3 | Wildwasserbahn Nebelschlucht am Wasserfall |
-| `park/attraktion-eichhorn.jpg` | 4/3 | Familienachterbahn Eichhorn zwischen den Bäumen |
-| `park/hotel.jpg` | 4/3 | Waldhotel Wolkenhain: Holzhäuser zwischen Bäumen am Abend |
-| `park/essen-forsthaus.jpg` | 16/10 | Teller mit Eintopf im Forsthaus |
-| `park/essen-kombuese.jpg` | 16/10 | Fischbrötchen an der Kombüse |
-| `park/essen-eiche.jpg` | 16/10 | Eisstand unter der alten Eiche |
+| `restaurant/hero.jpg` | 16/9 | Der Gastraum am Abend, gedeckte Tische unter Messingleuchten |
+| `restaurant/konzept.jpg` | 4/5 | Blick in die offene Küche während des Service |
+| `restaurant/kuechenchef.jpg` | 4/5 | Porträt der Küchenchefin am Pass |
+| `restaurant/gericht-saibling.jpg` | 1/1 | Saibling mit Gurke und Buttermilch, von oben |
+| `restaurant/gericht-sellerie.jpg` | 1/1 | Sellerie in Salzteig mit Haselnuss, von oben |
+| `restaurant/gericht-taube.jpg` | 1/1 | Taube mit Rote Bete und Wacholder, von oben |
+| `restaurant/raum-saal.jpg` | 16/11 | Der Saal mit hohen Fenstern und alten Dielen |
+| `restaurant/raum-bar.jpg` | 4/5 | Die Bar mit Weinregal aus Eiche |
+| `restaurant/raum-detail.jpg` | 4/5 | Detail: Kräuter aus dem eigenen Garten |
+| `restaurant/raum-tisch.jpg` | 16/11 | Gedeckter Tisch am Fenster zur blauen Stunde |
 
 ---
 
-Für den Shop gilt zusätzlich: Jedes Produkt hat drei Plätze - `<produkt>-1`
-(Vorderansicht), `-2` (Rückansicht) und `-3` (Stoffdetail). Die Kennung
-`<produkt>` ist der Name aus der Adresszeile, also etwa
-`hoodie-werft-1.jpg`. Die vollständige Liste steht in `lib/demo-mode.ts`.
+## Was passiert, wenn kein Foto da ist
+
+Jeder Platz hat ein hinterlegtes Motiv - eine gezeichnete Fläche in den Farben
+der jeweiligen Seite, kein Platzhalter. Die Seite ist damit vollständig
+vorzeigbar. Sobald eine Datei im Ordner liegt, ersetzt das Foto die Zeichnung
+beim nächsten Build, ohne dass am Code etwas geändert werden muss.

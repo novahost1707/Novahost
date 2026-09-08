@@ -142,16 +142,19 @@ function Vorschau({ demo }: { demo: Demo }) {
         </span>
       );
 
-    default:
+    case "restaurant":
       return (
-        <span className="work__mini" data-niche="freizeit" aria-hidden="true">
-          <span className="work__mini-bar" />
+        <span className="work__mini" data-niche="restaurant" aria-hidden="true">
           <span className="work__mini-buehne" />
-          <span className="work__mini-band" />
-          <span className="work__mini-raster">
-            <i /><i /><i /><i />
+          <span className="work__mini-mitte">
+            <i className="work__mini-h" />
+            <i className="work__mini-z" />
+            <i className="work__mini-knopf" />
           </span>
         </span>
       );
+
+    default:
+      return null;
   }
 }
