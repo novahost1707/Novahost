@@ -101,6 +101,7 @@
 .bildplatz {
   display: block;
   position: relative;
+  aspect-ratio: var(--bild-ratio, 3 / 2);
   overflow: hidden;
   background: var(--m-1, #dcdcd6);
   isolation: isolate;

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { DemoLeiste } from "@/components/demo/DemoLeiste";
 import "@/styles/demo.css";
 
 /**
@@ -19,19 +19,7 @@ export const metadata: Metadata = {
 export default function DemoLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <div className="demobar">
-        <span className="demobar__tag">DEMO</span>
-        <span className="demobar__text">
-          Gestaltungsbeispiel von Novahost.
-          <span className="demobar__lang">
-            {" "}Erfundenes Unternehmen, erfundene Angaben - hier lässt sich nichts bestellen oder
-            buchen.
-          </span>
-        </span>
-        <Link href="/#projekte" className="demobar__back">
-          <span aria-hidden="true">&#8592;</span> Zurück zu Novahost
-        </Link>
-      </div>
+      <DemoLeiste />
       <main id="main">{children}</main>
     </>
   );

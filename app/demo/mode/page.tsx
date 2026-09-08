@@ -1,15 +1,17 @@
 import Link from "next/link";
 import { Bild } from "@/components/demo/Bild";
+import { ProduktRaster } from "@/components/demo/shop/ProduktRaster";
 import type { Bildplatz } from "@/lib/demo-bilder";
-import { kategorien, produkte } from "@/lib/demo-mode";
+import { kategorien, marke, produktBySlug } from "@/lib/demo-mode";
 
 /**
- * Startseite des Demo-Shops NORDLICHT.
+ * Startseite von ARVO.
  *
- * Aufbau wie bei einem echten Label: ein grosses Kampagnenbild, darunter die
- * Kategorien, dann die aktuelle Serie, ein redaktioneller Teil zum Material,
- * die Versandbedingungen und der Brief. Kein Karussell, keine Rabattbanner -
- * die Ruhe ist hier Teil des Versprechens.
+ * Sie verkauft nicht selbst, sie sortiert: ein Kampagnenbild, die beiden
+ * Einstiege Damen und Herren, die Kategorien, vier ausgewählte Teile und
+ * danach die Gründe, hier zu kaufen. Das gesamte Sortiment liegt bewusst auf
+ * den Unterseiten - eine Startseite, die alle achtzehn Teile zeigt, trifft
+ * keine Auswahl und wirkt deshalb billiger, als sie ist.
  */
 
 const BILD_HERO: Bildplatz = {
@@ -20,6 +22,24 @@ const BILD_HERO: Bildplatz = {
   variante: 0,
 };
 
+const BILD_DAMEN: Bildplatz = {
+  src: "/demo/mode/einstieg-damen.jpg",
+  alt: "Model in weiter Hose und Ripp-Shirt, Ganzkörperaufnahme",
+  ratio: "3 / 2",
+  motiv: "mode-strasse",
+  variante: 1,
+  ton: "#8a857d",
+};
+
+const BILD_HERREN: Bildplatz = {
+  src: "/demo/mode/einstieg-herren.jpg",
+  alt: "Model in Bomberjacke und Cargohose, Ganzkörperaufnahme",
+  ratio: "3 / 2",
+  motiv: "mode-strasse",
+  variante: 2,
+  ton: "#5f5e58",
+};
+
 const BILD_EDITORIAL: Bildplatz = {
   src: "/demo/mode/editorial.jpg",
   alt: "Stoffbahnen in der Weberei, Detailaufnahme",
@@ -28,59 +48,91 @@ const BILD_EDITORIAL: Bildplatz = {
   variante: 0,
 };
 
+const AUSGEWAEHLT = ["hoodie-werft", "hose-ebbe", "mantel-fjord", "tee-kern"];
+
 const VERSPRECHEN = [
-  { titel: "Versandkostenfrei ab 80 €", text: "Innerhalb Deutschlands. Lieferung in zwei bis vier Werktagen, klimaneutral mit DHL GoGreen." },
+  { titel: `Versandfrei ab ${marke.versandfreiAb}`, text: "Innerhalb Deutschlands, klimaneutral mit DHL GoGreen. Lieferung in zwei bis vier Werktagen." },
   { titel: "30 Tage Rückgabe", text: "Ungetragen und mit Etikett zurück. Das Rücksendeetikett liegt jeder Bestellung bei." },
-  { titel: "Reparatur statt Ersatz", text: "Naht auf, Reißverschluss defekt? Wir reparieren im ersten Jahr kostenlos, danach zum Selbstkostenpreis." },
+  { titel: "Reparatur statt Ersatz", text: "Naht auf, Zipper defekt? Im ersten Jahr kostenlos, danach zum Selbstkostenpreis." },
+  { titel: "Kleine Auflagen", text: "40 bis 120 Stück je Serie. Was ausverkauft ist, legen wir nicht nach." },
 ];
 
-export default function ModeStartseite() {
-  const serie = produkte.slice(0, 8);
+const STIMMEN = [
+  { text: "Der Werft ist der erste Hoodie, der nach einem Jahr noch aussieht wie am ersten Tag. Der Preis hat mich zuerst gestört, inzwischen nicht mehr.", name: "Jonas K.", kauf: "Hoodie Werft, seit 14 Monaten" },
+  { text: "Größenberatung angeschrieben, am selben Tag eine Antwort mit konkreten Maßen bekommen. Danach hat die Hose gepasst.", name: "Merve A.", kauf: "Weite Hose Ebbe" },
+  { text: "Zipper am Sweat war nach acht Monaten kaputt. Eingeschickt, repariert, zurück - ohne Diskussion und ohne Rechnung.", name: "Timo B.", kauf: "Zip-Hoodie Kai" },
+];
+
+export default function ShopStartseite() {
+  const ausgewaehlt = AUSGEWAEHLT.map((s) => produktBySlug(s)!).filter(Boolean);
 
   return (
     <>
-      <header className="mode__hero">
+      <header className="shop__hero">
         <Bild platz={BILD_HERO} sizes="100vw" priority />
-        <div className="mode__hero-schleier" aria-hidden="true" />
-        <div className="mode__hero-inhalt">
-          <div className="demo__shell mode__hero-zeile">
+        <div className="shop__hero-schleier" aria-hidden="true" />
+        <div className="shop__hero-inhalt">
+          <div className="demo__shell shop__hero-zeile">
             <div>
-              <p className="mode__mini">Serie 04 &middot; Winter 26</p>
-              <h1 className="mode__display">Weniger Teile, länger getragen.</h1>
+              <p className="shop__mini">Serie 04 &middot; Winter 26</p>
+              <h1 className="shop__display">Weniger Teile, länger getragen.</h1>
             </div>
             <div>
               <p>
-                Vier Stoffe, elf Schnitte, gefertigt in einer Manufaktur bei Porto. Wir legen keine
-                Serie nach - was ausverkauft ist, bleibt es.
+                Achtzehn Teile aus vier Stoffen, gefertigt in einer Manufaktur bei Porto.
+                Wir legen keine Serie nach - was ausverkauft ist, bleibt es.
               </p>
-              <Link href="/demo/mode#serie" className="mode__btn mode__btn--hell" style={{ marginTop: "22px" }}>
-                Serie ansehen
-              </Link>
+              <div className="shop__hero-aktionen">
+                <Link href="/demo/mode/damen" className="shop__btn shop__btn--hell">Damen ansehen</Link>
+                <Link href="/demo/mode/herren" className="shop__btn shop__btn--hell">Herren ansehen</Link>
+              </div>
             </div>
           </div>
         </div>
       </header>
 
-      <section className="mode__section" id="kategorien">
+      <section className="shop__section shop__section--schmal">
         <div className="demo__shell">
-          <div className="mode__kopf auf">
+          <div className="shop__einstiege">
+            <Link href="/demo/mode/damen" className="shop__einstieg zoom">
+              <Bild platz={BILD_DAMEN} sizes="(max-width: 760px) 100vw, 50vw" />
+              <span className="shop__einstieg-text">
+                <h3>Damen</h3>
+                <span>Zwölf Teile ansehen</span>
+              </span>
+            </Link>
+            <Link href="/demo/mode/herren" className="shop__einstieg zoom">
+              <Bild platz={BILD_HERREN} sizes="(max-width: 760px) 100vw, 50vw" />
+              <span className="shop__einstieg-text">
+                <h3>Herren</h3>
+                <span>Dreizehn Teile ansehen</span>
+              </span>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="shop__section shop__section--weiss">
+        <div className="demo__shell">
+          <div className="shop__kopf auf">
             <div>
-              <p className="mode__mini" style={{ color: "var(--grau)" }}>Sortiment</p>
-              <h2 className="mode__display">Vier Kategorien, elf Teile.</h2>
+              <p className="shop__mini" style={{ color: "var(--grau)" }}>Sortiment</p>
+              <h2 className="shop__display">Fünf Kategorien.</h2>
             </div>
             <p>
-              Wir führen bewusst wenig. Jedes Teil muss sich mit jedem anderen kombinieren lassen -
-              sonst nehmen wir es nicht ins Sortiment.
+              Wir führen bewusst wenig. Jedes Teil muss sich mit jedem anderen kombinieren
+              lassen - sonst nehmen wir es nicht ins Sortiment.
             </p>
           </div>
 
-          <div className="mode__kategorien">
+          <div className="shop__kategorien">
             {kategorien.map((k) => (
-              <Link href="/demo/mode#serie" className="mode__kategorie zoom auf" key={k.id}>
-                <Bild platz={k.bild} sizes="(max-width: 900px) 50vw, 25vw" />
-                <span className="mode__kategorie-text">
-                  <h3>{k.name}</h3>
+              <Link href={`/demo/mode/kategorie/${k.id}`} className="shop__kategorie zoom auf" key={k.id}>
+                <Bild platz={k.bild} sizes="(max-width: 680px) 50vw, (max-width: 1100px) 33vw, 20vw" />
+                <span className="shop__kategorie-text">
+                  <h3>{k.kurz}</h3>
                   <p>{k.text}</p>
+                  <span>Ansehen</span>
                 </span>
               </Link>
             ))}
@@ -88,104 +140,76 @@ export default function ModeStartseite() {
         </div>
       </section>
 
-      <section className="mode__section mode__section--weiss" id="serie">
+      <section className="shop__section">
         <div className="demo__shell">
-          <div className="mode__kopf auf">
+          <div className="shop__kopf auf">
             <div>
-              <p className="mode__mini" style={{ color: "var(--grau)" }}>Serie 04</p>
-              <h2 className="mode__display">Neu im Atelier</h2>
+              <p className="shop__mini" style={{ color: "var(--grau)" }}>Ausgewählt</p>
+              <h2 className="shop__display">Vier, mit denen man anfängt.</h2>
             </div>
-            <p>
-              Alle Teile der aktuellen Serie. Auflage zwischen 40 und 120 Stück, danach ist Schluss.
-            </p>
+            <Link href="/demo/mode/kategorie/sweats" className="shop__mini">Alle Teile &#8594;</Link>
           </div>
-
-          <div className="mode__raster">
-            {serie.map((p) => (
-              <article className="mode__karte auf" key={p.slug}>
-                <Link href={`/demo/mode/produkt/${p.slug}`} className="mode__karte-bild zoom">
-                  {p.marker && <span className="mode__marker">{p.marker}</span>}
-                  <Bild platz={p.bilder[0]!} sizes="(max-width: 760px) 50vw, (max-width: 1100px) 33vw, 25vw" />
-                  <span className="mode__schnellwahl" aria-hidden="true">
-                    {p.groessen.map((g) => (
-                      <span key={g} data-weg={p.ausverkauft?.includes(g) ? "true" : undefined}>{g}</span>
-                    ))}
-                  </span>
-                </Link>
-                <div className="mode__karte-text">
-                  <div className="mode__karte-zeile">
-                    <h3>
-                      <Link href={`/demo/mode/produkt/${p.slug}`}>{p.name}</Link>
-                    </h3>
-                    <span className="mode__preis">
-                      {p.vorher && <span className="mode__vorher">{p.vorher},00 &euro;</span>}
-                      {p.preis},00 &euro;
-                    </span>
-                  </div>
-                  <p className="mode__karte-stoff">{p.stoff}</p>
-                  <span className="mode__farbpunkte" aria-label={`${p.farben.length} Farben`}>
-                    {p.farben.map((f) => <i key={f.name} style={{ background: f.wert }} />)}
-                  </span>
-                </div>
-              </article>
-            ))}
-          </div>
+          <ProduktRaster produkte={ausgewaehlt} />
         </div>
       </section>
 
-      <section className="mode__section mode__section--tinte" id="material">
-        <div className="demo__shell mode__editorial">
+      <section className="shop__section shop__section--tinte">
+        <div className="demo__shell shop__editorial">
           <div className="auf">
             <Bild platz={BILD_EDITORIAL} sizes="(max-width: 900px) 100vw, 46vw" />
           </div>
           <div className="auf">
-            <p className="mode__mini" style={{ color: "var(--sand)" }}>Material</p>
-            <h2 className="mode__display">Wir kaufen den Stoff, bevor wir den Schnitt zeichnen.</h2>
+            <p className="shop__mini" style={{ color: "var(--sand)" }}>Material</p>
+            <h2 className="shop__display">Wir kaufen den Stoff, bevor wir den Schnitt zeichnen.</h2>
             <p>
-              Die meisten Marken entwerfen erst und suchen dann einen Stoff, der billig genug ist.
-              Wir machen es umgekehrt: Wir kaufen jährlich bei vier Webereien ein und entwerfen
-              danach, was sich daraus nähen lässt.
+              Die meisten Marken entwerfen erst und suchen dann einen Stoff, der billig genug
+              ist. Wir machen es umgekehrt: Wir kaufen jährlich bei vier Webereien ein und
+              entwerfen danach, was sich daraus nähen lässt.
             </p>
-            <dl className="mode__editorial-liste">
+            <dl className="shop__editorial-liste">
               <div><dt>Baumwolle</dt><dd>GOTS-zertifiziert, gestrickt in Vila Nova de Gaia</dd></div>
               <div><dt>Wolle</dt><dd>Mulesing-frei, gewebt in Biella und Bergamo</dd></div>
               <div><dt>Leinen</dt><dd>Angebaut und gewebt in Belgien</dd></div>
               <div><dt>Leder</dt><dd>Pflanzlich gegerbt, verarbeitet in Ubrique</dd></div>
             </dl>
-            <Link href="/demo/mode#serie" className="mode__btn mode__btn--hell">Zur Serie</Link>
+            <Link href="/demo/mode/kategorie/jacken" className="shop__btn shop__btn--hell">Jacken ansehen</Link>
           </div>
         </div>
       </section>
 
-      <div className="mode__versprechen">
+      <div className="shop__versprechen">
         {VERSPRECHEN.map((v) => (
           <div key={v.titel} className="auf">
-            <p className="mode__mini" style={{ color: "var(--sand)" }}>Service</p>
+            <p className="shop__mini" style={{ color: "var(--sand)" }}>Service</p>
             <h3>{v.titel}</h3>
             <p>{v.text}</p>
           </div>
         ))}
       </div>
 
-      <section className="mode__section mode__section--tinte">
-        <div className="demo__shell mode__brief">
-          <div>
-            <p className="mode__mini" style={{ color: "var(--sand)" }}>Brief</p>
-            <h2 className="mode__display">Sechs Mails im Jahr, nicht mehr.</h2>
-            <p style={{ color: "rgba(246,245,242,0.7)", maxWidth: "44ch" }}>
-              Wir schreiben, wenn eine Serie fertig ist. Keine Rabattaktionen, keine
-              Countdown-Mails. Abmelden mit einem Klick.
-            </p>
+      <section className="shop__section shop__section--weiss">
+        <div className="demo__shell">
+          <div className="shop__kopf auf">
+            <div>
+              <p className="shop__mini" style={{ color: "var(--grau)" }}>Kundenstimmen</p>
+              <h2 className="shop__display">4,7 von 5 aus 312 Bewertungen.</h2>
+            </div>
+            <p>Bewertungen stammen aus dem Versandbestätigungsmail, vier Wochen nach Erhalt.</p>
           </div>
-          <form className="mode__brief-form" aria-label="Newsletter (Attrappe)">
-            <input type="email" placeholder="Ihre E-Mail-Adresse" disabled aria-label="E-Mail-Adresse" />
-            <button type="button" className="mode__btn mode__btn--hell demo__fake" disabled>
-              Eintragen
-            </button>
-            <p className="demo__note" style={{ flexBasis: "100%", color: "rgba(246,245,242,0.55)" }}>
-              Attrappe: Auf dieser Demo-Seite wird nichts versendet und nichts gespeichert.
-            </p>
-          </form>
+          <div className="shop__stimmen">
+            {STIMMEN.map((s) => (
+              <figure className="shop__stimme auf" key={s.name}>
+                <span className="shop__sterne" aria-label="Fünf von fünf Sternen">★★★★★</span>
+                <blockquote>{s.text}</blockquote>
+                <figcaption>
+                  <b>{s.name}</b> &middot; {s.kauf}
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+          <p className="demo__note" style={{ marginTop: "26px" }}>
+            Demo-Seite: Bewertungen und Kennzahlen gehören zum erfundenen Label.
+          </p>
         </div>
       </section>
     </>

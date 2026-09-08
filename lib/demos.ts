@@ -7,9 +7,14 @@
  * Suchmaschinen gesperrt - sie sollen den Auftritt von Novahost belegen, nicht
  * mit ihm um Sichtbarkeit konkurrieren.
  *
- * Zweck der Auswahl: vier moeglichst weit auseinanderliegende Branchen. Wer
- * sie nebeneinander sieht, erkennt, dass hier nicht ein Stil viermal recycelt
- * wurde.
+ * Zweck der Auswahl: vier moeglichst weit auseinanderliegende Branchen mit
+ * vier verschiedenen Geschaeftszielen - Besuch, Kauf, Anfrage, Reservierung.
+ * Wer sie nebeneinander sieht, erkennt, dass hier nicht ein Stil viermal
+ * recycelt wurde.
+ *
+ * Die Farbwerte unter `vorschau` sind aus der jeweiligen Seite uebernommen
+ * (styles/demo-*.css). Wer dort die Palette aendert, muss sie hier
+ * nachziehen - sonst verspricht die Kachel etwas anderes als die Seite.
  */
 
 export type Demo = {
@@ -31,15 +36,15 @@ export const demos: Demo[] = [
     slug: "cafe",
     betrieb: "Morgentau Kaffeerösterei",
     branche: "Specialty Coffee & Café",
-    umfang: "Startseite, Röstungen, Karte, Öffnungszeiten, Anfahrt",
-    haltung: "Warm und handgemacht, aber präzise. Serifen, Creme, viel Luft.",
-    vorschau: { grund: "#f5efe6", flaeche: "#fffdf9", text: "#241812", akzent: "#9e4e2a" },
+    umfang: "Tagesangebot, Röstungen, Karte, Öffnungszeiten, Anfahrt",
+    haltung: "Warm und handgemacht, aber präzise. Gebrannte Erde, Creme, viel Luft.",
+    vorschau: { grund: "#433024", flaeche: "#50392b", text: "#f4ead9", akzent: "#e08a55" },
   },
   {
     slug: "mode",
-    betrieb: "Nordlicht",
+    betrieb: "ARVO",
     branche: "Mode-Onlineshop",
-    umfang: "Lookbook, Kategorien, Produktseiten, Warenkorb, Größenberatung",
+    umfang: "Damen, Herren, Kategorien, Produktseiten, Favoriten, Warenkorb",
     haltung: "Streng, kühl, fast monochrom. Die Ware trägt die Seite.",
     vorschau: { grund: "#f6f5f2", flaeche: "#ffffff", text: "#131416", akzent: "#a8998a" },
   },
@@ -52,11 +57,11 @@ export const demos: Demo[] = [
     vorschau: { grund: "#eaedeb", flaeche: "#f7f9f8", text: "#191d1d", akzent: "#1c5a6b" },
   },
   {
-    slug: "freizeitpark",
-    betrieb: "Freizeitpark Wolkenhain",
-    branche: "Freizeitpark & Erlebnis",
-    umfang: "Themenwelten, Attraktionen, Tickets, Übernachtung, Anfahrt",
-    haltung: "Warm und abenteuerlich statt neonbunt. Waldgrün und Abendorange.",
-    vorschau: { grund: "#fbf6ec", flaeche: "#ffffff", text: "#16281f", akzent: "#e8622b" },
+    slug: "restaurant",
+    betrieb: "Restaurant Amsel",
+    branche: "Restaurant & Saisonküche",
+    umfang: "Konzept, Menüs, Küche, Raum, Öffnungszeiten, Reservierung",
+    haltung: "Ruhig, dunkel, zeitlos. Hohe Serifen, Messing, alles führt auf den Tisch.",
+    vorschau: { grund: "#14100e", flaeche: "#1d1815", text: "#f2ebe0", akzent: "#b08d57" },
   },
 ];

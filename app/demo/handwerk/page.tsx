@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Archivo } from "next/font/google";
 import { Bild } from "@/components/demo/Bild";
+import { Anfrage } from "@/components/demo/handwerk/Anfrage";
 import type { Bildplatz } from "@/lib/demo-bilder";
 import "@/styles/demo-handwerk.css";
 
@@ -376,43 +377,7 @@ export default function HandwerkDemo() {
             </dl>
           </div>
 
-          <div className="hw__formular auf">
-            <div className="hw__formular-kopf">
-              <h3 className="hw__display" style={{ fontSize: "1.3rem" }}>Aufmaß anfragen</h3>
-              <span className="hw__mono">Antwort binnen 1 Werktag</span>
-            </div>
-            <div className="hw__feld hw__feld--paar">
-              <div className="hw__feld">
-                <label htmlFor="hw-name">Name</label>
-                <input id="hw-name" type="text" placeholder="Vor- und Nachname" disabled />
-              </div>
-              <div className="hw__feld">
-                <label htmlFor="hw-tel">Telefon</label>
-                <input id="hw-tel" type="tel" placeholder="Für Rückfragen" disabled />
-              </div>
-            </div>
-            <div className="hw__feld">
-              <label htmlFor="hw-art">Worum geht es?</label>
-              <select id="hw-art" disabled defaultValue="">
-                <option value="">Bitte wählen</option>
-                <option>Einbaumöbel</option>
-                <option>Küche</option>
-                <option>Ladenbau</option>
-                <option>Reparatur oder Aufarbeitung</option>
-                <option>Etwas anderes</option>
-              </select>
-            </div>
-            <div className="hw__feld">
-              <label htmlFor="hw-text">Beschreibung</label>
-              <textarea id="hw-text" placeholder="Raum, Maße, Wunschtermin - je mehr wir wissen, desto genauer die Antwort." disabled />
-            </div>
-            <button type="button" className="hw__btn demo__fake" disabled style={{ justifyContent: "center" }}>
-              Anfrage senden
-            </button>
-            <p className="demo__note">
-              Attrappe: Dieses Formular gehört zu einer Demo-Seite und versendet nichts.
-            </p>
-          </div>
+          <Anfrage />
         </div>
       </section>
 

@@ -303,6 +303,84 @@ function zeichne(art: MotivArt, variante: number): Zeichnung {
         ),
       };
 
+    case "mode-jacke":
+      return {
+        box: P,
+        passung: "meet",
+        inhalt: (
+          <>
+            <Schatten cx={150} cy={330} rx={90} />
+            {/* Kurzes Blouson: Rippbund unten und an den Aermeln */}
+            <path d="M112 84h76l56 26c19 8 28 21 30 40l6 50-42 10-6-26v102H118V184l-6 26-42-10 6-50c2-19 11-32 30-40z" fill="var(--m-2)" />
+            <path d="M112 84h76v14l-38 26-38-26z" fill="var(--m-3)" />
+            <rect x="112" y="286" width="76" height="22" rx="4" fill="var(--m-3)" />
+            <rect x="58" y="222" width="26" height="18" rx="4" fill="var(--m-3)" />
+            <rect x="216" y="222" width="26" height="18" rx="4" fill="var(--m-3)" />
+            {/* Reissverschluss */}
+            <path d="M150 106v180" stroke="var(--m-4)" strokeWidth="5" />
+            <rect x="144" y="150" width="12" height="16" rx="3" fill="var(--m-4)" />
+          </>
+        ),
+      };
+
+    case "mode-stepp":
+      return {
+        box: P,
+        passung: "meet",
+        inhalt: (
+          <>
+            <Schatten cx={150} cy={346} rx={88} />
+            <path d="M114 78h72l54 26c19 9 28 22 30 40l6 58-42 10-6-28v134H116V184l-6 28-42-10 6-58c2-18 11-31 30-40z" fill="var(--m-2)" />
+            {/* Stehkragen */}
+            <path d="M114 78h72v-16a36 36 0 0 0-72 0z" fill="var(--m-3)" />
+            {/* Steppnaehte */}
+            {[112, 142, 172, 202, 232, 262, 292].map((y) => (
+              <path key={y} d={`M64 ${y}h172`} stroke="var(--m-3)" strokeWidth="3" opacity="0.75" />
+            ))}
+            <path d="M150 96v220" stroke="var(--m-4)" strokeWidth="4" opacity="0.8" />
+          </>
+        ),
+      };
+
+    case "mode-muetze":
+      return {
+        box: P,
+        passung: "meet",
+        inhalt: (
+          <>
+            <Schatten cx={150} cy={300} rx={74} />
+            <path d="M78 244c0-64 32-104 72-104s72 40 72 104z" fill="var(--m-2)" />
+            <rect x="70" y="238" width="160" height="46" rx="10" fill="var(--m-3)" />
+            {[86, 104, 122, 140, 158, 176, 194, 212].map((x) => (
+              <path key={x} d={`M${x} 240v42`} stroke="var(--m-2)" strokeWidth="3" opacity="0.6" />
+            ))}
+            {[100, 125, 150, 175, 200].map((x) => (
+              <path key={x} d={`M${x} 150v88`} stroke="var(--m-3)" strokeWidth="3" opacity="0.5" />
+            ))}
+          </>
+        ),
+      };
+
+    case "mode-guertel":
+      return {
+        box: P,
+        passung: "meet",
+        inhalt: (
+          <>
+            <Schatten cx={150} cy={318} rx={92} />
+            {/* Riemen als liegende Schlaufe */}
+            <path d="M60 176h180a52 52 0 0 1 0 104H84" stroke="var(--m-2)" strokeWidth="30" fill="none" strokeLinecap="round" />
+            <path d="M60 176h180a52 52 0 0 1 0 104H84" stroke="var(--m-3)" strokeWidth="4" fill="none" strokeDasharray="7 9" strokeLinecap="round" />
+            {/* Schnalle */}
+            <rect x="40" y="156" width="46" height="40" rx="6" fill="none" stroke="var(--m-4)" strokeWidth="9" />
+            <path d="M63 176h34" stroke="var(--m-4)" strokeWidth="7" strokeLinecap="round" />
+            {[128, 158, 188, 218].map((x) => (
+              <circle key={x} cx={x} cy="176" r="5" fill="var(--m-1)" opacity="0.9" />
+            ))}
+          </>
+        ),
+      };
+
     /* ===== Handwerk ========================================== */
     /* Werkbank mit Schraubzwingen, Werkzeugwand dahinter. */
     case "handwerk-werkbank":
@@ -514,235 +592,147 @@ function zeichne(art: MotivArt, variante: number): Zeichnung {
       };
     }
 
-    /* ===== Freizeitpark ====================================== */
-    case "park-landschaft":
+    /* ===== Restaurant ======================================== */
+    /* Angerichteter Teller von oben - Ring, Fond, drei Komponenten. */
+    case "essen-teller":
       return {
         box: `0 0 ${S}`,
         passung: "slice",
         inhalt: (
           <>
-            <circle cx="316" cy="66" r="38" fill="var(--m-4)" opacity="0.8" />
-            <path d="M0 214l84-104 66 78 52-58 92 106 106-72v136H0z" fill="var(--m-2)" />
-            <path d="M0 258l96-62 74 44 78-52 152 78v34H0z" fill="var(--m-3)" />
-            {[40, 110, 250, 330].map((x, i) => (
+            <circle cx="200" cy="150" r="132" fill="var(--m-2)" />
+            <circle cx="200" cy="150" r="112" fill="var(--m-1)" />
+            <circle cx="200" cy="150" r="74" fill="var(--m-2)" opacity="0.55" />
+            {/* Fond */}
+            <path d="M150 172c14-22 44-30 66-18s34 34 22 52-46 22-66 8-32-24-22-42z" fill="var(--m-3)" opacity="0.8" />
+            {/* Hauptkomponente */}
+            <path d="M166 118c22-16 54-12 66 8s2 44-22 50-48-6-52-26 0-24 8-32z" fill="var(--m-4)" />
+            {/* Beilagen */}
+            {[[236, 112, 13], [162, 176, 10], [238, 178, 8]].map(([x, y, r], i) => (
+              <circle key={i} cx={x} cy={y} r={r} fill="var(--m-3)" />
+            ))}
+            {/* Kräuter */}
+            {[0, 1, 2, 3].map((i) => (
+              <path
+                key={i}
+                d={`M${186 + i * 12} ${104 + (i % 2) * 8}c6-9 16-10 20-4`}
+                stroke="var(--m-2)"
+                strokeWidth="3"
+                fill="none"
+                strokeLinecap="round"
+              />
+            ))}
+          </>
+        ),
+      };
+
+    /* Gastraum: gedeckte Tische unter Hängeleuchten. */
+    case "essen-raum":
+      return {
+        box: `0 0 ${S}`,
+        passung: "slice",
+        inhalt: (
+          <>
+            <rect width="400" height="300" fill="var(--m-1)" />
+            <rect y="206" width="400" height="94" fill="var(--m-2)" opacity="0.5" />
+            {/* Fensterfront */}
+            {[36, 148, 260].map((x, i) => (
+              <rect key={i} x={x} y="30" width="88" height="128" fill="var(--m-2)" opacity="0.42" />
+            ))}
+            {/* Haengeleuchten */}
+            {[92, 200, 308].map((x, i) => (
               <g key={i}>
-                <path d={`M${x} 268l-22-46h44z`} fill="var(--m-4)" opacity="0.6" />
-                <path d={`M${x} 244l-16-34h32z`} fill="var(--m-4)" opacity="0.7" />
+                <path d={`M${x} 0v${52 + (i % 2) * 16}`} stroke="var(--m-3)" strokeWidth="2" />
+                <path d={`M${x - 20} ${76 + (i % 2) * 16}l20-24 20 24z`} fill="var(--m-4)" />
+                <circle cx={x} cy={82 + (i % 2) * 16} r="5" fill="var(--m-4)" opacity="0.6" />
               </g>
             ))}
-          </>
-        ),
-      };
-
-    case "park-bahn":
-      return {
-        box: `0 0 ${S}`,
-        passung: "slice",
-        inhalt: (
-          <>
-            {/* Holzgeruest */}
-            {[52, 112, 172, 232, 292, 352].map((x, i) => {
-              const hoehe = [212, 170, 236, 196, 148, 176][i]!;
-              return (
-                <g key={i} opacity="0.55">
-                  <rect x={x - 3} y={300 - hoehe} width="6" height={hoehe} fill="var(--m-3)" />
-                  <rect x={x + 27} y={300 - hoehe * 0.82} width="6" height={hoehe * 0.82} fill="var(--m-3)" />
-                  {Array.from({ length: Math.max(2, Math.round(hoehe / 42)) }, (_, k) => (
-                    <path
-                      key={k}
-                      d={`M${x} ${296 - k * 42}l30 -24`}
-                      stroke="var(--m-3)"
-                      strokeWidth="3"
-                      opacity="0.7"
-                    />
-                  ))}
-                </g>
-              );
-            })}
-            {/* Streckenprofil: Lifthill, erster Abwurf, zwei Huegel */}
-            <path
-              d="M-10 268L96 62c6-12 22-12 28 0l58 122c8 16 30 16 38 0l30-58c8-16 30-16 38 0l58 120"
-              stroke="var(--m-3)"
-              strokeWidth="13"
-              fill="none"
-              strokeLinecap="round"
-            />
-            <path
-              d="M-10 282L96 76c6-12 22-12 28 0l58 122c8 16 30 16 38 0l30-58c8-16 30-16 38 0l58 120"
-              stroke="var(--m-2)"
-              strokeWidth="8"
-              fill="none"
-              strokeLinecap="round"
-            />
-            {/* Zug mit drei Wagen kurz vor dem Scheitel */}
-            <g transform="rotate(-58 118 96)">
-              {[0, 1, 2].map((i) => (
-                <g key={i} transform={`translate(${88 + i * 34} 82)`}>
-                  <rect width="30" height="17" rx="6" fill="var(--m-4)" />
-                  <circle cx="8" cy="20" r="4.5" fill="var(--m-3)" />
-                  <circle cx="22" cy="20" r="4.5" fill="var(--m-3)" />
-                  <circle cx="10" cy="4" r="4" fill="var(--m-3)" opacity="0.8" />
-                  <circle cx="21" cy="4" r="4" fill="var(--m-3)" opacity="0.8" />
-                </g>
-              ))}
-            </g>
-            {/* Baumkronen im Vordergrund - der Park im Wald */}
-            {[18, 82, 150, 224, 300, 372].map((x, i) => {
-              const h = [96, 128, 88, 138, 104, 120][i]!;
-              return (
-                <g key={i}>
-                  <rect x={x - 5} y={300 - h * 0.32} width="10" height={h * 0.32} fill="var(--m-3)" />
-                  <path d={`M${x} ${300 - h}l${h * 0.42} ${h * 0.7}h-${h * 0.84}z`} fill="var(--m-2)" />
-                  <path d={`M${x} ${300 - h * 1.24}l${h * 0.32} ${h * 0.56}h-${h * 0.64}z`} fill="var(--m-2)" />
-                </g>
-              );
-            })}
-          </>
-        ),
-      };
-
-    /* Mischwald mit Weg - das Alleinstellungsmerkmal des Parks. */
-    case "park-wald":
-      return {
-        box: `0 0 ${S}`,
-        passung: "slice",
-        inhalt: (
-          <>
-            <rect width="400" height="300" fill="var(--m-1)" />
-            {[
-              [46, 300, 62], [116, 292, 78], [196, 300, 54], [268, 288, 84], [352, 300, 66],
-            ].map(([x, boden, h], i) => (
-              <g key={i} opacity={0.55 + (i % 3) * 0.18}>
-                <rect x={x! - 5} y={boden! - h! * 0.3} width="10" height={h! * 0.3} fill="var(--m-3)" />
-                <path d={`M${x} ${boden! - h!}l${h! * 0.42} ${h! * 0.72}h-${h! * 0.84}z`} fill="var(--m-2)" />
-                <path d={`M${x} ${boden! - h! * 1.26}l${h! * 0.32} ${h! * 0.56}h-${h! * 0.64}z`} fill="var(--m-2)" />
-              </g>
-            ))}
-            {/* Waldweg */}
-            <path d="M132 300c22-72 56-96 68-160 8-42 4-72-6-100h84c-10 34-14 66-6 108 12 62 42 84 62 152z" fill="var(--m-4)" opacity="0.32" />
-            <circle cx="330" cy="52" r="30" fill="var(--m-4)" opacity="0.65" />
-          </>
-        ),
-      };
-
-    /* Karussell fuer den Familienbereich. */
-    case "park-karussell":
-      return {
-        box: `0 0 ${S}`,
-        passung: "slice",
-        inhalt: (
-          <>
-            <rect width="400" height="300" fill="var(--m-1)" />
-            <rect y="256" width="400" height="44" fill="var(--m-2)" opacity="0.5" />
-            <path d="M200 34l122 74H78z" fill="var(--m-4)" />
-            <path d="M200 34l122 74H78z" fill="var(--m-3)" opacity="0.28" />
-            {[100, 140, 180, 220, 260, 300].map((x, i) => (
-              <rect key={i} x={x} y="108" width={i % 2 ? 8 : 8} height="98" fill="var(--m-3)" opacity="0.8" />
-            ))}
-            {[124, 204, 284].map((x, i) => (
+            {/* Tische mit Gedeck */}
+            {[[70, 196], [200, 210], [330, 196]].map(([x, y], i) => (
               <g key={i}>
-                <ellipse cx={x} cy="182" rx="26" ry="20" fill="var(--m-2)" />
-                <rect x={x - 8} y="150" width="6" height="34" fill="var(--m-3)" />
+                <ellipse cx={x} cy={y} rx="56" ry="14" fill="var(--m-3)" />
+                <rect x={x! - 3} y={y!} width="6" height="46" fill="var(--m-3)" />
+                <circle cx={x! - 20} cy={y! - 4} r="9" fill="var(--m-1)" />
+                <circle cx={x! + 20} cy={y! - 4} r="9" fill="var(--m-1)" />
+                <rect x={x! - 2} y={y! - 26} width="4" height="22" fill="var(--m-4)" />
               </g>
             ))}
-            <ellipse cx="200" cy="212" rx="146" ry="18" fill="var(--m-3)" />
-            <circle cx="200" cy="28" r="12" fill="var(--m-4)" />
           </>
         ),
       };
 
-    /* Wildwasserbahn - Boot in der Rinne. */
-    case "park-wasser":
+    /* Koch beim Anrichten - Haende ueber einem Teller. */
+    case "essen-koch":
+      return {
+        box: `0 0 ${S}`,
+        passung: "slice",
+        inhalt: (
+          <>
+            <rect width="400" height="300" fill="var(--m-2)" />
+            <circle cx="200" cy="104" r="58" fill="var(--m-3)" />
+            {/* Kochjacke */}
+            <path d="M84 300c0-70 52-112 116-112s116 42 116 112z" fill="var(--m-3)" />
+            <path d="M172 300V196c0-6 12-10 28-10s28 4 28 10v104z" fill="var(--m-1)" opacity="0.55" />
+            {/* Knopfleiste */}
+            {[214, 244, 274].map((y) => <circle key={y} cx="200" cy={y} r="4" fill="var(--m-4)" />)}
+            {/* Teller in den Haenden */}
+            <ellipse cx="200" cy="268" rx="70" ry="18" fill="var(--m-1)" />
+            <ellipse cx="200" cy="264" rx="40" ry="10" fill="var(--m-4)" opacity="0.5" />
+          </>
+        ),
+      };
+
+    /* Weinglaeser und Flasche im Gegenlicht. */
+    case "essen-wein":
       return {
         box: `0 0 ${S}`,
         passung: "slice",
         inhalt: (
           <>
             <rect width="400" height="300" fill="var(--m-1)" />
-            <path d="M0 300V196c62-6 92-88 152-88s70 78 130 78 78-36 118-46v160z" fill="var(--m-2)" />
-            <path d="M0 300v-58c66-14 96 26 156 12s86-42 146-30 68 22 98 16v60z" fill="var(--m-3)" />
-            {/* Boot */}
-            <path d="M158 178h74l-12 30h-50z" fill="var(--m-4)" />
-            <circle cx="176" cy="168" r="9" fill="var(--m-4)" />
-            <circle cx="212" cy="168" r="9" fill="var(--m-4)" />
-            {/* Gischt */}
-            {[150, 176, 202, 228, 254].map((x, i) => (
-              <circle key={i} cx={x} cy={214 + (i % 2) * 10} r={7 + (i % 3) * 3} fill="var(--m-1)" opacity="0.75" />
-            ))}
-          </>
-        ),
-      };
-
-    /* Waldhotel: Haeuser zwischen Baeumen. */
-    case "park-hotel":
-      return {
-        box: `0 0 ${S}`,
-        passung: "slice",
-        inhalt: (
-          <>
-            <rect width="400" height="300" fill="var(--m-1)" />
-            <rect y="252" width="400" height="48" fill="var(--m-2)" opacity="0.45" />
-            {[
-              [60, 176, 96], [214, 158, 116],
-            ].map(([x, y, b], i) => (
+            <circle cx="300" cy="96" r="86" fill="var(--m-2)" opacity="0.4" />
+            <rect y="256" width="400" height="44" fill="var(--m-2)" opacity="0.55" />
+            {/* Flasche */}
+            <path d="M126 60h28v54c22 14 30 32 30 54v88h-88v-88c0-22 8-40 30-54z" fill="var(--m-3)" />
+            <rect x="126" y="44" width="28" height="20" rx="4" fill="var(--m-4)" />
+            <rect x="98" y="192" width="84" height="42" fill="var(--m-1)" opacity="0.75" />
+            {/* Glaeser */}
+            {[236, 316].map((x, i) => (
               <g key={i}>
-                <rect x={x} y={y} width={b} height={252 - y!} fill="var(--m-2)" />
-                <path d={`M${x! - 12} ${y}l${b! / 2 + 12} -${b! * 0.42}L${x! + b! + 12} ${y}z`} fill="var(--m-3)" />
-                {[0, 1].map((r) =>
-                  [0, 1].map((c) => (
-                    <rect key={`${r}${c}`} x={x! + 16 + c * (b! / 2)} y={y! + 20 + r * 42} width={b! / 4} height="26" fill="var(--m-4)" opacity="0.7" />
-                  )),
-                )}
-              </g>
-            ))}
-            {[24, 176, 348].map((x, i) => (
-              <g key={i} opacity="0.85">
-                <rect x={x - 4} y="216" width="8" height="40" fill="var(--m-3)" />
-                <path d={`M${x} 140l34 84h-68z`} fill="var(--m-3)" />
-                <path d={`M${x} 108l26 62h-52z`} fill="var(--m-3)" />
+                <path d={`M${x - 30} 116c0 30 14 48 30 50 16-2 30-20 30-50z`} fill="var(--m-2)" />
+                <path d={`M${x - 30} 140c0 20 14 34 30 36 16-2 30-16 30-36z`} fill="var(--m-4)" opacity="0.7" />
+                <rect x={x - 2} y="166" width="4" height="66" fill="var(--m-2)" />
+                <ellipse cx={x} cy="236" rx="26" ry="7" fill="var(--m-2)" />
               </g>
             ))}
           </>
         ),
       };
 
-    /* Gastronomie: Tablett mit Schale, Becher und Brot. */
-    case "park-essen":
+    /* Detail: Textur einer Zutat, ganz nah. */
+    case "essen-detail":
       return {
         box: `0 0 ${S}`,
         passung: "slice",
         inhalt: (
           <>
-            <rect width="400" height="300" fill="var(--m-1)" />
-            <rect x="42" y="86" width="316" height="150" rx="18" fill="var(--m-2)" />
-            <ellipse cx="140" cy="160" rx="58" ry="42" fill="var(--m-3)" />
-            <ellipse cx="140" cy="152" rx="44" ry="30" fill="var(--m-4)" opacity="0.7" />
-            <path d="M232 122h56l-8 84h-40z" fill="var(--m-3)" />
-            <path d="M240 138h40l-5 52h-30z" fill="var(--m-4)" opacity="0.6" />
-            <rect x="296" y="150" width="48" height="56" rx="12" fill="var(--m-3)" />
-            <path d="M300 158q24-16 40 0" stroke="var(--m-4)" strokeWidth="5" fill="none" opacity="0.7" />
-            <rect x="60" y="216" width="280" height="10" rx="5" fill="var(--m-3)" opacity="0.6" />
-          </>
-        ),
-      };
-
-    case "park-welt":
-      return {
-        box: `0 0 ${S}`,
-        passung: "slice",
-        inhalt: (
-          <>
-            <path d="M0 300V166l70-52 74 44 66-58 88 62 102-40v178z" fill="var(--m-2)" />
-            <path d="M126 300V178h58v122z" fill="var(--m-3)" />
-            <path d="M155 178l-42-38h84z" fill="var(--m-4)" />
-            <path d="M240 300v-92h74v92z" fill="var(--m-3)" opacity="0.85" />
-            <path d="M277 208l-40-34h80z" fill="var(--m-4)" opacity="0.85" />
-            <circle cx="66" cy="76" r="30" fill="var(--m-4)" opacity="0.7" />
-            {[30, 210, 340].map((x, i) => (
-              <path key={i} d={`M${x} 300l-24-58h48z`} fill="var(--m-4)" opacity="0.5" />
+            <rect width="400" height="300" fill="var(--m-2)" />
+            {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
+              <path
+                key={i}
+                d={`M${-40 + i * 62} 320C${10 + i * 62} 240 ${-10 + i * 62} 140 ${40 + i * 62} -20`}
+                stroke="var(--m-3)"
+                strokeWidth={i % 2 ? 26 : 16}
+                fill="none"
+                opacity={0.5 + (i % 3) * 0.16}
+              />
+            ))}
+            {[[86, 92], [214, 66], [318, 148], [140, 224], [268, 244]].map(([x, y], i) => (
+              <circle key={i} cx={x} cy={y} r={11 + (i % 3) * 5} fill="var(--m-4)" opacity="0.72" />
             ))}
           </>
         ),
       };
+
   }
 }

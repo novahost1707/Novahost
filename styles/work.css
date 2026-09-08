@@ -122,16 +122,34 @@
 /* Handwerk: dunkel, Signalfarbe oben, drei Leistungsspalten */
 .work__mini[data-niche="handwerk"] .work__mini-bar { opacity: 0.32; }
 
-/* Freizeit: runde Ecken, buntes Band, vier Kacheln */
-.work__mini[data-niche="freizeit"] .work__mini-buehne {
-  border-radius: 10px;
+/* Restaurant: dunkel, mittig gesetzt, eine einzige Handlung.
+   Kein Raster - grosse Bildflaeche oben, darunter zentrierte
+   Zeilen und der Reservierungsknopf. */
+.work__mini[data-niche="restaurant"] { gap: 6%; }
+.work__mini[data-niche="restaurant"] .work__mini-buehne {
+  flex: 1.35;
   /* Nimmt die Farben der jeweiligen Seite auf, statt eine feste zu setzen. */
-  background: linear-gradient(150deg, var(--v-text), color-mix(in oklab, var(--v-text) 62%, var(--v-akzent)));
+  background: linear-gradient(155deg, color-mix(in oklab, var(--v-akzent) 34%, var(--v-flaeche)), var(--v-flaeche));
   opacity: 1;
 }
-.work__mini[data-niche="freizeit"] .work__mini-band { border-radius: 999px; }
-.work__mini[data-niche="freizeit"] .work__mini-raster i { border-radius: 7px; }
-.work__mini[data-niche="freizeit"] .work__mini-raster i:nth-child(2) { background: var(--v-akzent); opacity: 0.75; }
+.work__mini-mitte {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 9%;
+}
+.work__mini[data-niche="restaurant"] .work__mini-h { width: 62%; height: 10px; opacity: 0.9; }
+.work__mini[data-niche="restaurant"] .work__mini-z { width: 38%; height: 4px; opacity: 0.34; }
+.work__mini[data-niche="restaurant"] .work__mini-knopf {
+  width: 46%;
+  height: 13px;
+  margin-top: 2%;
+  /* Messing bleibt Linie, nicht Flaeche - so wie auf der Seite selbst. */
+  background: transparent;
+  border: 1px solid var(--v-akzent);
+}
 
 .work__badge {
   position: absolute;

@@ -116,6 +116,50 @@ const ZEITEN = [
   { tag: "Sonntag", zeit: "09:00 - 16:00", heute: false },
 ];
 
+const BILD_HEUTE = {
+  src: "/demo/cafe/heute.jpg",
+  alt: "Der Kuchen des Tages auf der Theke, angeschnitten",
+  ratio: "16 / 10",
+  motiv: "essen-teller",
+  variante: 0,
+  ton: "#9a6a3a",
+} as const;
+
+/** Tagesangebot - wechselt taeglich und ist der Grund, heute zu kommen. */
+const HEUTE = {
+  datum: "Heute, Donnerstag",
+  haupt: {
+    marke: "Kuchen des Tages",
+    name: "Rhabarber-Streusel",
+    text: "Mit Rhabarber vom Hof Wieland, dazu ein Klecks Sauerrahm. Wir backen zwei Bleche - erfahrungsgemäß sind die gegen halb drei weg.",
+    preis: "4,40",
+  },
+  klein: [
+    {
+      name: "Filter der Woche",
+      preis: "3,20",
+      text: "Morgentau, Äthiopien Sidamo. Hell geröstet, Zitrone und Jasmin.",
+      rest: "In der Karaffe, zum Nachschenken",
+      zusatz: "Dieselbe Röstung als 250-g-Beutel für zu Hause: 9,80 €",
+    },
+    {
+      name: "Suppe des Tages",
+      preis: "6,90",
+      text: "Pastinake mit gerösteten Kernen und Brot vom Sauerteig.",
+      rest: "Ab 11:30 Uhr, solange der Topf reicht",
+      zusatz: "Vegan. Zweiter Teller zum halben Preis, damit nichts übrig bleibt",
+    },
+  ],
+};
+
+/** Kennzahlen - als eigenstaendige Elemente, nicht als Tabelle. */
+const KENNZAHLEN = [
+  { wert: "16", einheit: "Jahre", text: "Rösterei und Café an derselben Adresse", zeichen: "haus" },
+  { wert: "6,2", einheit: "Tonnen", text: "Rohkaffee im Jahr, aus fünf Höfen", zeichen: "bohne" },
+  { wert: "4,8", einheit: "von 5", text: "aus 214 Bewertungen", zeichen: "stern" },
+  { wert: "1.400", einheit: "Tassen", text: "gehen bei uns pro Woche über die Theke", zeichen: "tasse" },
+];
+
 const LAUFBAND = [
   "Eigene Rösterei",
   "Direkt gehandelter Rohkaffee",
@@ -168,11 +212,15 @@ export default function CafeDemo() {
               </a>
               <a href="#roesterei" className="cafe__btn cafe__btn--leer">Unsere Röstungen</a>
             </div>
+            <p className="cafe__status" style={{ marginTop: "30px" }}>
+              <i aria-hidden="true" />
+              <b>Jetzt geöffnet</b>
+              <span>bis 18:00 Uhr &middot; Di - Fr ab 7:30 Uhr</span>
+            </p>
             <div className="cafe__hero-fuss">
               <span><b>44</b> Plätze innen</span>
               <span><b>30</b> im Hof</span>
               <span><b>3</b> eigene Röstungen</span>
-              <span><b>7:30</b> Uhr geöffnet</span>
             </div>
           </div>
           <div className="cafe__hero-bild">
@@ -194,18 +242,87 @@ export default function CafeDemo() {
         </div>
       </div>
 
+      {/* Tagesangebot steht bewusst weit oben: Es beantwortet die Frage, die
+          Gaeste zuerst haben - was gibt es heute, und lohnt sich der Weg? */}
+      <section className="cafe__section cafe__heute" id="heute">
+        <div className="demo__shell">
+          <div className="cafe__heute-kopf auf">
+            <div>
+              <p className="cafe__heute-datum">{HEUTE.datum}</p>
+              <h2 className="cafe__h2 cafe__display" style={{ margin: "10px 0 0" }}>
+                Was heute da ist.
+              </h2>
+            </div>
+            <p className="cafe__status">
+              <i aria-hidden="true" />
+              <b>Geöffnet bis 18:00</b>
+              <span>Küche bis 15:00</span>
+            </p>
+          </div>
+
+          <div className="cafe__tafel">
+            <article className="cafe__tafel-haupt zoom auf">
+              <Bild platz={BILD_HEUTE} sizes="(max-width: 900px) 100vw, 40vw" />
+              <div className="cafe__tafel-text">
+                <span className="cafe__tafel-marke">{HEUTE.haupt.marke}</span>
+                <h3>{HEUTE.haupt.name}</h3>
+                <p>{HEUTE.haupt.text}</p>
+                <p className="cafe__tafel-preis">{HEUTE.haupt.preis} &euro;</p>
+              </div>
+            </article>
+
+            {HEUTE.klein.map((k) => (
+              <article className="cafe__tafel-klein auf" key={k.name}>
+                <h4>
+                  {k.name}
+                  <span>{k.preis} &euro;</span>
+                </h4>
+                <p>{k.text}</p>
+                <p className="cafe__tafel-rest">{k.rest}</p>
+                <p className="cafe__tafel-zusatz">{k.zusatz}</p>
+              </article>
+            ))}
+          </div>
+
+          <div className="cafe__heute-fuss auf">
+            <p>
+              Kuchen und Suppe wechseln täglich, die Filterröstung wöchentlich. Was aus ist,
+              ist aus - das ist kein Fehler, das ist frisch.
+            </p>
+            <div className="cafe__hero-aktionen" style={{ marginTop: 0 }}>
+              <a href="#karte" className="cafe__btn cafe__btn--voll">
+                Ganze Karte ansehen <span aria-hidden="true">&#8594;</span>
+              </a>
+              <a href="#besuch" className="cafe__btn cafe__btn--leer">Anfahrt</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section className="cafe__section">
-        <div className="demo__shell cafe__statement auf">
-          <p className="cafe__display">
-            Wir machen keinen Kaffee für alle. Wir machen den Kaffee, den wir selbst jeden Tag
-            trinken - und erklären gern, warum er so schmeckt.
-          </p>
-          <dl className="cafe__fakten">
-            <div className="cafe__fakt"><dt>Gegründet</dt><dd>2009</dd></div>
-            <div className="cafe__fakt"><dt>Röstmenge im Jahr</dt><dd>ca. 6 Tonnen</dd></div>
-            <div className="cafe__fakt"><dt>Herkünfte</dt><dd>3 Länder, 5 Höfe</dd></div>
-            <div className="cafe__fakt"><dt>Team</dt><dd>9 Personen</dd></div>
-          </dl>
+        <div className="demo__shell">
+          <div className="cafe__statement auf" style={{ marginBottom: "clamp(40px, 5vw, 74px)" }}>
+            <p className="cafe__display">
+              Wir machen keinen Kaffee für alle. Wir machen den Kaffee, den wir selbst jeden Tag
+              trinken - und erklären gern, warum er so schmeckt.
+            </p>
+            <p style={{ color: "var(--kaffee-hell)" }}>
+              Seit 2009 rösten wir zwei Straßen weiter, seit 2014 backen wir selbst. Neun Leute,
+              ein Hof, drei Röstungen - mehr wollten wir nie werden.
+            </p>
+          </div>
+
+          <div className="cafe__kennzahlen">
+            {KENNZAHLEN.map((k) => (
+              <article className="cafe__kennzahl auf" key={k.text}>
+                <Kennzeichen art={k.zeichen} />
+                <b>
+                  {k.wert} <small>{k.einheit}</small>
+                </b>
+                <span>{k.text}</span>
+              </article>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -283,10 +400,10 @@ export default function CafeDemo() {
         <div className="demo__shell">
           <div className="cafe__kopf auf">
             <p className="cafe__kicker">Karte</p>
-            <h2 className="cafe__h2 cafe__display">Was heute da ist.</h2>
+            <h2 className="cafe__h2 cafe__display">Die ganze Karte.</h2>
             <p>
-              Kuchen und Suppe wechseln täglich. Was aus ist, ist aus - das ist kein Fehler,
-              das ist frisch.
+              Was immer da ist, unabhängig vom Tagesangebot. Preise gelten drinnen wie im Hof,
+              ohne Aufschlag für Bedienung.
             </p>
           </div>
 
@@ -438,5 +555,34 @@ export default function CafeDemo() {
         </div>
       </footer>
     </div>
+  );
+}
+
+/**
+ * Kleine Zeichen für die Kennzahlen. Bewusst als Strichzeichnung: eine
+ * gefüllte Fläche würde neben der Serifenschrift zu laut wirken.
+ */
+function Kennzeichen({ art }: { art: string }) {
+  const pfade: Record<string, React.ReactNode> = {
+    haus: <path d="M4 12 16 3l12 9v15a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z" />,
+    bohne: (
+      <>
+        <ellipse cx="16" cy="16" rx="12" ry="9" transform="rotate(-30 16 16)" />
+        <path d="M9 21c5-3 9-7 14-10" />
+      </>
+    ),
+    stern: <path d="m16 3 4 8.5 9.5 1.2-6.9 6.5 1.8 9.3L16 24l-8.4 4.5 1.8-9.3-6.9-6.5L12 11.5z" />,
+    tasse: (
+      <>
+        <path d="M5 10h18v9a7 7 0 0 1-7 7h-4a7 7 0 0 1-7-7z" />
+        <path d="M23 12h3a3.5 3.5 0 0 1 0 7h-3" />
+        <path d="M10 6c1.5-2 0-3 0-3M16 6c1.5-2 0-3 0-3" />
+      </>
+    ),
+  };
+  return (
+    <svg className="cafe__kennzahl-zeichen" viewBox="0 0 32 32" aria-hidden="true" strokeLinecap="round" strokeLinejoin="round">
+      {pfade[art]}
+    </svg>
   );
 }
