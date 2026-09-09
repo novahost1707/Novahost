@@ -51,6 +51,157 @@ function Schatten({ cx, cy, rx }: { cx: number; cy: number; rx: number }) {
   return <ellipse cx={cx} cy={cy} rx={rx} ry={rx * 0.11} fill="var(--m-4)" opacity="0.16" />;
 }
 
+/**
+ * Ein Kleidungsstück: der Umriss, darin Licht, Schatten und Gewebe.
+ *
+ * Eine einfarbige Silhouette sieht nach Piktogramm aus, nicht nach Stoff.
+ * Deshalb wird alles, was Tiefe gibt, am Umriss beschnitten und liegt
+ * innerhalb der Kontur: Licht von links oben, Schatten nach rechts unten,
+ * ein Schlagschatten am Saum und eine feine Köperbindung darüber. Zusammen
+ * ergibt das eine Fläche, die Volumen hat - auch ohne Farbverlauf.
+ *
+ * `id` muss innerhalb einer Zeichnung eindeutig sein; über mehrere gleiche
+ * Motive auf einer Seite hinweg wiederholt sie sich absichtlich, weil die
+ * Beschneidung dort dieselbe ist.
+ */
+function Stueck({
+  id,
+  umriss,
+  falten,
+  children,
+}: {
+  id: string;
+  umriss: string;
+  /** Zusätzliche Faltenlinien, in Gerätekoordinaten des Motivs. */
+  falten?: [number, number, number, number][];
+  children?: React.ReactNode;
+}) {
+  return (
+    <>
+      <defs>
+        <clipPath id={id}>
+          <path d={umriss} />
+        </clipPath>
+      </defs>
+      <path d={umriss} fill="var(--m-2)" />
+      <g clipPath={`url(#${id})`}>
+        <path d="M-60-60h150l-70 540h-140z" fill="var(--m-1)" opacity="0.22" />
+        <path d="M206-60h180v540H250z" fill="var(--m-4)" opacity="0.14" />
+        <ellipse cx="150" cy="452" rx="170" ry="96" fill="var(--m-4)" opacity="0.16" />
+        {Array.from({ length: 30 }, (_, i) => (
+          <path
+            key={i}
+            d={`M${-80 + i * 17} 440L${30 + i * 17} -40`}
+            stroke="var(--m-4)"
+            strokeWidth="1"
+            opacity="0.07"
+          />
+        ))}
+        {(falten ?? []).map(([x1, y1, x2, y2], i) => (
+          <path
+            key={`f${i}`}
+            d={`M${x1} ${y1}Q${(x1 + x2) / 2 + 7} ${(y1 + y2) / 2} ${x2} ${y2}`}
+            stroke="var(--m-4)"
+            strokeWidth="3"
+            fill="none"
+            opacity="0.13"
+          />
+        ))}
+        {children}
+      </g>
+    </>
+  );
+}
+
+/** Naht als feine Strichelung - das Detail, an dem Kleidung gemacht aussieht. */
+function Naht({ d, opacity = 0.45 }: { d: string; opacity?: number }) {
+  return (
+    <path
+      d={d}
+      stroke="var(--m-4)"
+      strokeWidth="2"
+      strokeDasharray="5 6"
+      strokeLinecap="round"
+      fill="none"
+      opacity={opacity}
+    />
+  );
+}
+
+/**
+ * Ein Kleidungsstück am Bügel - der Baustein der Ständeraufnahme.
+ *
+ * Bewusst keine Menschen: erfundene Gesichter wären eine Behauptung, die eine
+ * Demo nicht aufstellen muss, und als Fläche gezeichnet sehen sie schnell nach
+ * Schaufensterpuppe aus. Ein Ständer zeigt dasselbe - Ware, Auswahl, Ordnung -
+ * und funktioniert auch im breiten Ausschnitt.
+ */
+function AmBuegel({
+  x,
+  breite,
+  laenge,
+  ton,
+  oben,
+}: {
+  x: number;
+  breite: number;
+  laenge: number;
+  ton: string;
+  /** Höhe der Stange; die Schulter sitzt knapp darunter. */
+  oben: number;
+}) {
+  const h = breite / 2;
+  const s = breite * 0.58;
+  const schulter = oben + 6;
+  const unten = schulter + laenge;
+  return (
+    <g>
+      {/* Haken über der Stange */}
+      <path
+        d={`M${x} ${oben - 2}c0-4 3-6 3-9`}
+        stroke="var(--m-4)"
+        strokeWidth="1.6"
+        fill="none"
+        strokeLinecap="round"
+        opacity="0.45"
+      />
+      <path d={`M${x - h} ${schulter}L${x} ${oben - 2}L${x + h} ${schulter}`} stroke="var(--m-4)" strokeWidth="1.6" fill="none" opacity="0.35" />
+      {/* Stück: Schulter, leicht fallende Seite, gerundeter Saum */}
+      <path
+        d={`M${x - h} ${schulter}C${x - h - 2} ${schulter + 10} ${x - s} ${schulter + 16} ${x - s} ${unten}Q${x} ${unten + 5} ${x + s} ${unten}C${x + s} ${schulter + 16} ${x + h + 2} ${schulter + 10} ${x + h} ${schulter}Z`}
+        fill={ton}
+      />
+      {/* Licht links, Schatten rechts - dieselbe Lichtrichtung wie überall */}
+      <path
+        d={`M${x - h} ${schulter}C${x - h - 2} ${schulter + 10} ${x - s} ${schulter + 16} ${x - s} ${unten}L${x - s * 0.62} ${unten}L${x - s * 0.62} ${schulter}Z`}
+        fill="var(--m-1)"
+        opacity="0.1"
+      />
+      <path
+        d={`M${x + s * 0.5} ${schulter}L${x + s * 0.5} ${unten}L${x + s} ${unten}C${x + s} ${schulter + 16} ${x + h + 2} ${schulter + 10} ${x + h} ${schulter}Z`}
+        fill="var(--m-4)"
+        opacity="0.12"
+      />
+      {/* Halsausschnitt */}
+      <path
+        d={`M${x - h * 0.4} ${schulter + 1}q${h * 0.4} 8 ${h * 0.8} 0`}
+        stroke="var(--m-4)"
+        strokeWidth="1.8"
+        fill="none"
+        opacity="0.32"
+      />
+      {/* Saumschatten */}
+      <path
+        d={`M${x - s} ${unten - 3}Q${x} ${unten + 2} ${x + s} ${unten - 3}`}
+        stroke="var(--m-4)"
+        strokeWidth="2.5"
+        fill="none"
+        opacity="0.14"
+      />
+    </g>
+  );
+}
+
 function zeichne(art: MotivArt, variante: number): Zeichnung {
   const S = "400 300";
   const P = "0 0 300 400";
@@ -132,27 +283,101 @@ function zeichne(art: MotivArt, variante: number): Zeichnung {
       };
 
     /* ===== Mode: Szenen ====================================== */
-    case "mode-strasse":
+    /* Kopf der Shop-Startseite: ein Kleiderstaender, breit angelegt.
+       Das Bildfeld ist sehr flach (16/8) - eine Zeichnung im Format 4/3 wuerde
+       dort so stark beschnitten, dass nur noch ein Ausschnitt uebrig bleibt.
+       Deshalb hat dieses Motiv ein eigenes, flaches Koordinatenfeld. */
+    case "mode-lookbook":
       return {
-        box: `0 0 ${S}`,
+        box: "0 0 400 200",
         passung: "slice",
         inhalt: (
           <>
-            <rect x="16" y="40" width="86" height="260" fill="var(--m-2)" />
-            <rect x="118" y="86" width="70" height="214" fill="var(--m-3)" />
-            <rect x="204" y="18" width="94" height="282" fill="var(--m-2)" opacity="0.8" />
-            <rect x="314" y="104" width="70" height="196" fill="var(--m-3)" opacity="0.75" />
-            {[0, 1, 2, 3, 4, 5].map((r) =>
-              [0, 1, 2].map((c) => (
-                <rect key={`${r}${c}`} x={32 + c * 24} y={62 + r * 38} width="12" height="20" fill="var(--m-4)" opacity="0.45" />
-              )),
-            )}
-            {[0, 1, 2, 3, 4, 5, 6].map((r) => (
-              <rect key={r} x={220} y={38 + r * 38} width="62" height="16" fill="var(--m-4)" opacity="0.3" />
+            <rect width="400" height="200" fill="var(--m-1)" />
+            {/* Der Kopftext steht unten links auf dem Bild. Ein Motiv, das
+                ueberall gleich viel zu sehen hat, macht ihn unleserlich -
+                deshalb liegt die Ware rechts und links bleibt Studio. */}
+            <path d="M0 0h130L74 200H0z" fill="var(--m-2)" opacity="0.14" />
+            <rect y="150" width="400" height="50" fill="var(--m-2)" opacity="0.34" />
+            <path d="M0 150h400" stroke="var(--m-3)" strokeWidth="1.2" opacity="0.34" />
+
+            {/* Staender: zwei Beine, Querstange, danach die Ware */}
+            <path d="M214 40h176" stroke="var(--m-4)" strokeWidth="3" strokeLinecap="round" opacity="0.5" />
+            <path d="M232 40v112M372 40v112" stroke="var(--m-4)" strokeWidth="2.5" opacity="0.3" />
+            <path d="M222 152h20M362 152h20" stroke="var(--m-4)" strokeWidth="2.5" opacity="0.3" />
+            {[
+              [246, 22, 64, 3], [274, 20, 48, 2], [302, 23, 72, 3],
+              [330, 21, 54, 2], [358, 22, 66, 3],
+            ].map(([x, breite, laenge, stufe], i) => (
+              <AmBuegel key={i} x={x!} breite={breite!} laenge={laenge!} ton={`var(--m-${stufe})`} oben={40} />
             ))}
+            {/* Schatten des Staenders auf dem Boden */}
+            <ellipse cx="306" cy="154" rx="86" ry="6" fill="var(--m-4)" opacity="0.14" />
+
+            {/* Einzelnes Stueck links, an einem Haken an der Wand - gibt
+                Tiefe, ohne dem Text ins Gehege zu kommen */}
+            <path d="M158 62h8" stroke="var(--m-4)" strokeWidth="2" strokeLinecap="round" opacity="0.35" />
+            <AmBuegel x={162} breite={26} laenge={54} ton="var(--m-2)" oben={64} />
           </>
         ),
       };
+
+    /* Einstiege in Damen und Herren: eine Auslage von oben. Bewusst eine
+       andere Aufnahmeart als der Staender darueber - zwei Ausschnitte
+       derselben Zeichnung nebeneinander sehen aus wie ein Fehler. */
+    case "mode-auslage": {
+      const gedreht = variante % 2 === 1;
+      return {
+        box: "0 0 400 267",
+        passung: "slice",
+        inhalt: (
+          <>
+            <rect width="400" height="267" fill="var(--m-1)" />
+            <path d="M0 0h150L86 267H0z" fill="var(--m-2)" opacity="0.13" />
+            {/* Gefalteter Stapel */}
+            <g transform={gedreht ? "translate(214 40)" : "translate(46 34)"}>
+              <ellipse cx="70" cy="150" rx="86" ry="16" fill="var(--m-4)" opacity="0.14" />
+              {[0, 1, 2].map((i) => (
+                <g key={i} transform={`translate(${i * 5} ${112 - i * 34}) rotate(${i * -1.6} 70 20)`}>
+                  <rect x="0" y="0" width="140" height="34" rx="4" fill={i === 1 ? "var(--m-3)" : "var(--m-2)"} />
+                  <rect x="0" y="0" width="140" height="9" rx="4" fill="var(--m-1)" opacity="0.22" />
+                  <path d="M70 0v34" stroke="var(--m-4)" strokeWidth="2" opacity="0.16" />
+                  <path d="M0 30h140" stroke="var(--m-4)" strokeWidth="2" opacity="0.12" />
+                </g>
+              ))}
+            </g>
+            {/* Ein aufgeschlagenes Stueck daneben, damit die Auslage nicht nur
+                aus Rechtecken besteht */}
+            <g transform={gedreht ? "translate(36 96) rotate(-8)" : "translate(230 88) rotate(7)"}>
+              <ellipse cx="66" cy="120" rx="72" ry="14" fill="var(--m-4)" opacity="0.12" />
+              <path
+                d="M22 6h88c10 0 16 7 18 16l8 34-20 6-4-12v66H20V50l-4 12-20-6 8-34c2-9 8-16 18-16z"
+                fill="var(--m-3)"
+              />
+              <path d="M22 6c8 12 16 18 22 18s14-6 22-18c-2 16-10 24-22 24s-20-8-22-24z" fill="var(--m-4)" opacity="0.28" />
+              <path d="M-4 56l12 4M136 56l-12 4" stroke="var(--m-4)" strokeWidth="2" opacity="0.25" />
+              <path d="M20 100h88" stroke="var(--m-4)" strokeWidth="2" strokeDasharray="5 6" opacity="0.3" />
+            </g>
+            {/* Cap von oben: rundes Gegengewicht zu den Rechtecken und auf den
+                ersten Blick als Ware zu erkennen. Ein aufgerollter Guertel
+                stand hier vorher und sah aus wie ein Objektiv. */}
+            <g transform={gedreht ? "translate(178 220)" : "translate(172 222)"}>
+              <ellipse cx="2" cy="24" rx="36" ry="8" fill="var(--m-4)" opacity="0.13" />
+              {/* Schirm */}
+              <path d="M-30 4a30 26 0 0 0 60 0 34 20 0 0 1-60 0z" fill="var(--m-3)" />
+              <path d="M-30 4a30 26 0 0 0 60 0" stroke="var(--m-4)" strokeWidth="1.6" fill="none" opacity="0.3" />
+              {/* Krone */}
+              <ellipse cx="0" cy="-4" rx="27" ry="23" fill="var(--m-2)" />
+              <path d="M-27-4a27 23 0 0 1 16-21l5 7a20 17 0 0 0-12 14z" fill="var(--m-1)" opacity="0.22" />
+              {[-14, 0, 14].map((x) => (
+                <path key={x} d={`M${x} -26q${-x * 0.3} 22 ${x * 0.2} 44`} stroke="var(--m-4)" strokeWidth="1.4" fill="none" opacity="0.22" />
+              ))}
+              <circle cy="-4" r="3.5" fill="var(--m-4)" opacity="0.4" />
+            </g>
+          </>
+        ),
+      };
+    }
 
     case "mode-stoff":
       return {
@@ -163,49 +388,83 @@ function zeichne(art: MotivArt, variante: number): Zeichnung {
             <path d="M0 300V80c50-34 90 26 134-6s76 18 130-14 86 8 136-22v262z" fill="var(--m-2)" />
             <path d="M0 300V152c54-28 92 20 140-8s78 14 128-12 82 4 132-18v186z" fill="var(--m-3)" />
             <path d="M0 300v-72c58-22 96 16 146-6s80 10 128-10 76 2 126-14v102z" fill="var(--m-4)" />
+            {/* Koeperbindung: der Grund, warum eine Stoffaufnahme aus der Naehe
+                ueberhaupt interessant ist. Ohne sie sind es nur drei Baender. */}
+            {Array.from({ length: 34 }, (_, i) => (
+              <path
+                key={i}
+                d={`M${-70 + i * 15} 320L${30 + i * 15} -20`}
+                stroke="var(--m-1)"
+                strokeWidth="1.5"
+                opacity="0.16"
+              />
+            ))}
+            {Array.from({ length: 22 }, (_, i) => (
+              <path key={`q${i}`} d={`M0 ${i * 15}h400`} stroke="var(--m-1)" strokeWidth="1" opacity="0.09" />
+            ))}
           </>
         ),
       };
 
     /* ===== Mode: Kleidungsstücke, freigestellt ================ */
-    case "mode-hoodie":
+    case "mode-hoodie": {
+      /* Schulterlinie ohne Kuppel. Die Kuppel gehoerte frueher zum Umriss und
+         sass genau da, wo bei einer Person der Kopf waere - das Stueck sah
+         dadurch aus wie ein Mensch mit Kapuze statt wie ein Kleidungsstueck. */
+      const umriss = "M110 98h80l34 12c26 9 40 23 44 46l10 56-44 12-6-28v152H112V196l-6 28-44-12 10-56c4-23 18-37 44-46z";
       return {
         box: P,
         passung: "meet",
         inhalt: (
           <>
             <Schatten cx={150} cy={368} rx={92} />
-            <path d="M110 92c0-24 18-38 40-38s40 14 40 38l34 12c26 9 40 23 44 46l10 56-44 12-6-28v154H112V190l-6 28-44-12 10-56c4-23 18-37 44-46z" fill="var(--m-2)" />
-            <path d="M110 92c14 22 26 32 40 32s26-10 40-32c-8 30-22 44-40 44s-32-14-40-44z" fill="var(--m-3)" />
-            <rect x="112" y="252" width="76" height="10" rx="5" fill="var(--m-3)" />
-            <path d="M132 96v34M168 96v34" stroke="var(--m-4)" strokeWidth="5" strokeLinecap="round" opacity="0.75" />
+            {/* Kapuze liegt hinter dem Stueck und schaut nur flach darueber
+                hinaus: 100 breit, 38 hoch - deutlich zu breit fuer einen Kopf. */}
+            <path d="M100 110c0-32 22-50 50-50s50 18 50 50z" fill="var(--m-3)" />
+            <path d="M100 110q50 16 100 0v6H100z" fill="var(--m-4)" opacity="0.22" />
+            <Stueck id="u-hoodie" umriss={umriss} falten={[[124, 214, 132, 322], [176, 210, 170, 320]]} />
+            <path d="M118 100q32 16 64 0" stroke="var(--m-4)" strokeWidth="3" fill="none" opacity="0.3" />
+            <rect x="112" y="256" width="76" height="10" rx="5" fill="var(--m-3)" />
+            {/* Kordeln haengen aus dem Kapuzenbund nach unten */}
+            <path d="M136 108v32M164 108v32" stroke="var(--m-4)" strokeWidth="3.5" strokeLinecap="round" opacity="0.55" />
+            <circle cx="136" cy="142" r="3.5" fill="var(--m-4)" opacity="0.55" />
+            <circle cx="164" cy="142" r="3.5" fill="var(--m-4)" opacity="0.55" />
             <rect x="94" y="330" width="112" height="12" fill="var(--m-3)" opacity="0.7" />
+            <Naht d="M112 246h76" />
+            <Naht d="M94 326h112" opacity={0.35} />
           </>
         ),
       };
+    }
 
-    case "mode-shirt":
+    case "mode-shirt": {
+      const umriss = "M118 74h64l60 26c20 9 30 20 32 38l6 42-46 12-6-26v130H116V166l-6 26-46-12 6-42c2-18 12-29 32-38z";
       return {
         box: P,
         passung: "meet",
         inhalt: (
           <>
             <Schatten cx={150} cy={352} rx={88} />
-            <path d="M118 74h64l60 26c20 9 30 20 32 38l6 42-46 12-6-26v130H116V166l-6 26-46-12 6-42c2-18 12-29 32-38z" fill="var(--m-2)" />
+            <Stueck id="u-shirt" umriss={umriss} falten={[[128, 190, 136, 292], [172, 188, 166, 290]]} />
             <path d="M118 74c8 18 18 26 32 26s24-8 32-26c-2 24-14 36-32 36s-30-12-32-36z" fill="var(--m-3)" />
             <path d="M116 296h68" stroke="var(--m-3)" strokeWidth="7" opacity="0.8" />
+            <Naht d="M118 78c8 20 18 30 32 30s24-10 32-30" />
+            <Naht d="M116 290h68" opacity={0.35} />
+            <Naht d="M100 168l-8 22M200 168l8 22" opacity={0.35} />
           </>
         ),
       };
+    }
 
-    case "mode-hemd":
+    case "mode-hemd": {
+      const umriss = "M116 76h68l56 24c19 8 28 19 30 36l6 46-42 10-6-24v148H122V168l-6 24-42-10 6-46c2-17 11-28 30-36z";
       return {
         box: P,
         passung: "meet",
         inhalt: (
           <>
             <Schatten cx={150} cy={360} rx={86} />
-            <path d="M116 76h68l56 24c19 8 28 19 30 36l6 46-42 10-6-24v148H122V168l-6 24-42-10 6-46c2-17 11-28 30-36z" fill="var(--m-2)" />
+            <Stueck id="u-hemd" umriss={umriss} falten={[[130, 200, 138, 300], [170, 198, 164, 298]]} />
             {/* Stehkragen mit kurzen Ecken statt tiefem Ausschnitt */}
             <path d="M116 76h68v18l-16 16-18-12-18 12-16-16z" fill="var(--m-3)" />
             <path d="M116 76l18 34 16-12-16-22zM184 76l-18 34-16-12 16-22z" fill="var(--m-3)" opacity="0.75" />
@@ -214,62 +473,87 @@ function zeichne(art: MotivArt, variante: number): Zeichnung {
               <circle key={y} cx="150" cy={y} r="4.5" fill="var(--m-4)" />
             ))}
             <rect x="188" y="150" width="34" height="42" rx="3" fill="var(--m-3)" opacity="0.6" />
+            <Naht d="M188 150h34v42h-34z" opacity={0.4} />
+            <Naht d="M122 312h56" opacity={0.35} />
           </>
         ),
       };
+    }
 
-    case "mode-strick":
+    case "mode-strick": {
+      const umriss = "M112 82h76l58 26c20 9 30 22 32 40l6 48-44 12-6-28v144H116V180l-6 28-44-12 6-48c2-18 12-31 32-40z";
       return {
         box: P,
         passung: "meet",
         inhalt: (
           <>
             <Schatten cx={150} cy={358} rx={90} />
-            <path d="M112 82h76l58 26c20 9 30 22 32 40l6 48-44 12-6-28v144H116V180l-6 28-44-12 6-48c2-18 12-31 32-40z" fill="var(--m-2)" />
+            <Stueck id="u-strick" umriss={umriss}>
+              {/* Strickmuster laeuft ueber die ganze Flaeche, nicht nur mittig */}
+              {Array.from({ length: 9 }, (_, i) => (
+                <path
+                  key={i}
+                  d={`M58 ${132 + i * 24}q26 13 52 0t52 0t52 0t52 0`}
+                  stroke="var(--m-1)"
+                  strokeWidth="3"
+                  fill="none"
+                  opacity="0.24"
+                />
+              ))}
+            </Stueck>
             <path d="M112 82c10 20 22 28 38 28s28-8 38-28c-4 26-16 38-38 38s-34-12-38-38z" fill="var(--m-3)" />
-            {[0, 1, 2, 3, 4, 5, 6].map((i) => (
-              <path key={i} d={`M118 ${140 + i * 26}q32 14 64 0`} stroke="var(--m-3)" strokeWidth="4" fill="none" opacity="0.65" />
-            ))}
             <rect x="116" y="308" width="68" height="14" rx="7" fill="var(--m-3)" opacity="0.8" />
           </>
         ),
       };
+    }
 
-    case "mode-mantel":
+    case "mode-mantel": {
+      const umriss = "M112 48h76l50 22c19 8 28 21 30 40l8 76-40 8-6-34v226H110V160l-6 34-40-8 8-76c2-19 11-32 30-40z";
       return {
         box: P,
         passung: "meet",
         inhalt: (
           <>
             <Schatten cx={150} cy={392} rx={94} />
-            <path d="M112 48h76l50 22c19 8 28 21 30 40l8 76-40 8-6-34v226H110V160l-6 34-40-8 8-76c2-19 11-32 30-40z" fill="var(--m-2)" />
+            <Stueck id="u-mantel" umriss={umriss} falten={[[124, 262, 130, 378], [178, 260, 172, 376]]}>
+              {/* Guertel liegt innerhalb der Beschneidung - sonst steht er
+                  links und rechts ueber den Mantel hinaus. */}
+              <rect x="40" y="232" width="220" height="16" fill="var(--m-3)" />
+              <rect x="40" y="232" width="220" height="4" fill="var(--m-1)" opacity="0.22" />
+            </Stueck>
             {/* Breites, fallendes Revers - das auffaelligste Merkmal des Mantels */}
             <path d="M112 48l38 78 38-78 16 8-30 40 16 14-40 62-40-62 16-14-30-40z" fill="var(--m-3)" />
             <path d="M150 126v260" stroke="var(--m-3)" strokeWidth="4" opacity="0.6" />
-            {/* Guertel */}
-            <rect x="62" y="232" width="176" height="16" fill="var(--m-3)" />
             <rect x="138" y="228" width="26" height="24" rx="3" fill="var(--m-4)" />
+            <Naht d="M112 52l38 78 38-78" opacity={0.35} />
+            <Naht d="M110 380h80" opacity={0.35} />
           </>
         ),
       };
+    }
 
-    case "mode-hose":
+    case "mode-hose": {
+      const umriss = "M86 58h128v34l-14 280h-44l-6-166-6 166H98L86 92z";
       return {
         box: P,
         passung: "meet",
         inhalt: (
           <>
             <Schatten cx={150} cy={382} rx={82} />
-            <path d="M86 58h128v34l-14 280h-44l-6-166-6 166H98L86 92z" fill="var(--m-2)" />
+            <Stueck id="u-hose" umriss={umriss} falten={[[112, 210, 116, 330], [188, 210, 184, 330]]} />
             <rect x="86" y="58" width="128" height="24" fill="var(--m-3)" />
             <path d="M150 82v154" stroke="var(--m-3)" strokeWidth="4" opacity="0.6" />
             <rect x="86" y="150" width="34" height="52" rx="4" fill="var(--m-3)" opacity="0.85" />
             <rect x="180" y="150" width="34" height="52" rx="4" fill="var(--m-3)" opacity="0.85" />
             <rect x="96" y="352" width="34" height="10" rx="5" fill="var(--m-4)" opacity="0.7" />
             <rect x="170" y="352" width="34" height="10" rx="5" fill="var(--m-4)" opacity="0.7" />
+            <Naht d="M86 86h128" />
+            <Naht d="M86 150h34v52H86zM180 150h34v52h-34z" opacity={0.4} />
           </>
         ),
       };
+    }
 
     case "mode-tasche":
       return {
@@ -279,10 +563,11 @@ function zeichne(art: MotivArt, variante: number): Zeichnung {
           <>
             <Schatten cx={150} cy={344} rx={84} />
             <path d="M104 128c0-40 20-62 46-62s46 22 46 62" stroke="var(--m-3)" strokeWidth="14" fill="none" strokeLinecap="round" />
-            <rect x="62" y="132" width="176" height="196" rx="10" fill="var(--m-2)" />
+            <Stueck id="u-tasche" umriss="M62 132h176a10 10 0 0 1 10 10v176a10 10 0 0 1-10 10H62a10 10 0 0 1-10-10V142a10 10 0 0 1 10-10z" />
             <rect x="62" y="132" width="176" height="46" rx="10" fill="var(--m-3)" />
             <rect x="132" y="168" width="36" height="22" rx="4" fill="var(--m-4)" />
             <path d="M62 268h176" stroke="var(--m-3)" strokeWidth="4" opacity="0.55" />
+            <Naht d="M72 190h156v128H72z" opacity={0.4} />
           </>
         ),
       };
@@ -294,16 +579,18 @@ function zeichne(art: MotivArt, variante: number): Zeichnung {
         inhalt: (
           <>
             <Schatten cx={150} cy={286} rx={86} />
-            <path d="M64 236c0-66 38-108 88-108s84 42 84 108z" fill="var(--m-2)" />
+            <Stueck id="u-cap" umriss="M64 236c0-66 38-108 88-108s84 42 84 108z" />
             <path d="M64 236c46 22 126 22 172 0 26 4 44 16 52 34H36c6-18 22-30 28-34z" fill="var(--m-3)" />
             <path d="M150 128v104" stroke="var(--m-3)" strokeWidth="4" opacity="0.6" />
             <path d="M104 148q46 30 92 0" stroke="var(--m-4)" strokeWidth="4" fill="none" opacity="0.5" />
             <circle cx="150" cy="130" r="8" fill="var(--m-4)" />
+            <Naht d="M64 240c46 22 126 22 172 0" opacity={0.4} />
           </>
         ),
       };
 
-    case "mode-jacke":
+    case "mode-jacke": {
+      const umriss = "M112 84h76l56 26c19 8 28 21 30 40l6 50-42 10-6-26v102H118V184l-6 26-42-10 6-50c2-19 11-32 30-40z";
       return {
         box: P,
         passung: "meet",
@@ -311,7 +598,7 @@ function zeichne(art: MotivArt, variante: number): Zeichnung {
           <>
             <Schatten cx={150} cy={330} rx={90} />
             {/* Kurzes Blouson: Rippbund unten und an den Aermeln */}
-            <path d="M112 84h76l56 26c19 8 28 21 30 40l6 50-42 10-6-26v102H118V184l-6 26-42-10 6-50c2-19 11-32 30-40z" fill="var(--m-2)" />
+            <Stueck id="u-jacke" umriss={umriss} falten={[[126, 208, 132, 280], [176, 206, 170, 278]]} />
             <path d="M112 84h76v14l-38 26-38-26z" fill="var(--m-3)" />
             <rect x="112" y="286" width="76" height="22" rx="4" fill="var(--m-3)" />
             <rect x="58" y="222" width="26" height="18" rx="4" fill="var(--m-3)" />
@@ -319,28 +606,38 @@ function zeichne(art: MotivArt, variante: number): Zeichnung {
             {/* Reissverschluss */}
             <path d="M150 106v180" stroke="var(--m-4)" strokeWidth="5" />
             <rect x="144" y="150" width="12" height="16" rx="3" fill="var(--m-4)" />
+            <Naht d="M112 282h76" opacity={0.4} />
           </>
         ),
       };
+    }
 
-    case "mode-stepp":
+    case "mode-stepp": {
+      const umriss = "M114 78h72l54 26c19 9 28 22 30 40l6 58-42 10-6-28v134H116V184l-6 28-42-10 6-58c2-18 11-31 30-40z";
       return {
         box: P,
         passung: "meet",
         inhalt: (
           <>
             <Schatten cx={150} cy={346} rx={88} />
-            <path d="M114 78h72l54 26c19 9 28 22 30 40l6 58-42 10-6-28v134H116V184l-6 28-42-10 6-58c2-18 11-31 30-40z" fill="var(--m-2)" />
-            {/* Stehkragen */}
-            <path d="M114 78h72v-16a36 36 0 0 0-72 0z" fill="var(--m-3)" />
-            {/* Steppnaehte */}
-            {[112, 142, 172, 202, 232, 262, 292].map((y) => (
-              <path key={y} d={`M64 ${y}h172`} stroke="var(--m-3)" strokeWidth="3" opacity="0.75" />
-            ))}
+            <Stueck id="u-stepp" umriss={umriss}>
+              {/* Kammern: heller Rueckensteg, dunkle Naht - so wirkt Daune gefuellt */}
+              {[112, 142, 172, 202, 232, 262, 292].map((y) => (
+                <g key={y}>
+                  <path d={`M50 ${y - 9}h200`} stroke="var(--m-1)" strokeWidth="8" opacity="0.16" />
+                  <path d={`M50 ${y}h200`} stroke="var(--m-4)" strokeWidth="3" opacity="0.3" />
+                </g>
+              ))}
+            </Stueck>
+            {/* Stehkragen: niedrig und breit. Ein Halbkreis ueber der Schulter
+                liest sich als Kopf, nicht als Kragen. */}
+            <path d="M114 78h72v-14a8 8 0 0 0-8-8h-56a8 8 0 0 0-8 8z" fill="var(--m-3)" />
+            <path d="M118 62h64" stroke="var(--m-4)" strokeWidth="2" opacity="0.3" />
             <path d="M150 96v220" stroke="var(--m-4)" strokeWidth="4" opacity="0.8" />
           </>
         ),
       };
+    }
 
     case "mode-muetze":
       return {
@@ -349,14 +646,16 @@ function zeichne(art: MotivArt, variante: number): Zeichnung {
         inhalt: (
           <>
             <Schatten cx={150} cy={300} rx={74} />
-            <path d="M78 244c0-64 32-104 72-104s72 40 72 104z" fill="var(--m-2)" />
+            <Stueck id="u-muetze" umriss="M78 244c0-64 32-104 72-104s72 40 72 104z">
+              {[100, 125, 150, 175, 200].map((x) => (
+                <path key={x} d={`M${x} 130v120`} stroke="var(--m-1)" strokeWidth="4" opacity="0.2" />
+              ))}
+            </Stueck>
             <rect x="70" y="238" width="160" height="46" rx="10" fill="var(--m-3)" />
             {[86, 104, 122, 140, 158, 176, 194, 212].map((x) => (
               <path key={x} d={`M${x} 240v42`} stroke="var(--m-2)" strokeWidth="3" opacity="0.6" />
             ))}
-            {[100, 125, 150, 175, 200].map((x) => (
-              <path key={x} d={`M${x} 150v88`} stroke="var(--m-3)" strokeWidth="3" opacity="0.5" />
-            ))}
+            <Naht d="M70 238h160" opacity={0.4} />
           </>
         ),
       };
@@ -370,6 +669,7 @@ function zeichne(art: MotivArt, variante: number): Zeichnung {
             <Schatten cx={150} cy={318} rx={92} />
             {/* Riemen als liegende Schlaufe */}
             <path d="M60 176h180a52 52 0 0 1 0 104H84" stroke="var(--m-2)" strokeWidth="30" fill="none" strokeLinecap="round" />
+            <path d="M60 170h180a52 52 0 0 1 34 12" stroke="var(--m-1)" strokeWidth="6" fill="none" strokeLinecap="round" opacity="0.3" />
             <path d="M60 176h180a52 52 0 0 1 0 104H84" stroke="var(--m-3)" strokeWidth="4" fill="none" strokeDasharray="7 9" strokeLinecap="round" />
             {/* Schnalle */}
             <rect x="40" y="156" width="46" height="40" rx="6" fill="none" stroke="var(--m-4)" strokeWidth="9" />

@@ -12,8 +12,9 @@ import "@/styles/demo-restaurant.css";
  * Sterne-Getue, aber ein klarer Anspruch: was auf den Teller kommt, wächst
  * höchstens 120 Kilometer entfernt.
  *
- * Haltung: ruhig, warm, zeitlos. Fast schwarzer Grund, hohe Serifenschrift,
- * Messing als einziger Akzent, grosse Bilder und viel Luft. Bewusst wenige
+ * Haltung: ruhig, warm, zeitlos. Sehr dunkles Burgunder als Grund, Beige als
+ * Schrift und Akzent, hohe Serifenschrift, grosse Bilder und viel Luft.
+ * Die Farbwelt trennt das Haus bewusst vom Braun der Kaffeeroesterei. Wenige
  * Kanten - kaum Karten, keine Glasflächen, keine technisch wirkenden
  * Bausteine.
  *
@@ -35,7 +36,7 @@ export const metadata: Metadata = {
   description: "Demo-Projekt von Novahost: Website für ein Restaurant mit Saisonküche und Reservierung.",
 };
 
-export const viewport: Viewport = { themeColor: "#14100e", colorScheme: "dark" };
+export const viewport: Viewport = { themeColor: "#f2e6cb", colorScheme: "light" };
 
 /* --- Bildplätze ---------------------------------------------------------- */
 const BILD_HERO: Bildplatz = {
@@ -160,7 +161,7 @@ export default function RestaurantDemo() {
       <section className="rt__hero">
         <Bild platz={BILD_HERO} sizes="100vw" priority />
         <div className="rt__hero-schleier" aria-hidden="true" />
-        <div className="rt__hero-inhalt">
+        <div className="rt__hero-inhalt rt__dunkel">
           <div className="demo__shell">
             <p className="rt__mini">Saisonküche &middot; Musterstadt</p>
             <h1 className="rt__display">
@@ -174,7 +175,7 @@ export default function RestaurantDemo() {
             </p>
             <div className="rt__hero-aktionen">
               <a href="#reservierung" className="rt__btn rt__btn--voll">Tisch reservieren</a>
-              <a href="#karte" className="rt__btn rt__btn--creme">Menü ansehen</a>
+              <a href="#karte" className="rt__btn rt__btn--beige">Menü ansehen</a>
             </div>
             <p className="rt__hero-hinweis">
               <i aria-hidden="true" />
@@ -368,7 +369,7 @@ export default function RestaurantDemo() {
         </div>
       </section>
 
-      <section className="rt__section" id="reservierung">
+      <section className="rt__section rt__dunkel" id="reservierung">
         <div className="demo__shell rt__reservierung">
           <div className="auf">
             <p className="rt__mini rt__strich">Reservierung</p>
@@ -409,7 +410,7 @@ export default function RestaurantDemo() {
         </div>
       </section>
 
-      <footer className="rt__fuss">
+      <footer className="rt__fuss rt__dunkel">
         <div className="demo__shell">
           <div className="rt__fuss-grid">
             <div>
@@ -457,7 +458,7 @@ export default function RestaurantDemo() {
         </div>
       </footer>
 
-      <div className="rt__leiste">
+      <div className="rt__leiste rt__dunkel">
         <span>
           Heute geöffnet
           <b>18:00 - 23:00 Uhr</b>

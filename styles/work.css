@@ -129,7 +129,7 @@
 .work__mini[data-niche="restaurant"] .work__mini-buehne {
   flex: 1.35;
   /* Nimmt die Farben der jeweiligen Seite auf, statt eine feste zu setzen. */
-  background: linear-gradient(155deg, color-mix(in oklab, var(--v-akzent) 34%, var(--v-flaeche)), var(--v-flaeche));
+  background: linear-gradient(155deg, color-mix(in oklab, var(--v-akzent) 62%, var(--v-flaeche)), var(--v-flaeche));
   opacity: 1;
 }
 .work__mini-mitte {
