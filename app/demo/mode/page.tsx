@@ -18,7 +18,7 @@ const BILD_HERO: Bildplatz = {
   src: "/demo/mode/hero.jpg",
   alt: "Zwei Personen in Mänteln der Serie 04 vor einer Hafenkulisse",
   ratio: "16 / 8",
-  motiv: "mode-strasse",
+  motiv: "mode-lookbook",
   variante: 0,
 };
 
@@ -26,8 +26,8 @@ const BILD_DAMEN: Bildplatz = {
   src: "/demo/mode/einstieg-damen.jpg",
   alt: "Model in weiter Hose und Ripp-Shirt, Ganzkörperaufnahme",
   ratio: "3 / 2",
-  motiv: "mode-strasse",
-  variante: 1,
+  motiv: "mode-auslage",
+  variante: 0,
   ton: "#8a857d",
 };
 
@@ -35,8 +35,8 @@ const BILD_HERREN: Bildplatz = {
   src: "/demo/mode/einstieg-herren.jpg",
   alt: "Model in Bomberjacke und Cargohose, Ganzkörperaufnahme",
   ratio: "3 / 2",
-  motiv: "mode-strasse",
-  variante: 2,
+  motiv: "mode-auslage",
+  variante: 1,
   ton: "#5f5e58",
 };
 
