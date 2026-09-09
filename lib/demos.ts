@@ -61,7 +61,7 @@ export const demos: Demo[] = [
     betrieb: "Restaurant Amsel",
     branche: "Restaurant & Saisonküche",
     umfang: "Konzept, Menüs, Küche, Raum, Öffnungszeiten, Reservierung",
-    haltung: "Ruhig, dunkel, zeitlos. Hohe Serifen, Messing, alles führt auf den Tisch.",
-    vorschau: { grund: "#14100e", flaeche: "#1d1815", text: "#f2ebe0", akzent: "#b08d57" },
+    haltung: "Beige Karte, Burgunder als Akzent. Ruhig, zeitlos, alles führt auf den Tisch.",
+    vorschau: { grund: "#f2e6cb", flaeche: "#eadcba", text: "#2b1418", akzent: "#8c2233" },
   },
 ];
