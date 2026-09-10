@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 
+import { anbieter, anbieterAnschrift, telefonHref } from "@/lib/anbieter";
+
 export const metadata: Metadata = {
   title: "Impressum",
   description: "Anbieterkennzeichnung nach § 5 DDG.",
@@ -8,9 +10,11 @@ export const metadata: Metadata = {
 };
 
 /**
- * Achtung: Diese Seite enthält bewusst Platzhalter. Es werden keine
- * Unternehmensdaten erfunden - die markierten Stellen müssen vor dem
- * Livegang durch die echten Angaben ersetzt werden.
+ * Alle Angaben stammen aus lib/anbieter.ts, damit Impressum, Datenschutz und
+ * Widerrufsbelehrung nicht auseinanderlaufen können. Ohne
+ * Handelsregistereintrag genügt der volle Vor- und Nachname; Registerangaben
+ * und Umsatzsteuer-Identnummer entfallen, die Steuernummer gehört nicht ins
+ * Impressum.
  */
 export default function ImpressumPage() {
   return (
@@ -21,25 +25,18 @@ export default function ImpressumPage() {
       </header>
 
       <div className="legal__body">
-        <p className="legal__note">
-          <strong>Hinweis für den Betreiber:</strong> Alle mit{" "}
-          <span className="placeholder">[ ... ]</span> markierten Felder müssen vor der
-          Veröffentlichung durch die echten Angaben ersetzt werden. Ohne Handelsregistereintrag
-          ist der volle Vor- und Nachname anzugeben; Registerangaben und Umsatzsteuer-Identnummer
-          entfallen dann. Die Steuernummer gehört nicht ins Impressum. Diese Vorlage ersetzt keine
-          Rechtsberatung.
-        </p>
-
         <section>
           <h2>Angaben gemäß § 5 DDG</h2>
           <p>
-            <span className="placeholder">[Vor- und Nachname, ggf. mit Geschäftsbezeichnung]</span>
+            {anbieter.marke}
             <br />
-            <span className="placeholder">[Straße und Hausnummer]</span>
+            Inhaber: {anbieter.name}
             <br />
-            <span className="placeholder">[PLZ und Ort]</span>
+            {anbieter.strasse}
             <br />
-            <span className="placeholder">[Land]</span>
+            {anbieter.ort}
+            <br />
+            {anbieter.land}
           </p>
         </section>
 
@@ -54,17 +51,16 @@ export default function ImpressumPage() {
         <section>
           <h2>Kontakt</h2>
           <p>
-            Telefon: <span className="placeholder">[Telefonnummer]</span>
+            Telefon: <a href={`tel:${telefonHref}`}>{anbieter.telefon}</a>
             <br />
-            E-Mail: <span className="placeholder">[E-Mail-Adresse]</span>
+            E-Mail: <a href={`mailto:${anbieter.email}`}>{anbieter.email}</a>
           </p>
         </section>
 
         <section>
           <h2>Verantwortlich für den Inhalt</h2>
           <p>
-            <span className="placeholder">[Name]</span>,{" "}
-            <span className="placeholder">[Anschrift wie oben]</span>
+            {anbieter.name}, {anbieterAnschrift}
           </p>
         </section>
 

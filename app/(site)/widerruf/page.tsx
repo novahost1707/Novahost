@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 
+import { anbieter, anbieterAnschrift } from "@/lib/anbieter";
+
 export const metadata: Metadata = {
   title: "Widerrufsrecht",
   description: "Widerrufsbelehrung für Verbraucher.",
@@ -28,11 +30,9 @@ export default function WiderrufPage() {
       <div className="legal__body">
         <p className="legal__note">
           <strong>Hinweis für den Betreiber:</strong> Diese Belehrung gilt gegenüber
-          Verbrauchern, also Privatpersonen. Die mit{" "}
-          <span className="placeholder">[ ... ]</span> markierten Felder sind zu ergänzen. Wenn
-          eine Dienstleistung auf ausdrücklichen Wunsch vor Ablauf der Frist beginnen soll, muss
-          das gesondert und nachweisbar vereinbart werden - siehe den letzten Abschnitt. Die
-          Vorlage ersetzt keine Rechtsberatung.
+          Verbrauchern, also Privatpersonen. Wenn eine Dienstleistung auf ausdrücklichen Wunsch
+          vor Ablauf der Frist beginnen soll, muss das gesondert und nachweisbar vereinbart
+          werden - siehe den letzten Abschnitt. Die Vorlage ersetzt keine Rechtsberatung.
         </p>
 
         <section>
@@ -54,11 +54,8 @@ export default function WiderrufPage() {
             widerrufen. Die Widerrufsfrist beträgt vierzehn Tage ab dem Tag des Vertragsabschlusses.
           </p>
           <p>
-            Um Ihr Widerrufsrecht auszuüben, müssen Sie uns (
-            <span className="placeholder">[Name]</span>,{" "}
-            <span className="placeholder">[Anschrift]</span>,{" "}
-            <span className="placeholder">[Telefonnummer]</span>,{" "}
-            <span className="placeholder">[E-Mail-Adresse]</span>) mittels einer eindeutigen
+            Um Ihr Widerrufsrecht auszuüben, müssen Sie uns ({anbieter.name},{" "}
+            {anbieterAnschrift}, {anbieter.telefon}, {anbieter.email}) mittels einer eindeutigen
             Erklärung (z. B. ein mit der Post versandter Brief oder eine E-Mail) über Ihren
             Entschluss, diesen Vertrag zu widerrufen, informieren. Sie können dafür das beigefügte
             Muster-Widerrufsformular verwenden, das jedoch nicht vorgeschrieben ist.
@@ -114,9 +111,7 @@ export default function WiderrufPage() {
           </p>
           <ul>
             <li>
-              An <span className="placeholder">[Name]</span>,{" "}
-              <span className="placeholder">[Anschrift]</span>,{" "}
-              <span className="placeholder">[E-Mail-Adresse]</span>:
+              An {anbieter.name}, {anbieterAnschrift}, {anbieter.email}:
             </li>
             <li>
               Hiermit widerrufe(n) ich/wir (*) den von mir/uns (*) abgeschlossenen Vertrag über den
