@@ -1,5 +1,5 @@
 /* ============================================================
-   DEMO 4 — RESTAURANT AMSEL
+   DEMO — RESTAURANT AMSEL
    Gehobene Saisonküche, 34 Plätze, offene Küche.
 
    Haltung: ruhig, warm, zeitlos. Sehr dunkles Burgunder als
@@ -14,12 +14,12 @@
   --demo-maxw: 1360px;
 
   /* Rot und Beige.
-     Die Seite steht auf Beige, nicht auf Dunkel. Das ist der Grund, warum sie
-     sich vom Cafe unterscheidet: zwei dunkle warme Auftritte nebeneinander
-     bleiben verwandt, egal wie der Farbton heisst - gemessen kam ein dunkles
-     Burgunder dem Cafe-Braun sogar naeher als das alte Schwarzbraun. Ein
-     heller Grund loest das, und ein gedeckter Beigeton mit Wein als Akzent
-     ist ohnehin das, was eine gedruckte Menuekarte ausmacht.
+     Die Seite steht auf Beige, nicht auf Dunkel. Zwei dunkle warme Auftritte
+     nebeneinander bleiben verwandt, egal wie der Farbton heisst - gemessen
+     kam ein dunkles Burgunder dem damaligen Cafe-Braun sogar naeher als das
+     alte Schwarzbraun. Ein heller Grund loest das, und ein gedeckter
+     Beigeton mit Wein als Akzent ist ohnehin das, was eine gedruckte
+     Menuekarte ausmacht.
 
      Die Rollen heissen deshalb nach ihrer Aufgabe, nicht nach ihrer Farbe:
      dieselben Namen bekommen in den dunklen Baendern (.rt__dunkel) andere

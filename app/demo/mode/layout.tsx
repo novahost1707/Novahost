@@ -10,7 +10,7 @@ import { findeBilder } from "@/lib/demo-bilder.server";
 import "@/styles/demo-shop.css";
 
 /**
- * Demo 2 - ARVO (erfundenes Modelabel).
+ * Demo - ARVO (erfundenes Modelabel).
  *
  * Gemeinsamer Rahmen für alle Shopseiten: Ankündigungsband, Kopfzeile mit
  * Damen/Herren/Sale, Kategorienzeile, Warenkorb-Schublade und Fuß. Genau

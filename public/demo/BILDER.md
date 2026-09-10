@@ -1,6 +1,6 @@
 # Bilder für die Demo-Projekte
 
-Die vier Demo-Seiten sind so gebaut, dass echte Fotos **ohne Codeänderung**
+Die Demo-Seiten sind so gebaut, dass echte Fotos **ohne Codeänderung**
 eingesetzt werden können. Es zählt allein, ob unter `public/` eine Datei mit
 dem hier genannten Namen liegt.
 
@@ -25,21 +25,6 @@ Entscheidend sind **Ordner und Dateiname**.
   Seite mit anpassen.
 
 ---
-
-## Morgentau Kaffeerösterei (`/demo/cafe`)
-
-| Datei | Seitenverhältnis | Motiv |
-|---|---|---|
-| `cafe/hero.jpg` | 4/5 | Barista an der Siebträgermaschine, Blick über die Theke |
-| `cafe/roestung-morgentau.jpg` | 1/1 | Helle Röstung Morgentau, Bohnen in der Schale |
-| `cafe/roestung-sieben.jpg` | 1/1 | Hausmischung Nummer Sieben, Bohnen in der Schale |
-| `cafe/roestung-nachtschicht.jpg` | 1/1 | Dunkle Röstung Nachtschicht, Bohnen in der Schale |
-| `cafe/roester.jpg` | 3/4 | Trommelröster in der Rösterei während des Röstvorgangs |
-| `cafe/raum-theke.jpg` | 16/11 | Blick in den Gastraum mit Theke am Morgen |
-| `cafe/raum-hof.jpg` | 4/5 | Der begrünte Innenhof mit Sitzplätzen |
-| `cafe/raum-tisch.jpg` | 4/5 | Gedeckter Tisch mit Frühstücksbrett und Cappuccino |
-| `cafe/raum-fenster.jpg` | 16/11 | Fensterplatz mit Blick auf die Lindenstraße |
-| `cafe/heute.jpg` | 16/10 | Der Kuchen des Tages auf der Theke, angeschnitten |
 
 ## ARVO (`/demo/mode`)
 
