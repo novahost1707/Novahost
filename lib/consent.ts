@@ -21,10 +21,17 @@ export type ConsentState = {
  * eingebunden ist, braucht die Seite auch keine Abfrage - ein Banner ohne
  * Anlass kostet nur Abschlüsse.
  *
- * Auf false setzen, solange Google Ads noch nicht live ist. Sobald ein
- * Werbe- oder Analysedienst eingebunden wird, muss der Wert true sein.
+ * Steht derzeit auf false: die Seite lädt weder Statistik- noch Werbedienste.
+ * Technisch notwendig sind nur das kurzlebige Cookie nach dem Absenden eines
+ * Formulars und, in den Demo-Seiten, der lokale Speicher für Merkliste und
+ * Warenkorb - beides ohne Einwilligung zulässig nach § 25 Absatz 2 TDDDG.
+ *
+ * Sobald ein Werbe- oder Analysedienst eingebunden wird, muss der Wert
+ * zurück auf true. Die Datenschutzerklärung liest denselben Schalter und
+ * beschreibt dann automatisch wieder die Abfrage - so kann der Text nicht
+ * beschreiben, was die Seite gar nicht tut.
  */
-export const EINWILLIGUNG_NOETIG = true;
+export const EINWILLIGUNG_NOETIG = false;
 
 /**
  * Bei jeder Änderung an den Kategorien hochzählen. Ältere Entscheidungen

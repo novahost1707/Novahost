@@ -48,7 +48,7 @@
   font-size: 0.92em;
 }
 
-/* --- 404 -------------------------------------------------------------- */
+/* --- 404 und Fehlerseite ---------------------------------------------- */
 .nf {
   display: grid;
   align-content: center;
@@ -65,6 +65,12 @@
   letter-spacing: var(--ls-mega);
   color: transparent;
   -webkit-text-stroke: 1px var(--ink-500);
+}
+/* Fehlerkennung: gehoert zur Seite, soll sie aber nicht dominieren. Wer
+   anruft, kann sie nennen, dann ist der Fall im Protokoll auffindbar. */
+.nf__kennung {
+  font-size: var(--t-xs);
+  color: var(--text-faint);
 }
 
 /* ============================================================

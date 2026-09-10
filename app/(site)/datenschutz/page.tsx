@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { EINWILLIGUNG_NOETIG } from "@/lib/consent";
 
 export const metadata: Metadata = {
   title: "Datenschutz",
@@ -10,8 +11,12 @@ export const metadata: Metadata = {
 /**
  * Beschreibt ausschließlich, was diese Website technisch tatsächlich tut:
  * Auslieferung der Seite, Kontakt- und Analyseformular, Google-Fonts werden
- * beim Build selbst gehostet, kein Tracking, keine Cookies. Wird die Seite um
- * Analytics oder externe Dienste erweitert, muss dieser Text ergänzt werden.
+ * beim Build selbst gehostet, kein Tracking.
+ *
+ * Die Abschnitte 3 und 4 lesen denselben Schalter wie die Einwilligungs-
+ * abfrage (EINWILLIGUNG_NOETIG in lib/consent.ts). Dadurch kann der Text
+ * nicht beschreiben, was die Seite gar nicht tut - eine Erklärung, die eine
+ * Abfrage schildert, die es nicht gibt, ist schlechter als keine.
  */
 export default function DatenschutzPage() {
   return (
@@ -65,31 +70,56 @@ export default function DatenschutzPage() {
               Bestätigungsseite angezeigt werden kann (Laufzeit 30 Minuten)
             </li>
             <li>
-              Ihre Entscheidung aus der Einwilligungsabfrage, damit wir sie nicht bei jedem Besuch
-              erneut stellen müssen; sie liegt im lokalen Speicher Ihres Browsers und wird nicht an
-              uns übertragen
+              in den Demo-Seiten unter <code>/demo</code> Ihre Merkliste und Ihr Warenkorb, damit
+              sie beim Blättern erhalten bleiben; beides liegt im lokalen Speicher Ihres Browsers
+              und wird nicht an uns übertragen
             </li>
+            {EINWILLIGUNG_NOETIG ? (
+              <li>
+                Ihre Entscheidung aus der Einwilligungsabfrage, damit wir sie nicht bei jedem
+                Besuch erneut stellen müssen; sie liegt ebenfalls im lokalen Speicher Ihres
+                Browsers und wird nicht an uns übertragen
+              </li>
+            ) : null}
           </ul>
           <p>
-            Rechtsgrundlage hierfür ist § 25 Absatz 2 TDDDG, da beides für den von Ihnen
+            Rechtsgrundlage hierfür ist § 25 Absatz 2 TDDDG, da all dies für den von Ihnen
             gewünschten Dienst unbedingt erforderlich ist.
           </p>
-          <p>
-            Alles Weitere setzen wir nur mit Ihrer Einwilligung nach § 25 Absatz 1 TDDDG und
-            Artikel 6 Absatz 1 Buchstabe a DSGVO. Sie treffen diese Entscheidung beim ersten Besuch
-            und können sie jederzeit über den Link{" "}
-            <strong>Cookie-Einstellungen</strong> in der Fußzeile ändern oder widerrufen. Der
-            Widerruf wirkt für die Zukunft; die Rechtmäßigkeit der bis dahin erfolgten
-            Verarbeitung bleibt unberührt.
-          </p>
+          {EINWILLIGUNG_NOETIG ? (
+            <p>
+              Alles Weitere setzen wir nur mit Ihrer Einwilligung nach § 25 Absatz 1 TDDDG und
+              Artikel 6 Absatz 1 Buchstabe a DSGVO. Sie treffen diese Entscheidung beim ersten
+              Besuch und können sie jederzeit über den Link{" "}
+              <strong>Cookie-Einstellungen</strong> in der Fußzeile ändern oder widerrufen. Der
+              Widerruf wirkt für die Zukunft; die Rechtmäßigkeit der bis dahin erfolgten
+              Verarbeitung bleibt unberührt.
+            </p>
+          ) : (
+            <p>
+              Darüber hinaus wird nichts auf Ihrem Gerät gespeichert. Weil die Seite keinen
+              einwilligungspflichtigen Dienst lädt, gibt es auch keine Einwilligungsabfrage. Sollte
+              sich das ändern, holen wir Ihre Einwilligung nach § 25 Absatz 1 TDDDG und Artikel 6
+              Absatz 1 Buchstabe a DSGVO ein, bevor ein solcher Dienst startet.
+            </p>
+          )}
         </section>
 
         <section>
           <h2>4. Reichweitenmessung und Werbung</h2>
-          <p>
-            Diese Dienste laufen ausschließlich nach Ihrer Einwilligung. Erteilen Sie sie nicht,
-            wird nichts davon geladen und es entstehen keine entsprechenden Daten.
-          </p>
+          {EINWILLIGUNG_NOETIG ? (
+            <p>
+              Diese Dienste laufen ausschließlich nach Ihrer Einwilligung. Erteilen Sie sie nicht,
+              wird nichts davon geladen und es entstehen keine entsprechenden Daten.
+            </p>
+          ) : (
+            <p>
+              <strong>Derzeit setzen wir keine solchen Dienste ein.</strong> Diese Website lädt
+              weder ein Statistik- noch ein Werbewerkzeug; es findet keine Reichweitenmessung
+              statt. Der folgende Abschnitt beschreibt, was gälte, sobald wir das ändern - dann
+              fragen wir vorher Ihre Einwilligung ab.
+            </p>
+          )}
           <ul>
             <li>
               <strong>Statistik:</strong> anonyme Auswertung, welche Seiten aufgerufen werden,
@@ -106,11 +136,12 @@ export default function DatenschutzPage() {
           </ul>
           <p className="legal__note">
             <strong>Hinweis für den Betreiber:</strong> Dieser Abschnitt beschreibt Dienste, die
-            erst mit dem Start einer Werbekampagne tatsächlich eingebunden werden. Solange nichts
-            davon aktiv ist, lässt sich die Einwilligungsabfrage über den Schalter{" "}
-            <code>EINWILLIGUNG_NOETIG</code> in <code>lib/consent.ts</code> ausblenden. Sobald ein
-            Dienst live geht, sind hier Name, Anbieter, Zweck, Speicherdauer und Rechtsgrundlage
-            konkret zu benennen.
+            erst mit dem Start einer Werbekampagne tatsächlich eingebunden werden. Der Schalter{" "}
+            <code>EINWILLIGUNG_NOETIG</code> in <code>lib/consent.ts</code> steht deshalb auf{" "}
+            <code>false</code>: keine Abfrage, weil es nichts abzufragen gibt. Sobald ein Dienst
+            live geht, muss er zurück auf <code>true</code>, und hier sind Name, Anbieter, Zweck,
+            Speicherdauer und Rechtsgrundlage konkret zu benennen. Die Abschnitte 3 und 4 stellen
+            sich mit dem Schalter automatisch um.
           </p>
         </section>
 
