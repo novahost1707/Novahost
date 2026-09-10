@@ -151,6 +151,17 @@
   border: 1px solid var(--v-akzent);
 }
 
+/* Aufnahme eines echten Projekts statt der gezeichneten Vorschau. */
+.work__foto {
+  object-fit: cover;
+  /* Linke Kante halten: dort steht die Wortmarke, und genau die soll auf
+     der Kachel zu sehen sein. Bei "cover" wuerde sonst beidseitig
+     beschnitten und sie fiele weg. */
+  object-position: left center;
+  transition: transform var(--dur-4) var(--ease-out);
+}
+.work__card[data-active="true"] .work__foto { transform: scale(1.035); }
+
 .work__badge {
   position: absolute;
   top: var(--s-3);
@@ -159,6 +170,17 @@
   background: var(--ink-000);
   color: var(--accent);
   border: 1px solid var(--line-accent);
+}
+/* Ein echtes Projekt wird anders ausgezeichnet als ein Eigenkonzept - die
+   Unterscheidung ist der Punkt und darf nicht nur im Wortlaut stecken.
+   Er steht dort unten, weil oben links die Wortmarke der gezeigten Seite
+   sitzt - genau die soll auf der Kachel zu sehen sein. */
+.work__badge[data-art="kunde"] {
+  top: auto;
+  bottom: var(--s-3);
+  background: var(--accent);
+  color: var(--ink-000);
+  border-color: var(--accent);
 }
 
 .work__meta {

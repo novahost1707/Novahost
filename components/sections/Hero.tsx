@@ -1,11 +1,22 @@
 import { PixelField } from "@/components/fx/PixelField";
 import { Cta } from "@/components/ui/Cta";
+import { Wordmark } from "@/components/ui/Wordmark";
 import { hero } from "@/lib/content";
+import { site } from "@/lib/site";
 
 /**
- * Hero: In fünf Sekunden muss klar sein, was wir machen, für wen, mit
- * welchem Nutzen und was der nächste Schritt ist. Das Pixel-Feld liegt
- * hinter der Typo, nie darüber - Lesbarkeit schlägt Effekt.
+ * Hero.
+ *
+ * Aufbau: das Zeichen klein und mittig, darunter die Aussage in ruhiger
+ * Größe, darunter die beiden Wege weiter - und am unteren Rand der Name in
+ * voller Breite, vom Bildrand angeschnitten.
+ *
+ * Der Gedanke dahinter: die Wucht kommt aus dem Namen, nicht aus der
+ * Schlagzeile. Dadurch bleibt der Satz lesbar wie ein Satz, statt in vier
+ * Zeilen Versalien zu zerfallen, und der Auftritt merkt sich über die
+ * Wortmarke statt über die Typogröße.
+ *
+ * Das Pixel-Feld liegt hinter allem, nie darüber - Lesbarkeit schlägt Effekt.
  */
 export function Hero() {
   return (
@@ -22,44 +33,50 @@ export function Hero() {
           <p className="pixel hero__label">{hero.label}</p>
         </div>
 
-        <h1 className="hero__title display" id="hero-title">
-          {hero.headline.map((line, index) => (
-            <span className="hero__line" key={line}>
-              <span className="hero__line-inner" style={{ animationDelay: `${index * 90}ms` }}>
-                {line}
+        <div className="hero__mitte">
+          {/* Zeichen und Name zusammen - dieselbe Wortmarke wie in der
+              Kopfleiste, nur groesser. */}
+          <Wordmark className="hero__marke" />
+
+          {/* Die Zeilen stehen im Inhalt getrennt und behalten ihre Farben.
+              Sie fliessen hier aber als ein Satz, statt untereinander zu
+              stehen - lange Zeilen statt eines schmalen Klumpens. */}
+          <h1 className="hero__aussage" id="hero-title">
+            {hero.headline.map((teil) => (
+              <span className="hero__wort" key={teil}>
+                {teil}
               </span>
-            </span>
-          ))}
-        </h1>
+            ))}
+          </h1>
 
-        <div className="hero__bottom">
-          <p className="hero__sub lead">{hero.sub}</p>
+          <p className="hero__sub">{hero.sub}</p>
 
-          <div className="hero__actions">
-            <div className="btn-row">
-              <Cta href={hero.ctaPrimary.href} variant="primary" size="lg" magnetic cursor="LOS">
-                {hero.ctaPrimary.label}
-              </Cta>
-              <Cta href={hero.ctaSecondary.href} variant="ghost" size="lg" cursor="CHECK">
-                {hero.ctaSecondary.label}
-              </Cta>
-            </div>
-
-            <dl className="hero__meta">
-              {hero.meta.map((item) => (
-                <div className="hero__meta-item" key={item.k}>
-                  <dt className="pixel">{item.k}</dt>
-                  <dd>{item.v}</dd>
-                </div>
-              ))}
-            </dl>
+          <div className="btn-row hero__aktionen">
+            <Cta href={hero.ctaPrimary.href} variant="primary" size="lg" magnetic cursor="LOS">
+              {hero.ctaPrimary.label}
+            </Cta>
+            <Cta href={hero.ctaSecondary.href} variant="ghost" size="lg" cursor="CHECK">
+              {hero.ctaSecondary.label}
+            </Cta>
           </div>
+
+          {/* Eckdaten als schmale Zeile direkt unter den Knöpfen: sie helfen
+              bei der Entscheidung und lassen dem Namen darunter trotzdem die
+              ganze Fläche. */}
+          <dl className="hero__eckdaten">
+            {hero.meta.map((item) => (
+              <div key={item.k}>
+                <dt className="pixel">{item.k}</dt>
+                <dd>{item.v}</dd>
+              </div>
+            ))}
+          </dl>
         </div>
       </div>
 
-      <a href="#problem" className="hero__scroll pixel" aria-label="Weiter zum nächsten Abschnitt">
-        SCROLL <span aria-hidden="true">&#8595;</span>
-      </a>
+      {/* Der Name in voller Breite, unten angeschnitten. Für Vorlese-
+          programme ist er nichts Neues - er steht schon in der Kopfleiste. */}
+      <p className="hero__wortmarke" aria-hidden="true">{site.name}</p>
     </section>
   );
 }
