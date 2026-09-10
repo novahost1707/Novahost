@@ -1,11 +1,18 @@
 import { PixelField } from "@/components/fx/PixelField";
 import { Cta } from "@/components/ui/Cta";
+import { PixelMark } from "@/components/ui/Wordmark";
 import { hero } from "@/lib/content";
+import { site } from "@/lib/site";
 
 /**
  * Hero: In fünf Sekunden muss klar sein, was wir machen, für wen, mit
  * welchem Nutzen und was der nächste Schritt ist. Das Pixel-Feld liegt
  * hinter der Typo, nie darüber - Lesbarkeit schlägt Effekt.
+ *
+ * Aufbau: Zeichen und Name mittig, darunter die Aussage. Wer die Seite zum
+ * ersten Mal sieht, liest damit zuerst, wer hier spricht, und erst dann,
+ * worum es geht - bei einem Studio ohne bekannten Namen ist das die
+ * richtige Reihenfolge. Alles Weitere bleibt darunter in derselben Achse.
  */
 export function Hero() {
   return (
@@ -22,15 +29,27 @@ export function Hero() {
           <p className="pixel hero__label">{hero.label}</p>
         </div>
 
-        <h1 className="hero__title display" id="hero-title">
-          {hero.headline.map((line, index) => (
-            <span className="hero__line" key={line}>
-              <span className="hero__line-inner" style={{ animationDelay: `${index * 90}ms` }}>
-                {line}
-              </span>
+        <div className="hero__mitte">
+          {/* Das Zeichen ist dasselbe wie in der Kopfleiste, nur gross. Es
+              traegt hier den Namen, deshalb steht es nicht als Dekoration
+              daneben, sondern in derselben Zeile darueber. */}
+          <p className="hero__marke">
+            <span className="hero__marke-zeichen" aria-hidden="true">
+              <PixelMark size={64} />
             </span>
-          ))}
-        </h1>
+            <span className="hero__marke-name">{site.name}</span>
+          </p>
+
+          <h1 className="hero__title display" id="hero-title">
+            {hero.headline.map((line, index) => (
+              <span className="hero__line" key={line}>
+                <span className="hero__line-inner" style={{ animationDelay: `${index * 90}ms` }}>
+                  {line}
+                </span>
+              </span>
+            ))}
+          </h1>
+        </div>
 
         <div className="hero__bottom">
           <p className="hero__sub lead">{hero.sub}</p>
