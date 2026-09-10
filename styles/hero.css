@@ -1,13 +1,8 @@
 /* ============================================================
    HERO
-   Zeichen und Aussage ruhig in der Mitte, der Name gross am
-   unteren Rand und vom Bildrand angeschnitten. Die Wucht kommt
-   damit aus der Wortmarke statt aus der Schlagzeile - der Satz
-   bleibt lesbar wie ein Satz.
-
-   Alle Groessen sind am Bildschirm nachgemessen: die Wortmarke
-   fuellt die Breite auf jedem Format, und der Inhalt darueber
-   passt samt erstem Knopf ohne Scrollen ins Bild.
+   Massive Typografie ueber einem Pixel-Feld. Der Verlauf sorgt dafuer,
+   dass Headline und CTA jederzeit lesbar bleiben - Effekt ist der
+   Lesbarkeit untergeordnet.
    ============================================================ */
 
 .hero {
@@ -16,15 +11,8 @@
   flex-direction: column;
   justify-content: flex-end;
   min-height: 100svh;
-  /* Wortmarke am unteren Rand. Zwei Groessen, weil sie zwei Aufgaben hat:
-     --wortmarke bestimmt die Breite (nachgemessen fuellt sie damit genau den
-     Bildschirm), --marke-sichtbar, wie hoch sie ueber die untere Kante ragt.
-     So bleibt sie auf flachen Fenstern randfuellend und wird einfach tiefer
-     angeschnitten, statt zu schrumpfen und die Kanten zu verfehlen. */
-  --wortmarke: 18.8vw;
-  --marke-sichtbar: calc(var(--wortmarke) * 0.856);
-  padding-top: clamp(84px, 9vh, 116px);
-  padding-bottom: 0;
+  padding-top: 120px;
+  padding-bottom: var(--s-7);
   overflow: hidden;
   background: var(--ink-000);
 }
@@ -51,12 +39,9 @@
   z-index: 2;
   display: flex;
   flex-direction: column;
-  gap: clamp(var(--s-5), 3vw, var(--s-7));
+  gap: clamp(var(--s-6), 5vw, var(--s-9));
   flex: 1;
-  justify-content: space-between;
-  /* Haelt genau so viel Platz frei, wie die Wortmarke darunter einnimmt.
-     Sie steht absolut und wuerde sonst unter dem Inhalt durchlaufen. */
-  padding-bottom: var(--marke-sichtbar);
+  justify-content: flex-end;
 }
 
 .hero__top {
@@ -67,136 +52,86 @@
 }
 .hero__label { color: var(--fog-600); }
 
-/* --- MITTE ------------------------------------------------------------
-   Zeichen, Aussage, Wege - alles auf einer Achse und in ruhiger Groesse.
-   Die Wucht traegt der Name am unteren Rand, nicht die Schlagzeile.
-   --------------------------------------------------------------------- */
-.hero__mitte {
-  display: grid;
-  justify-items: center;
-  text-align: center;
-  gap: clamp(var(--s-4), 2.4vw, var(--s-6));
-  /* Der Block sitzt in der verbleibenden Hoehe mittig. Ein eigener
-     Innenabstand kaeme obendrauf und wuerde den Kopfbereich ueber die
-     Bildschirmhoehe treiben. */
-  margin-block: auto;
-}
-
-.hero__marke {
-  gap: clamp(14px, 1.6vw, 22px);
-  margin-bottom: var(--s-2);
-}
-.hero__marke .wordmark__mark svg { display: block; width: clamp(40px, 4.4vw, 62px); height: auto; }
-.hero__marke .wordmark__text {
-  font-size: clamp(1.55rem, 2.6vw, 2.4rem);
-  letter-spacing: 0.14em;
-  text-indent: 0.14em;
-}
-
-/* Breit statt schmal: die Aussage laeuft ueber lange Zeilen, nicht als
-   Klumpen in der Mitte. Die Farben bleiben an den Satzteilen haengen -
-   dieselbe Abfolge wie in der linksbuendigen Fassung davor. */
-.hero__aussage {
-  font-family: var(--font-display);
-  font-size: clamp(1.5rem, 3.1vw, 2.9rem);
-  font-weight: 700;
-  line-height: 1.14;
-  letter-spacing: -0.026em;
+/* --- HEADLINE --------------------------------------------------------- */
+.hero__title {
+  font-size: var(--t-hero);
+  line-height: 0.86;
+  letter-spacing: var(--ls-mega);
+  font-weight: 800;
   text-transform: uppercase;
   color: var(--paper);
-  max-width: min(100%, 62ch);
-  text-wrap: balance;
+  margin-left: -0.05em;
 }
-.hero__wort { display: inline; }
-.hero__wort + .hero__wort::before { content: " "; }
-.hero__wort:nth-child(2) { color: var(--fog-300); }
-.hero__wort:nth-child(4) { color: var(--accent); }
-
-.hero__sub {
-  font-size: var(--t-base);
-  line-height: 1.66;
-  color: var(--fog-400);
-  max-width: min(100%, 76ch);
-  text-wrap: pretty;
+.hero__line { display: block; overflow: hidden; }
+.hero__line-inner {
+  display: block;
+  transform: translate3d(0, 100%, 0);
+  animation: heroRise 1s var(--ease-out) forwards;
 }
+.hero__line:nth-child(2) .hero__line-inner { color: var(--fog-300); }
+.hero__line:nth-child(4) .hero__line-inner { color: var(--accent); }
 
-.hero__aktionen { justify-content: center; margin-top: var(--s-2); }
-
-/* --- ECKDATEN ---------------------------------------------------------
-   Eine schmale Zeile statt dreier Spalten, direkt unter den Knoepfen. Am
-   unteren Rand gestanden haben sie sich mit den Buchstaben der Wortmarke
-   ueberlagert - deren Zeilenhoehe liegt unter eins, die Glyphen ragen also
-   ueber ihren eigenen Kasten hinaus.
-   --------------------------------------------------------------------- */
-.hero__eckdaten {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: var(--s-2) clamp(var(--s-4), 3vw, var(--s-6));
-  margin-top: var(--s-2);
-  padding-top: var(--s-4);
-  border-top: var(--border);
-  width: min(100%, 62ch);
-}
-.hero__eckdaten > div { display: flex; align-items: baseline; gap: var(--s-2); }
-.hero__eckdaten dt { color: var(--fog-600); }
-.hero__eckdaten dd { font-size: var(--t-sm); color: var(--fog-200); font-weight: 500; }
-
-/* --- WORTMARKE --------------------------------------------------------
-   Der Name ueber die volle Breite, unten vom Bildrand angeschnitten. Die
-   Groesse ist in vw gerechnet und am Bildschirm nachgemessen, damit die
-   Zeile die Breite fuellt, ohne sie zu sprengen.
-   --------------------------------------------------------------------- */
-.hero__wortmarke {
-  /* Absolut gesetzt: im Fluss wuerde sie die Hoehe des Kopfbereichs ueber
-     die Bildschirmhoehe treiben, und der erste Knopf rutschte darunter. */
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 1;
-  margin: 0;
-  padding-inline: 0;
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: var(--wortmarke);
-  line-height: 0.76;
-  letter-spacing: -0.03em;
-  text-align: center;
-  text-transform: uppercase;
-  white-space: nowrap;
-  color: var(--fog-500);
-  /* Gedaempft: der Name steht darueber schon einmal, hier traegt er die
-     Flaeche, nicht die Aussage. */
-  opacity: 0.3;
-  /* Angeschnitten: der untere Teil der Buchstaben laeuft aus dem Bild.
-     Der Wert folgt aus --marke-sichtbar; 0.986em ist die am Bildschirm
-     gemessene Hoehe der Versalien samt Ueberhang der Zeilenbox. */
-  margin-bottom: calc(var(--marke-sichtbar) - var(--wortmarke) * 0.986);
-  user-select: none;
-  pointer-events: none;
-}
+@keyframes heroRise { to { transform: translate3d(0, 0, 0); } }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero__wortmarke { transition: none; }
+  .hero__line-inner { transform: none; animation: none; }
 }
 
-/* Flache Fenster - Notebooks mit 720 Punkten Hoehe und aehnliche.
-   Dort passen Inhalt und Wortmarke sonst nicht gemeinsam auf den Schirm,
-   und die Marke faellt unter die Kante. Gemessen und nachgezogen. */
-@media (min-width: 900px) and (max-height: 800px) {
-  .hero {
-    /* Breite bleibt, der Anschnitt wird tiefer. */
-    --marke-sichtbar: calc(var(--wortmarke) * 0.62);
-    padding-top: clamp(72px, 8vh, 92px);
+/* --- UNTERE ZONE ------------------------------------------------------ */
+.hero__bottom {
+  display: grid;
+  gap: var(--s-6);
+  padding-top: var(--s-5);
+  border-top: var(--border);
+}
+.hero__sub { max-width: 46ch; color: var(--fog-300); }
+
+.hero__actions { display: grid; gap: var(--s-6); }
+
+.hero__meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: var(--s-4);
+  padding-top: var(--s-5);
+  border-top: var(--border);
+}
+.hero__meta-item dt { color: var(--fog-600); margin-bottom: var(--s-1); }
+.hero__meta-item dd {
+  font-family: var(--font-display);
+  font-size: var(--t-h4);
+  font-weight: 600;
+  color: var(--fog-100);
+}
+
+.hero__scroll {
+  position: relative;
+  z-index: 2;
+  align-self: flex-start;
+  display: none;
+  gap: var(--s-2);
+  margin-left: var(--gutter);
+  margin-top: var(--s-6);
+  color: var(--fog-600);
+  transition: color var(--dur-1) var(--ease-out);
+}
+.hero__scroll span { animation: nudge 2.6s var(--ease-in-out) infinite; display: inline-block; }
+.hero__scroll:hover { color: var(--paper); }
+@keyframes nudge {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(4px); }
+}
+
+@media (min-width: 900px) {
+  .hero__bottom {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    align-items: start;
+    gap: var(--s-8);
   }
-  .hero__mitte { gap: var(--s-3); }
-  .hero__marke { margin-bottom: 0; }
-  .hero__marke .wordmark__mark svg { width: clamp(32px, 3.2vw, 44px); }
-  .hero__marke .wordmark__text { font-size: clamp(1.2rem, 1.9vw, 1.7rem); }
-  .hero__aussage { font-size: clamp(1.3rem, 2.4vw, 2.2rem); }
-  .hero__sub { font-size: var(--t-sm); line-height: 1.6; }
-  .hero__eckdaten { margin-top: 0; padding-top: var(--s-3); }
+  .hero__scroll { display: inline-flex; }
+}
+
+@media (min-width: 1280px) {
+  .hero__title { font-size: clamp(4rem, 7.4vw, 7.4rem); }
 }
 
 /* --- TRUSTBAR --------------------------------------------------------- */

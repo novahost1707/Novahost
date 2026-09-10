@@ -16,9 +16,10 @@
  * verschiedenen Geschaeftszielen - Kauf, Anfrage, Reservierung. Wer sie
  * nebeneinander sieht, erkennt, dass hier nicht ein Stil recycelt wurde.
  *
- * Die Farbwerte unter `vorschau` sind aus der jeweiligen Seite uebernommen
- * (styles/demo-*.css). Wer dort die Palette aendert, muss sie hier
- * nachziehen - sonst verspricht die Kachel etwas anderes als die Seite.
+ * Jede Kachel zeigt eine Aufnahme der Seite, im Kachelformat 16/11
+ * aufgenommen - dadurch muss nichts beschnitten werden. Die Aufnahmen der
+ * Demos entstehen aus den Seiten selbst (scripts/kacheln.mjs), die des
+ * Kundenprojekts kommt von der veroeffentlichten Seite.
  */
 
 export type Projekt = {
@@ -35,13 +36,13 @@ export type Projekt = {
   umfang: string;
   /** Ein Satz zur gestalterischen Haltung, erscheint auf der Kachel. */
   haltung: string;
+  /** Aufnahme der Seite, im Kachelformat 16/11 aufgenommen. */
+  bild: { src: string; alt: string };
   /**
-   * Aufnahme der Seite. Nur bei echten Projekten - die Demos zeichnen ihre
-   * Vorschau in CSS, damit die Startseite ohne Bilddateien auskommt.
+   * Grundfarbe der Seite. Sie steht hinter der Aufnahme, solange die noch
+   * laedt - so blitzt an der Stelle nicht kurz die dunkle Kachel auf.
    */
-  bild?: { src: string; alt: string };
-  /** Farbwelt fuer die Vorschau auf der Startseite. */
-  vorschau: { grund: string; flaeche: string; text: string; akzent: string };
+  grund: string;
 };
 
 export const projekte: Projekt[] = [
@@ -57,7 +58,7 @@ export const projekte: Projekt[] = [
       src: "/work/redeemedbooking.jpg",
       alt: "Startseite von Redeemed Booking: Wortmarke und Kontaktknopf auf schwarzem Grund",
     },
-    vorschau: { grund: "#0b0a09", flaeche: "#151210", text: "#ffffff", akzent: "#e8a857" },
+    grund: "#0b0a09",
   },
 
   {
@@ -68,7 +69,11 @@ export const projekte: Projekt[] = [
     branche: "Mode-Onlineshop",
     umfang: "Damen, Herren, Kategorien, Produktseiten, Favoriten, Warenkorb",
     haltung: "Streng, kühl, fast monochrom. Die Ware trägt die Seite.",
-    vorschau: { grund: "#f6f5f2", flaeche: "#ffffff", text: "#131416", akzent: "#a8998a" },
+    bild: {
+      src: "/work/arvo.png",
+      alt: "Startseite des Demo-Shops ARVO: Kopfleiste, Kategorien und Kleiderständer",
+    },
+    grund: "#f6f5f2",
   },
   {
     slug: "handwerk",
@@ -78,7 +83,11 @@ export const projekte: Projekt[] = [
     branche: "Tischlerei & Innenausbau",
     umfang: "Leistungen, Referenzen, Ablauf, Team, Anfragestrecke",
     haltung: "Präzise und bodenständig. Haarlinien statt Werbekacheln.",
-    vorschau: { grund: "#eaedeb", flaeche: "#f7f9f8", text: "#191d1d", akzent: "#1c5a6b" },
+    bild: {
+      src: "/work/brandhorst.png",
+      alt: "Startseite der Demo-Tischlerei Brandhorst: Kopfleiste, Werkbank und Kennzahlen",
+    },
+    grund: "#191d1d",
   },
   {
     slug: "restaurant",
@@ -88,6 +97,10 @@ export const projekte: Projekt[] = [
     branche: "Restaurant & Saisonküche",
     umfang: "Konzept, Menüs, Küche, Raum, Öffnungszeiten, Reservierung",
     haltung: "Beige Karte, Burgunder als Akzent. Ruhig, zeitlos, alles führt auf den Tisch.",
-    vorschau: { grund: "#f2e6cb", flaeche: "#eadcba", text: "#2b1418", akzent: "#8c2233" },
+    bild: {
+      src: "/work/amsel.png",
+      alt: "Startseite des Demo-Restaurants Amsel: Kopfleiste und Hero mit Reservierungsknopf",
+    },
+    grund: "#f2e6cb",
   },
 ];
