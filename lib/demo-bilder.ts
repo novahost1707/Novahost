@@ -26,10 +26,6 @@ export type Bildplatz = {
 };
 
 export type MotivArt =
-  | "kaffee-tasse"
-  | "kaffee-bohnen"
-  | "kaffee-raum"
-  | "kaffee-handwerk"
   | "mode-stoff"
   | "mode-lookbook"
   | "mode-auslage"

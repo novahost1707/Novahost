@@ -6,17 +6,15 @@ import type { Bildplatz } from "@/lib/demo-bilder";
 import "@/styles/demo-restaurant.css";
 
 /**
- * Demo 4 - Restaurant Amsel (erfundenes Haus).
+ * Demo - Restaurant Amsel (erfundenes Haus).
  *
  * Marke: gehobene Saisonküche, 34 Plätze, offene Küche, zwei Menüs. Kein
  * Sterne-Getue, aber ein klarer Anspruch: was auf den Teller kommt, wächst
  * höchstens 120 Kilometer entfernt.
  *
- * Haltung: ruhig, warm, zeitlos. Sehr dunkles Burgunder als Grund, Beige als
- * Schrift und Akzent, hohe Serifenschrift, grosse Bilder und viel Luft.
- * Die Farbwelt trennt das Haus bewusst vom Braun der Kaffeeroesterei. Wenige
- * Kanten - kaum Karten, keine Glasflächen, keine technisch wirkenden
- * Bausteine.
+ * Haltung: ruhig, warm, zeitlos. Beige als Grund, Burgunder als Akzent, hohe
+ * Serifenschrift, grosse Bilder und viel Luft. Wenige Kanten - kaum Karten,
+ * keine Glasflächen, keine technisch wirkenden Bausteine.
  *
  * Conversion: Die Seite hat genau ein Ziel, und alles führt darauf hin - den
  * Tisch zu reservieren. Der Knopf steht im Kopf, im Hero, nach dem Konzept,

@@ -100,12 +100,6 @@
 .work__mini-spalten { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4%; flex: 1; }
 .work__mini-spalten i { background: var(--v-flaeche); border-left: 3px solid var(--v-akzent); }
 
-/* Café: warm, rund, Serifenanmutung durch weiche Kanten */
-.work__mini[data-niche="cafe"] .work__mini-bar,
-.work__mini[data-niche="cafe"] .work__mini-h,
-.work__mini[data-niche="cafe"] .work__mini-knopf { border-radius: 999px; }
-.work__mini[data-niche="cafe"] .work__mini-knopf { background: var(--v-text); }
-
 /* Mode: strenge Kanten, viel Weissraum, Ware im Raster */
 .work__mini[data-niche="mode"] { gap: 5%; }
 .work__mini[data-niche="mode"] .work__mini-raster i:nth-child(odd) { background: var(--v-flaeche); }

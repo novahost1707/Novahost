@@ -6,7 +6,7 @@ import type { Bildplatz } from "@/lib/demo-bilder";
 import "@/styles/demo-handwerk.css";
 
 /**
- * Demo 3 - Tischlerei Brandhorst (erfundener Betrieb).
+ * Demo - Tischlerei Brandhorst (erfundener Betrieb).
  *
  * Marke: Meisterbetrieb für Innenausbau und Möbel nach Maß, gegründet 1954,
  * dritte Generation. Spezialisiert auf Einbaumöbel im Altbau - nicht auf
