@@ -130,9 +130,9 @@ export const work = {
   label: "05 / PROJEKTE",
   headline: "SELECTED WORK.",
   intro:
-    "Vier vollständige Demo-Seiten aus vier Branchen - anklickbar, nicht nur abgebildet. Es sind eigene Konzepte, keine Kundenreferenzen. Sobald Kundenprojekte live sind, stehen sie an dieser Stelle.",
+    "Ein veröffentlichtes Kundenprojekt und drei vollständige Demo-Seiten aus drei Branchen - alle anklickbar, nicht nur abgebildet. Welche Kachel was ist, steht auf der Kachel.",
   disclaimer:
-    "Alle vier Seiten sind als DEMO PROJECT gekennzeichnete Eigenkonzepte mit erfundenen Unternehmen, Adressen und Preisen. Keine echten Kundennamen, keine erfundenen Ergebniszahlen.",
+    "Als DEMO PROJECT gekennzeichnete Kacheln sind eigene Konzepte mit erfundenen Unternehmen, Adressen und Preisen - keine Kundenreferenzen. Keine erfundenen Ergebniszahlen.",
   cta: "Demo ansehen",
 };
 

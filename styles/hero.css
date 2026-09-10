@@ -82,29 +82,41 @@
   margin-block: auto;
 }
 
-.hero__zeichen {
-  display: block;
-  color: var(--accent);
+.hero__marke {
+  gap: clamp(10px, 1.2vw, 16px);
   margin-bottom: var(--s-2);
 }
-.hero__zeichen svg { display: block; width: clamp(30px, 3.2vw, 44px); height: auto; }
+.hero__marke .wordmark__mark svg { display: block; width: clamp(26px, 2.6vw, 34px); height: auto; }
+.hero__marke .wordmark__text {
+  font-size: clamp(1rem, 1.5vw, 1.35rem);
+  letter-spacing: 0.16em;
+  text-indent: 0.16em;
+}
 
+/* Breit statt schmal: die Aussage laeuft ueber lange Zeilen, nicht als
+   Klumpen in der Mitte. Die Farben bleiben an den Satzteilen haengen -
+   dieselbe Abfolge wie in der linksbuendigen Fassung davor. */
 .hero__aussage {
   font-family: var(--font-display);
-  font-size: clamp(1.35rem, 2.5vw, 2.15rem);
-  font-weight: 600;
-  line-height: 1.24;
-  letter-spacing: -0.018em;
+  font-size: clamp(1.5rem, 3.1vw, 2.9rem);
+  font-weight: 700;
+  line-height: 1.14;
+  letter-spacing: -0.026em;
+  text-transform: uppercase;
   color: var(--paper);
-  max-width: 22ch;
+  max-width: min(100%, 62ch);
   text-wrap: balance;
 }
+.hero__wort { display: inline; }
+.hero__wort + .hero__wort::before { content: " "; }
+.hero__wort:nth-child(2) { color: var(--fog-300); }
+.hero__wort:nth-child(4) { color: var(--accent); }
 
 .hero__sub {
   font-size: var(--t-base);
-  line-height: 1.68;
+  line-height: 1.66;
   color: var(--fog-400);
-  max-width: 48ch;
+  max-width: min(100%, 76ch);
   text-wrap: pretty;
 }
 
@@ -154,7 +166,9 @@
   text-transform: uppercase;
   white-space: nowrap;
   color: var(--fog-500);
-  opacity: 0.42;
+  /* Gedaempft: der Name steht darueber schon einmal, hier traegt er die
+     Flaeche, nicht die Aussage. */
+  opacity: 0.3;
   /* Angeschnitten: der untere Teil der Buchstaben laeuft aus dem Bild.
      Der Wert folgt aus --marke-sichtbar; 0.986em ist die am Bildschirm
      gemessene Hoehe der Versalien samt Ueberhang der Zeilenbox. */
@@ -177,9 +191,10 @@
     padding-top: clamp(72px, 8vh, 92px);
   }
   .hero__mitte { gap: var(--s-3); }
-  .hero__zeichen { margin-bottom: 0; }
-  .hero__zeichen svg { width: clamp(26px, 2.4vw, 34px); }
-  .hero__aussage { font-size: clamp(1.2rem, 2vw, 1.7rem); }
+  .hero__marke { margin-bottom: 0; }
+  .hero__marke .wordmark__mark svg { width: clamp(22px, 2vw, 28px); }
+  .hero__marke .wordmark__text { font-size: clamp(0.9rem, 1.2vw, 1.1rem); }
+  .hero__aussage { font-size: clamp(1.3rem, 2.4vw, 2.2rem); }
   .hero__sub { font-size: var(--t-sm); line-height: 1.6; }
   .hero__eckdaten { margin-top: 0; padding-top: var(--s-3); }
 }

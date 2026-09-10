@@ -1,6 +1,6 @@
 import { PixelField } from "@/components/fx/PixelField";
 import { Cta } from "@/components/ui/Cta";
-import { PixelMark } from "@/components/ui/Wordmark";
+import { Wordmark } from "@/components/ui/Wordmark";
 import { hero } from "@/lib/content";
 import { site } from "@/lib/site";
 
@@ -34,15 +34,19 @@ export function Hero() {
         </div>
 
         <div className="hero__mitte">
-          <span className="hero__zeichen" aria-hidden="true">
-            <PixelMark size={44} />
-          </span>
+          {/* Zeichen und Name zusammen - dieselbe Wortmarke wie in der
+              Kopfleiste, nur groesser. */}
+          <Wordmark className="hero__marke" />
 
-          {/* Die Zeilen stehen im Inhalt getrennt, weil die frühere Fassung
-              sie einzeln eingeblendet hat. Hier tragen sie einen Satz, also
-              werden sie auch als Satz gesetzt. */}
+          {/* Die Zeilen stehen im Inhalt getrennt und behalten ihre Farben.
+              Sie fliessen hier aber als ein Satz, statt untereinander zu
+              stehen - lange Zeilen statt eines schmalen Klumpens. */}
           <h1 className="hero__aussage" id="hero-title">
-            {hero.headline.join(" ")}
+            {hero.headline.map((teil) => (
+              <span className="hero__wort" key={teil}>
+                {teil}
+              </span>
+            ))}
           </h1>
 
           <p className="hero__sub">{hero.sub}</p>
