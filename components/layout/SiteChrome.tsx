@@ -3,6 +3,7 @@ import { Cursor } from "@/components/fx/Cursor";
 import { DinoGame } from "@/components/easteregg/DinoGame";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { ScrollStart } from "@/components/layout/ScrollStart";
 
 /**
  * Der gemeinsame Rahmen der Novahost-Seite: Kopf, Fuss, Cursor, Easter Egg
@@ -17,6 +18,7 @@ import { Footer } from "@/components/layout/Footer";
 export function SiteChrome({ children }: { children: React.ReactNode }) {
   return (
     <>
+      <ScrollStart />
       <a className="skip" href="#main">Zum Inhalt springen</a>
       <div className="texture" aria-hidden="true" />
       <Cursor />

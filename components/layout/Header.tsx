@@ -45,7 +45,15 @@ export function Header() {
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
 
-  /** Dreifachklick auf die Wortmarke öffnet das versteckte Spiel. */
+  /**
+   * Klick auf die Wortmarke.
+   *
+   * Steht man schon auf der Startseite, fuehrt ein Link auf "/" nirgendwohin -
+   * der Browser bleibt, wo er ist. Erwartet wird aber der Weg nach oben, und
+   * genau das macht der Klick jetzt.
+   *
+   * Dreifachklick oeffnet weiterhin das versteckte Spiel.
+   */
   const onMarkClick = (event: React.MouseEvent) => {
     const now = Date.now();
     clicks.current = [...clicks.current.filter((t) => now - t < 900), now];
@@ -54,6 +62,22 @@ export function Header() {
       // Der ausloesende Klick soll nicht zusaetzlich zur Startseite navigieren
       event.preventDefault();
       window.dispatchEvent(new CustomEvent("novahost:easteregg"));
+      return;
+    }
+
+    if (window.location.pathname === "/") {
+      event.preventDefault();
+      setOpen(false);
+      // Ein gesetzter Anker in der Adresse wuerde sonst beim naechsten Laden
+      // wieder nach unten fuehren.
+      if (window.location.hash) {
+        history.replaceState(null, "", window.location.pathname + window.location.search);
+      }
+      // Sanft nur, wenn der Rechner nicht auf reduzierte Bewegung steht -
+      // ein per JavaScript gesetztes "smooth" beachtet die Einstellung nicht
+      // von selbst, anders als scroll-behavior im Stylesheet.
+      const ruhig = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      window.scrollTo({ top: 0, behavior: ruhig ? "auto" : "smooth" });
     }
   };
 
