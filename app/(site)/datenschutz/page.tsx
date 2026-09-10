@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+
+import { anbieter, anbieterAnschrift } from "@/lib/anbieter";
 import { EINWILLIGUNG_NOETIG } from "@/lib/consent";
 
 export const metadata: Metadata = {
@@ -29,18 +31,26 @@ export default function DatenschutzPage() {
       <div className="legal__body">
         <p className="legal__note">
           <strong>Hinweis für den Betreiber:</strong> Diese Erklärung beschreibt den aktuellen
-          technischen Stand dieser Website. Die mit{" "}
-          <span className="placeholder">[ ... ]</span> markierten Angaben sind zu ergänzen. Wird
-          die Seite um Analyse-, Marketing- oder Buchungsdienste erweitert, ist dieser Text
+          technischen Stand dieser Website. Offen sind noch die mit{" "}
+          <span className="placeholder">[ ... ]</span> markierten Angaben: der vollständige
+          Firmenname und die Anschrift von Hoster und E-Mail-Versand sowie die Grundlage der
+          Datenübermittlung - beides steht in den Auftragsverarbeitungsverträgen der Anbieter.
+          Wird die Seite um Analyse-, Marketing- oder Buchungsdienste erweitert, ist dieser Text
           entsprechend anzupassen. Die Vorlage ersetzt keine Rechtsberatung.
         </p>
 
         <section>
           <h2>1. Verantwortliche Stelle</h2>
           <p>
-            <span className="placeholder">[Firmenname / Inhaber]</span>,{" "}
-            <span className="placeholder">[Anschrift]</span>,{" "}
-            <span className="placeholder">[E-Mail-Adresse]</span>
+            {anbieter.marke}
+            <br />
+            Inhaber: {anbieter.name}
+            <br />
+            {anbieterAnschrift}, {anbieter.land}
+            <br />
+            Telefon: {anbieter.telefon}
+            <br />
+            E-Mail: <a href={`mailto:${anbieter.email}`}>{anbieter.email}</a>
           </p>
         </section>
 
@@ -172,7 +182,9 @@ export default function DatenschutzPage() {
               Aufbewahrungsfristen
             </li>
             <li>
-              Empfänger: <span className="placeholder">[eingesetzter E-Mail- oder CRM-Dienst]</span>
+              Empfänger: Resend als Dienst für den E-Mail-Versand (
+              <span className="placeholder">[vollständiger Firmenname und Anschrift]</span>). Ein
+              CRM-System ist nicht angebunden.
             </li>
           </ul>
           <p>
@@ -185,10 +197,9 @@ export default function DatenschutzPage() {
         <section>
           <h2>7. Hosting</h2>
           <p>
-            Diese Website wird bei{" "}
-            <span className="placeholder">[Name und Anschrift des Hosting-Anbieters]</span>{" "}
-            betrieben. Mit dem Anbieter besteht ein Vertrag zur Auftragsverarbeitung nach Artikel 28
-            DSGVO.
+            Diese Website wird bei Vercel betrieben (
+            <span className="placeholder">[vollständiger Firmenname und Anschrift]</span>). Mit dem
+            Anbieter besteht ein Vertrag zur Auftragsverarbeitung nach Artikel 28 DSGVO.
           </p>
           <p>
             Sitzt der Anbieter ausserhalb der EU oder verarbeitet er dort Daten, stützt sich die
@@ -213,7 +224,7 @@ export default function DatenschutzPage() {
           </p>
           <p>
             Für alle Anliegen erreichen Sie uns unter{" "}
-            <span className="placeholder">[E-Mail-Adresse]</span>.
+            <a href={`mailto:${anbieter.email}`}>{anbieter.email}</a>.
           </p>
         </section>
 
