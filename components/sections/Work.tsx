@@ -12,14 +12,14 @@ import { projekte, type Projekt } from "@/lib/projekte";
  * Projekte.
  *
  * Zwei Sorten nebeneinander, und die Kachel sagt jeweils, welche: ein echtes
- * Projekt führt auf die veröffentlichte Seite und zeigt eine Aufnahme davon,
- * ein eigenes Konzept trägt sichtbar DEMO PROJECT und führt auf /demo/...
- * Die Trennung ist der Punkt - eine Demo als Referenz auszugeben wäre eine
- * Behauptung, die niemand nachprüfen kann.
+ * Projekt führt auf die veröffentlichte Seite, ein eigenes Konzept trägt
+ * sichtbar DEMO PROJECT und führt auf /demo/... Die Trennung ist der Punkt -
+ * eine Demo als Referenz auszugeben wäre eine Behauptung, die niemand
+ * nachprüfen kann.
  *
- * Die Vorschau der Demos ist keine beliebige Skizze, sondern nimmt Aufbau und
- * Farbwelt der jeweiligen Seite vorweg - reines CSS, damit die Startseite
- * ohne Bilddateien auskommt.
+ * Jede Kachel zeigt eine Aufnahme der Seite selbst. Vorher standen dort für
+ * die Demos gezeichnete Miniaturen; neben der Aufnahme des Kundenprojekts
+ * sahen sie aus wie ein Platzhalter, der noch ersetzt werden muss.
  */
 export function Work() {
   const [active, setActive] = useState<number | null>(null);
@@ -63,24 +63,15 @@ export function Work() {
                 >
                   <div
                     className="work__visual"
-                    style={{
-                      "--v-grund": projekt.vorschau.grund,
-                      "--v-flaeche": projekt.vorschau.flaeche,
-                      "--v-text": projekt.vorschau.text,
-                      "--v-akzent": projekt.vorschau.akzent,
-                    } as React.CSSProperties}
+                    style={{ "--v-grund": projekt.grund } as React.CSSProperties}
                   >
-                    {projekt.bild ? (
-                      <Image
-                        src={projekt.bild.src}
-                        alt={projekt.bild.alt}
-                        fill
-                        sizes="(max-width: 760px) 100vw, 50vw"
-                        className="work__foto"
-                      />
-                    ) : (
-                      <Vorschau projekt={projekt} />
-                    )}
+                    <Image
+                      src={projekt.bild.src}
+                      alt={projekt.bild.alt}
+                      fill
+                      sizes="(max-width: 760px) 100vw, 50vw"
+                      className="work__foto"
+                    />
                     <span className="work__badge pixel" data-art={projekt.art}>
                       {extern ? "KUNDENPROJEKT" : "DEMO PROJECT"}
                     </span>
@@ -112,58 +103,4 @@ export function Work() {
       </div>
     </section>
   );
-}
-
-/**
- * Miniatur der jeweiligen Demo-Seite.
- *
- * Bewusst eine eigene Anordnung je Seite statt einer Vorlage mit anderen
- * Farbwerten: Der ganze Punkt dieser Sektion ist, dass die Auftritte
- * verschieden aufgebaut sind. Eine gemeinsame Skizze wuerde genau das
- * verdecken.
- */
-function Vorschau({ projekt }: { projekt: Projekt }) {
-  switch (projekt.slug) {
-    case "mode":
-      return (
-        <span className="work__mini" data-niche="mode" aria-hidden="true">
-          <span className="work__mini-bar" />
-          <span className="work__mini-buehne" />
-          <span className="work__mini-raster">
-            <i /><i /><i /><i />
-          </span>
-        </span>
-      );
-
-    case "handwerk":
-      return (
-        <span className="work__mini" data-niche="handwerk" aria-hidden="true">
-          <span className="work__mini-signal" />
-          <span className="work__mini-bar" />
-          <span className="work__mini-text">
-            <i className="work__mini-h" />
-            <i className="work__mini-h work__mini-h--kurz" />
-            <i className="work__mini-knopf" />
-          </span>
-          <span className="work__mini-spalten">
-            <i /><i /><i />
-          </span>
-        </span>
-      );
-
-    case "restaurant":
-      return (
-        <span className="work__mini" data-niche="restaurant" aria-hidden="true">
-          <span className="work__mini-buehne" />
-          <span className="work__mini-mitte">
-            <i className="work__mini-h" />
-            <i className="work__mini-z" />
-            <i className="work__mini-knopf" />
-          </span>
-        </span>
-      );
-
-    default:
-      return null;
-  }
 }

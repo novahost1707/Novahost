@@ -1,7 +1,8 @@
 /* ============================================================
-   PROJEKTE — Demo-Konzepte, klar als solche markiert
-   Die Vorschauen sind generative Pixel-Kompositionen aus CSS:
-   keine Bilddateien, kein Ladegewicht, kein Stockfoto.
+   PROJEKTE — ein Kundenprojekt und drei Demo-Konzepte, jedes
+   klar als das markiert, was es ist.
+   Jede Kachel zeigt eine Aufnahme der Seite selbst, im
+   Kachelformat aufgenommen - kein Stockfoto, kein Zuschnitt.
    ============================================================ */
 
 .work__head { display: grid; gap: var(--s-5); margin-block: var(--s-6) var(--s-8); }
@@ -51,107 +52,11 @@
   border-bottom: var(--border);
 }
 
-/* --- Miniatur der Demo-Seite --------------------------------
-   Vier eigene Anordnungen, jede in der Farbwelt der Seite, auf
-   die sie fuehrt. Reines CSS: keine Bilddatei, kein Ladegewicht.
-   ----------------------------------------------------------- */
-.work__mini {
-  position: absolute;
-  inset: 9% 8%;
-  display: flex;
-  flex-direction: column;
-  gap: 4%;
-  transition: transform var(--dur-4) var(--ease-out);
-}
-.work__card[data-active="true"] .work__mini { transform: scale(1.035); }
-.work__mini > *, .work__mini i { display: block; }
-
-.work__mini-bar {
-  height: 7%;
-  flex: none;
-  background: var(--v-flaeche);
-  opacity: 0.9;
-}
-.work__mini-reihe { display: flex; gap: 5%; align-items: center; flex: 1; }
-.work__mini-text { display: flex; flex-direction: column; gap: 7%; flex: 1; justify-content: center; }
-.work__mini-h { height: 13px; background: var(--v-text); opacity: 0.88; }
-.work__mini-h--kurz { width: 58%; }
-.work__mini-z { height: 5px; width: 76%; background: var(--v-text); opacity: 0.3; }
-.work__mini-knopf { height: 14px; width: 42%; background: var(--v-akzent); margin-top: 4%; }
-
-.work__mini-kreis {
-  width: 38%;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  flex: none;
-  background: var(--v-akzent);
-  box-shadow: 0 0 0 6px var(--v-flaeche);
-}
-.work__mini-karte { display: flex; flex-direction: column; gap: 6px; flex: none; }
-.work__mini-karte i { height: 4px; background: var(--v-text); opacity: 0.22; }
-.work__mini-karte i:nth-child(2) { width: 82%; }
-.work__mini-karte i:nth-child(3) { width: 64%; }
-
-.work__mini-buehne { flex: 1.1; background: var(--v-text); opacity: 0.92; }
-.work__mini-raster { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4%; flex: 1; }
-.work__mini-raster i { background: var(--v-flaeche); }
-.work__mini-band { height: 9%; flex: none; background: var(--v-akzent); }
-.work__mini-signal { height: 6%; flex: none; background: var(--v-akzent); }
-.work__mini-spalten { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4%; flex: 1; }
-.work__mini-spalten i { background: var(--v-flaeche); border-left: 3px solid var(--v-akzent); }
-
-/* Mode: strenge Kanten, viel Weissraum, Ware im Raster */
-.work__mini[data-niche="mode"] { gap: 5%; }
-.work__mini[data-niche="mode"] .work__mini-raster i:nth-child(odd) { background: var(--v-flaeche); }
-.work__mini[data-niche="mode"] .work__mini-raster i::after {
-  content: "";
-  display: block;
-  margin: 26% auto 0;
-  width: 46%;
-  height: 46%;
-  background: var(--v-akzent);
-  opacity: 0.55;
-}
-
-/* Handwerk: dunkel, Signalfarbe oben, drei Leistungsspalten */
-.work__mini[data-niche="handwerk"] .work__mini-bar { opacity: 0.32; }
-
-/* Restaurant: dunkel, mittig gesetzt, eine einzige Handlung.
-   Kein Raster - grosse Bildflaeche oben, darunter zentrierte
-   Zeilen und der Reservierungsknopf. */
-.work__mini[data-niche="restaurant"] { gap: 6%; }
-.work__mini[data-niche="restaurant"] .work__mini-buehne {
-  flex: 1.35;
-  /* Nimmt die Farben der jeweiligen Seite auf, statt eine feste zu setzen. */
-  background: linear-gradient(155deg, color-mix(in oklab, var(--v-akzent) 62%, var(--v-flaeche)), var(--v-flaeche));
-  opacity: 1;
-}
-.work__mini-mitte {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 9%;
-}
-.work__mini[data-niche="restaurant"] .work__mini-h { width: 62%; height: 10px; opacity: 0.9; }
-.work__mini[data-niche="restaurant"] .work__mini-z { width: 38%; height: 4px; opacity: 0.34; }
-.work__mini[data-niche="restaurant"] .work__mini-knopf {
-  width: 46%;
-  height: 13px;
-  margin-top: 2%;
-  /* Messing bleibt Linie, nicht Flaeche - so wie auf der Seite selbst. */
-  background: transparent;
-  border: 1px solid var(--v-akzent);
-}
-
-/* Aufnahme eines echten Projekts statt der gezeichneten Vorschau. */
+/* Aufnahme der jeweiligen Seite. Sie ist im Kachelformat aufgenommen,
+   deshalb muss "cover" nichts wegschneiden. */
 .work__foto {
   object-fit: cover;
-  /* Linke Kante halten: dort steht die Wortmarke, und genau die soll auf
-     der Kachel zu sehen sein. Bei "cover" wuerde sonst beidseitig
-     beschnitten und sie fiele weg. */
-  object-position: left center;
+  object-position: top center;
   transition: transform var(--dur-4) var(--ease-out);
 }
 .work__card[data-active="true"] .work__foto { transform: scale(1.035); }
